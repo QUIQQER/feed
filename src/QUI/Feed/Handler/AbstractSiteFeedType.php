@@ -142,7 +142,6 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                 $Config = QUI::getPackage("quiqqer/feed")->getConfig();
 
                 try {
-
                     //Check if the creation user should be picked
                     if ($Config?->get("common", "user") != "c_user") {
                         throw new QUI\Exception("Invalid user field choice!");
