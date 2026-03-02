@@ -326,7 +326,7 @@ class Manager
 
                 if ($publishable->length) {
                     $publishableNode = $publishable->item(0);
-                    $type['publishable'] = $publishableNode ? !empty($publishableNode->nodeValue) : false;
+                    $type['publishable'] = $publishableNode && !empty($publishableNode->nodeValue);
                 }
 
                 $pagination = $FeedTypeNode->getElementsByTagName('pagination');
@@ -334,7 +334,7 @@ class Manager
 
                 if ($pagination->length) {
                     $paginationNode = $pagination->item(0);
-                    $type['pagination'] = $paginationNode ? !empty($paginationNode->nodeValue) : false;
+                    $type['pagination'] = $paginationNode && !empty($paginationNode->nodeValue);
                 }
 
                 // Mime type
