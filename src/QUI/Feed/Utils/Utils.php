@@ -21,7 +21,7 @@ class Utils
      */
     public static function fixLinkProtocol(string $url): string
     {
-        $forceHttp = QUI::getPackage("quiqqer/feed")->getConfig()->get("rss", "http");
+        $forceHttp = QUI::getPackage("quiqqer/feed")->getConfig()?->get("rss", "http");
 
         if (!$forceHttp) {
             return $url;

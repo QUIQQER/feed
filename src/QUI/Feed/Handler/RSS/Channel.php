@@ -15,7 +15,7 @@ use QUI\Feed\Interfaces\FeedItemInterface;
 class Channel extends AbstractChannel
 {
     /**
-     * @param array $params
+     * @param array<string, mixed> $params
      * @return FeedItemInterface
      */
     public function createItem(array $params = []): FeedItemInterface

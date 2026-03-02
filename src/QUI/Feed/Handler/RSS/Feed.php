@@ -98,9 +98,12 @@ class Feed extends AbstractSiteFeedType
                     continue;
                 }
 
-                $maxSize = QUI::getPackage("quiqqer/feed")->getConfig()->get("images", "maxsize");
-                $Image->setAttribute("maxheight", $maxSize);
-                $Image->setAttribute("maxwidth", $maxSize);
+                $maxSize = QUI::getPackage("quiqqer/feed")->getConfig()?->get("images", "maxsize");
+
+                if ($maxSize !== null) {
+                    $Image->setAttribute("maxheight", $maxSize);
+                    $Image->setAttribute("maxwidth", $maxSize);
+                }
 
                 $EnclosureDom = $ItemXml->addChild('enclosure');
                 $EnclosureDom->addAttribute(
