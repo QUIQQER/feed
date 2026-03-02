@@ -26,7 +26,7 @@ abstract class AbstractItem extends QDOM implements InterfaceItem
     /**
      * constructor
      *
-     * @param array $params
+     * @param array<string, mixed> $params
      */
     public function __construct(array $params = [])
     {

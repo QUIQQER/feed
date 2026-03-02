@@ -234,6 +234,12 @@ class EventHandler
     {
         $Manager = new Manager();
         $feedRows = $Manager->getList();
+        $curProject = QUI::getRewrite()->getProject();
+        $Site = QUI::getRewrite()->getSite();
+
+        if (!$curProject || !$Site) {
+            return;
+        }
 
         foreach ($feedRows as $databaseRow) {
             $feedID = $databaseRow['id'];
@@ -262,7 +268,6 @@ class EventHandler
             );
 
             // Only display feeds for the current project and language
-            $curProject = QUI::getRewrite()->getProject();
             if ($curProject->getName() != $FeedProject->getName()) {
                 continue;
             }
@@ -273,7 +278,7 @@ class EventHandler
 
 
             // Check if the feed should be included on this page
-            if (!$Feed->publishOnSite(QUI::getRewrite()->getSite())) {
+            if (!$Feed->publishOnSite($Site)) {
                 continue;
             }
 
