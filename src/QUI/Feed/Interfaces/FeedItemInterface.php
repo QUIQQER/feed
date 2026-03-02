@@ -14,6 +14,18 @@ use QUI\Projects\Media\Image;
 interface FeedItemInterface
 {
     /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setAttribute(string $name, mixed $value): void;
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getAttribute(string $name): mixed;
+
+    /**
      * Set the title of the feed item
      *
      * @param string $title

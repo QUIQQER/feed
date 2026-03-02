@@ -69,6 +69,12 @@ interface ChannelInterface
     public function setAttribute(string $name, mixed $value): void;
 
     /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getAttribute(string $name): mixed;
+
+    /**
      * Host
      */
 
