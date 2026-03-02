@@ -14,7 +14,7 @@ use QUI\QDOM;
 abstract class AbstractFeedType extends QDOM implements FeedInterface
 {
     /**
-     * @param array $attributes - Feed type attributes
+     * @param array<string, mixed> $attributes - Feed type attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -24,7 +24,7 @@ abstract class AbstractFeedType extends QDOM implements FeedInterface
     /**
      * Channel list
      *
-     * @var array
+     * @var array<int, ChannelInterface>
      */
     protected array $channels = [];
 
@@ -41,7 +41,7 @@ abstract class AbstractFeedType extends QDOM implements FeedInterface
     /**
      * Return the channels
      *
-     * @return array
+     * @return array<int, ChannelInterface>
      */
     public function getChannels(): array
     {

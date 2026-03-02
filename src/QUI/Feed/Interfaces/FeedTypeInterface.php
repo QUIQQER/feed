@@ -11,7 +11,7 @@ use QUI\Feed\Feed;
 interface FeedTypeInterface extends QUI\QDOMInterface
 {
     /**
-     * @param array $attributes - Feed type attributes
+     * @param array<string, mixed> $attributes - Feed type attributes
      */
     public function __construct(array $attributes = []);
 
@@ -32,7 +32,7 @@ interface FeedTypeInterface extends QUI\QDOMInterface
     /**
      * Return the channel list
      *
-     * @return array
+     * @return array<int, ChannelInterface>
      */
     public function getChannels(): array;
 
