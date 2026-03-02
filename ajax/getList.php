@@ -8,9 +8,7 @@
  * Returns the feed list
  *
  * @param string $gridParams - grid params
- *
  * @return array
- * @author www.pcsg.de (Henning Leutz)
  */
 
 QUI::$Ajax->registerFunction(

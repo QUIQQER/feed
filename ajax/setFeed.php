@@ -5,10 +5,8 @@
  *
  * @param string|boolean $feedId - ID of the Feed
  * @param string $params - JSON params
- *
  * @return array
  * @throws QUI\Exception
- * @author www.pcsg.de (Henning Leutz)
  */
 
 QUI::$Ajax->registerFunction(

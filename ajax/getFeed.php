@@ -8,10 +8,6 @@
  * Returns the feed list
  *
  * @param integer $feedId - ID of the Feed
- *
- * @return array
- * @author www.pcsg.de (Henning Leutz)
- *
  */
 
 QUI::$Ajax->registerFunction(
