@@ -11,9 +11,6 @@ use QUI\Feed\Interfaces\FeedItemInterface;
 
 /**
  * Class Channel - Google Sitemap XML
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Channel extends AbstractChannel
 {

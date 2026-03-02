@@ -13,9 +13,6 @@ use QUI\QDOM;
 
 /**
  * Class AbstractItem
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 abstract class AbstractItem extends QDOM implements InterfaceItem
 {

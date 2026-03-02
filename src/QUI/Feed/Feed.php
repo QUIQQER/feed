@@ -16,9 +16,6 @@ use function json_encode;
 /**
  * Class Feed
  * One Feed, you can edit and save the feed, and get the feed as an XML / RSS Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Feed extends QUI\QDOM
 {

@@ -8,9 +8,6 @@ namespace QUI\Feed\Interfaces;
 
 /**
  * Interface Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 interface ChannelInterface
 {

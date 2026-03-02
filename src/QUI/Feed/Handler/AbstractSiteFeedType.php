@@ -31,10 +31,7 @@ use function time;
 
 /**
  * Class AbstractSiteFeedType
- *
  * Abstract class for feed types that publish CMS Site feeds.
- *
- * @author  www.pcsg.de (Patrick Müller)
  */
 abstract class AbstractSiteFeedType extends AbstractFeedType
 {

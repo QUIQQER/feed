@@ -23,10 +23,6 @@ use function str_replace;
 
 /**
  * Class Feed Manager
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
- * @author  www.pcsg.de (Patrick Müller)
  */
 class Manager
 {

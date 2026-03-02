@@ -24,9 +24,6 @@ use function strtotime;
 
 /**
  * Class Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Feed extends AbstractSiteFeedType
 {

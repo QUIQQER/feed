@@ -6,8 +6,6 @@ use SimpleXMLElement;
 
 /**
  * SimpleXMLElement extent
- *
- * @auth
  */
 class SimpleXML extends SimpleXMLElement
 {

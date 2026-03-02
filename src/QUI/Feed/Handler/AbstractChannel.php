@@ -12,9 +12,6 @@ use QUI\QDOM;
 
 /**
  * Class AbstractChannel
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 abstract class AbstractChannel extends QDOM implements ChannelInterface
 {

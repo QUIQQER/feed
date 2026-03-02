@@ -14,9 +14,6 @@ use function json_encode;
 
 /**
  * Class Events -> System Events
- *
- * @package QUI\Feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class EventHandler
 {
@@ -200,13 +197,9 @@ class EventHandler
 
     /**
      * event : site change it
-     *
-     * <<<<<<< HEAD
-     * @param QUI\Interfaces\Projects\Site $Site |Edit $Site
+
      * @param QUI\Interfaces\Projects\Site $Site
-     * >>>>>>> 59aed0d (feat: missing return types, qualifier imports, function converts to php8.1)
      * @throws QUI\Database\Exception
-     * =======
      */
     public static function onSiteChange(QUI\Interfaces\Projects\Site $Site): void
     {

@@ -14,9 +14,6 @@ use SimpleXMLElement;
 
 /**
  * Class Feed - RSS Feed 2.0
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Feed extends AbstractSiteFeedType
 {

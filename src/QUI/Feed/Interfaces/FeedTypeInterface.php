@@ -7,10 +7,6 @@ use QUI\Feed\Feed;
 
 /**
  * Interface Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
- * @author  www.pcsg.de (Patrick Müller)
  */
 interface FeedTypeInterface extends QUI\QDOMInterface
 {

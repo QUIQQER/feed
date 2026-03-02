@@ -10,9 +10,6 @@ use QUI\Projects\Media\Image;
 
 /**
  * Interface Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 interface FeedItemInterface
 {

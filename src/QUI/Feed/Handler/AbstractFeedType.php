@@ -10,9 +10,6 @@ use QUI\QDOM;
 
 /**
  * Class AbstractFeed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 abstract class AbstractFeedType extends QDOM implements FeedInterface
 {
