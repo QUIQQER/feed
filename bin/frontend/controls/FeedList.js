@@ -1,8 +1,3 @@
-/**
- * @module package/quiqqer/feed/bin/frontend/controls/FeedList
- *
- *
- */
 define('package/quiqqer/feed/bin/frontend/controls/FeedList', [
 
     'qui/QUI',

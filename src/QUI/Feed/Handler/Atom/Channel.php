@@ -11,14 +11,11 @@ use QUI\Feed\Interfaces\FeedItemInterface;
 
 /**
  * Class Channel - Atom Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Channel extends AbstractChannel
 {
     /**
-     * @param array $params
+     * @param array<string, mixed> $params
      * @return FeedItemInterface
      */
     public function createItem(array $params = []): FeedItemInterface

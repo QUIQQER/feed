@@ -1,9 +1,5 @@
 /**
  * Feed settings
- *
- * @module package/quiqqer/feed/bin/Feed
- * @author www.pcsg.de (Henning Leutz)
- * @author www.pcsg.de (Patrick Müller)
  */
 define('package/quiqqer/feed/bin/Feed', [
 

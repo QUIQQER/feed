@@ -16,9 +16,6 @@ use function json_encode;
 /**
  * Class Feed
  * One Feed, you can edit and save the feed, and get the feed as an XML / RSS Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Feed extends QUI\QDOM
 {
@@ -34,17 +31,17 @@ class Feed extends QUI\QDOM
      *
      * @var string
      */
-    protected mixed $typeId = '';
+    protected string $typeId = '';
 
     /**
-     * @var ?QUI\Projects\Project
+     * @var QUI\Projects\Project
      */
-    protected ?QUI\Projects\Project $Project = null;
+    protected QUI\Projects\Project $Project;
 
     /**
-     * @var ?QUI\Feed\Interfaces\FeedTypeInterface
+     * @var QUI\Feed\Interfaces\FeedTypeInterface
      */
-    protected ?Interfaces\FeedTypeInterface $FeedType = null;
+    protected Interfaces\FeedTypeInterface $FeedType;
 
     /**
      * Constructor
@@ -86,10 +83,18 @@ class Feed extends QUI\QDOM
 
         // Build project
         if (!empty($data['project']) && !empty($data['lang'])) {
-            $this->Project = QUI::getProjectManager()::getProject($data['project'], $data['lang']);
+            $Project = QUI::getProjectManager()::getProject($data['project'], $data['lang']);
         } else {
-            $this->Project = QUI::getProjectManager()::getStandard();
+            $Project = QUI::getProjectManager()::getStandard();
         }
+
+        if (!$Project) {
+            throw new QUI\Exception(
+                QUI::getLocale()->get('quiqqer/feed', 'exception.feed.project.not.found')
+            );
+        }
+
+        $this->Project = $Project;
 
         // Build FeedType
         $Manager = new Manager();
@@ -137,7 +142,7 @@ class Feed extends QUI\QDOM
     /**
      * Return the feed attributes
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getAttributes(): array
     {

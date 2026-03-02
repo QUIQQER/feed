@@ -1,13 +1,5 @@
 /**
  * Feed window
- *
- * @module package/quiqqer/feed/bin/FeedWindow
- * @author www.pcsg.de (Henning Leutz)
- *
- * @require qui/QUI
- * @require qui/controls/windows/Confirm
- * @require package/quiqqer/feed/bin/Feed
- * @require Locale
  */
 define('package/quiqqer/feed/bin/FeedWindow', [
 

@@ -11,11 +11,10 @@ use Exception;
 use QUI;
 use QUI\ERP\Products\Handler\Products;
 use QUI\Feed\Feed as FeedInstance;
-use QUI\Feed\Handler\AbstractItem;
 use QUI\Feed\Handler\AbstractSiteFeedType;
 use QUI\Feed\Interfaces\ChannelInterface;
+use QUI\Feed\Interfaces\FeedItemInterface;
 use QUI\Feed\Utils\SimpleXML;
-use SimpleXMLElement;
 
 use function array_filter;
 use function count;
@@ -24,9 +23,6 @@ use function strtotime;
 
 /**
  * Class Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Feed extends AbstractSiteFeedType
 {
@@ -64,7 +60,7 @@ class Feed extends AbstractSiteFeedType
     public function create(FeedInstance $Feed, ?int $page = null): string
     {
         $this->setPage($page);
-        $this->setPageSize($Feed->getAttribute('pageSize'));
+        $this->setPageSize((int)$Feed->getAttribute('pageSize'));
 
         return parent::create($Feed, $page);
     }
@@ -76,6 +72,7 @@ class Feed extends AbstractSiteFeedType
      */
     public function getXML(): SimpleXML
     {
+        /** @var array<int, FeedItemInterface> $Items */
         $Items = [];
         $Channels = $this->getChannels();
 
@@ -86,7 +83,7 @@ class Feed extends AbstractSiteFeedType
 
         // Filter items
         $Items = array_filter($Items, function ($Item) {
-            /** @var AbstractItem $Item */
+            /** @var FeedItemInterface $Item */
             $seoDirective = $Item->getAttribute('seoDirective');
 
             if (!empty($seoDirective) && mb_strpos($seoDirective, 'noindex') !== false) {
@@ -103,7 +100,7 @@ class Feed extends AbstractSiteFeedType
         // Pagination - index
 
         // The link attribute ends on .rss - we need to strip that
-        $baseURL = $Channels[0]->getAttribute("link");
+        $baseURL = (string)$Channels[0]->getAttribute("link");
 
         if (str_ends_with($baseURL, ".rss")) {
             $baseURL = substr($baseURL, 0, -4);
@@ -111,7 +108,7 @@ class Feed extends AbstractSiteFeedType
 
         // Calculate the pages
         $itemCount = count($Items);
-        $pageCount = ceil($itemCount / $this->pageSize);
+        $pageCount = (int)ceil($itemCount / $this->pageSize);
 
         // Return the sitemap index for page 0
         if ($this->page == 0) {
@@ -131,7 +128,7 @@ class Feed extends AbstractSiteFeedType
     }
 
     /**
-     * @param Item[] $items
+     * @param array<int, FeedItemInterface> $items
      *
      * @return SimpleXML
      */
@@ -143,7 +140,7 @@ class Feed extends AbstractSiteFeedType
         );
 
         foreach ($items as $Item) {
-            /* @var $Item Item */
+            /* @var $Item FeedItemInterface */
             $ItemXml = $XML->addChild('url');
             $date = $Item->getAttribute('e_date');
 
@@ -159,12 +156,11 @@ class Feed extends AbstractSiteFeedType
     }
 
     /**
-     * @param $pages
-     * @param $baseURL
-     *
+     * @param int $pages
+     * @param string $baseURL
      * @return SimpleXML
      */
-    protected function createSitemapIndexXML($pages, $baseURL): SimpleXML
+    protected function createSitemapIndexXML(int $pages, string $baseURL): SimpleXML
     {
         $XML = new SimpleXML(
             '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" />'
@@ -180,23 +176,23 @@ class Feed extends AbstractSiteFeedType
     }
 
     /**
-     * @param $pageSize
+     * @param int $pageSize
      */
-    protected function setPageSize($pageSize): void
+    protected function setPageSize(int $pageSize): void
     {
         $this->pageSize = $pageSize;
     }
 
     /**
-     * @param $page
+     * @param int|null $page
      */
-    protected function setPage($page): void
+    protected function setPage(?int $page): void
     {
-        $this->page = $page;
+        $this->page = $page ?? 0;
     }
 
     /**
-     * @return array
+     * @return array<int, int|string>
      */
     protected function getFeedProductIds(): array
     {
@@ -258,8 +254,18 @@ class Feed extends AbstractSiteFeedType
         $Locale->setCurrent($lang);
 
         foreach ($productIds as $productId) {
+            if (!is_numeric($productId)) {
+                continue;
+            }
+
+            $pid = (int)$productId;
+
+            if ($pid <= 0) {
+                continue;
+            }
+
             try {
-                $Product = Products::getProduct($productId);
+                $Product = Products::getProduct($pid);
             } catch (Exception $Exception) {
                 QUI\System\Log::writeException($Exception);
                 continue;

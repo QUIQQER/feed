@@ -13,9 +13,6 @@ use function date;
 
 /**
  * Class Feed
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Feed extends AbstractSiteFeedType
 {
@@ -138,9 +135,12 @@ class Feed extends AbstractSiteFeedType
                 continue;
             }
 
-            $maxSize = QUI::getPackage("quiqqer/feed")->getConfig()->get("images", "maxsize");
-            $Image->setAttribute("maxheight", $maxSize);
-            $Image->setAttribute("maxwidth", $maxSize);
+            $maxSize = QUI::getPackage("quiqqer/feed")->getConfig()?->get("images", "maxsize");
+
+            if ($maxSize !== null) {
+                $Image->setAttribute("maxheight", $maxSize);
+                $Image->setAttribute("maxwidth", $maxSize);
+            }
 
 
             $Enclosure = $ItemXml->addChild("link");

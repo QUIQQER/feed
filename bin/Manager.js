@@ -1,9 +1,5 @@
 /**
  * Feed manager
- *
- * @module packages/quiqqer/feed/bin/Manager
- * @author www.pcsg.de (Henning Leutz)
- * @author www.pcsg.de (Patrick Müller)
  */
 define('package/quiqqer/feed/bin/Manager', [
 

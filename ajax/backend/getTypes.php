@@ -6,7 +6,7 @@
  * @return array
  */
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_backend_getTypes',
     function () {
         $FeedManager = new QUI\Feed\Manager();

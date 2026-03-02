@@ -5,13 +5,11 @@
  *
  * @param string|boolean $feedId - ID of the Feed
  * @param string $params - JSON params
- *
  * @return array
  * @throws QUI\Exception
- * @author www.pcsg.de (Henning Leutz)
  */
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_setFeed',
     function ($feedId, $params) {
         $FeedManager = new QUI\Feed\Manager();

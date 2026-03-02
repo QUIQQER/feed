@@ -11,14 +11,11 @@ use QUI\Feed\Interfaces\FeedItemInterface;
 
 /**
  * Class Channel - RSS Feed 2.0
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class Channel extends AbstractChannel
 {
     /**
-     * @param array $params
+     * @param array<string, mixed> $params
      * @return FeedItemInterface
      */
     public function createItem(array $params = []): FeedItemInterface

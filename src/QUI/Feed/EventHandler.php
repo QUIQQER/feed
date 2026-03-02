@@ -14,9 +14,6 @@ use function json_encode;
 
 /**
  * Class Events -> System Events
- *
- * @package QUI\Feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 class EventHandler
 {
@@ -200,13 +197,9 @@ class EventHandler
 
     /**
      * event : site change it
-     *
-     * <<<<<<< HEAD
-     * @param QUI\Interfaces\Projects\Site $Site |Edit $Site
+
      * @param QUI\Interfaces\Projects\Site $Site
-     * >>>>>>> 59aed0d (feat: missing return types, qualifier imports, function converts to php8.1)
      * @throws QUI\Database\Exception
-     * =======
      */
     public static function onSiteChange(QUI\Interfaces\Projects\Site $Site): void
     {
@@ -241,6 +234,12 @@ class EventHandler
     {
         $Manager = new Manager();
         $feedRows = $Manager->getList();
+        $curProject = QUI::getRewrite()->getProject();
+        $Site = QUI::getRewrite()->getSite();
+
+        if (!$curProject || !$Site) {
+            return;
+        }
 
         foreach ($feedRows as $databaseRow) {
             $feedID = $databaseRow['id'];
@@ -269,7 +268,6 @@ class EventHandler
             );
 
             // Only display feeds for the current project and language
-            $curProject = QUI::getRewrite()->getProject();
             if ($curProject->getName() != $FeedProject->getName()) {
                 continue;
             }
@@ -280,7 +278,7 @@ class EventHandler
 
 
             // Check if the feed should be included on this page
-            if (!$Feed->publishOnSite(QUI::getRewrite()->getSite())) {
+            if (!$Feed->publishOnSite($Site)) {
                 continue;
             }
 

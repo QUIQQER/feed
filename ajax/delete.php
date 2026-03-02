@@ -7,11 +7,10 @@
 /**
  * Returns the feed list
  *
- * @param string $feedIds - json array, array of feed ids
- * @author www.pcsg.de (Henning Leutz)
+ * @param string $feedIds - JSON array, array of feed ids
  */
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_delete',
     function ($feedIds) {
         $FeedManager = new QUI\Feed\Manager();

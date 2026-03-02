@@ -13,9 +13,6 @@ use QUI\QDOM;
 
 /**
  * Class AbstractItem
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 abstract class AbstractItem extends QDOM implements InterfaceItem
 {
@@ -29,7 +26,7 @@ abstract class AbstractItem extends QDOM implements InterfaceItem
     /**
      * constructor
      *
-     * @param array $params
+     * @param array<string, mixed> $params
      */
     public function __construct(array $params = [])
     {
