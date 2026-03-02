@@ -7,6 +7,9 @@ use QUI\Exception;
 
 class FeedList extends QUI\Control
 {
+    /**
+     * @param array<string, mixed> $attributes
+     */
     public function __construct(array $attributes = [])
     {
         $this->setAttributes([
@@ -53,7 +56,13 @@ class FeedList extends QUI\Control
     /**
      * Gets all currently configured feeds
      *
-     * @return array
+     * @return array<int, array{
+     *   feedID: mixed,
+     *   name: mixed,
+     *   type: mixed,
+     *   desc: mixed,
+     *   url: string
+     * }>
      * @throws Exception
      */
     protected function getFeeds(): array
@@ -61,6 +70,11 @@ class FeedList extends QUI\Control
         $Manager = new QUI\Feed\Manager();
         $configuredFeeds = $Manager->getList();
         $result = [];
+        $curProject = QUI::getRewrite()->getProject();
+
+        if (!$curProject) {
+            return $result;
+        }
 
         foreach ($configuredFeeds as $feed) {
             $feedID = $feed['id'];
@@ -70,8 +84,6 @@ class FeedList extends QUI\Control
             $project = $feed['project'];
             $language = $feed['lang'];
             $publish = $feed['publish'];
-
-            $curProject = QUI::getRewrite()->getProject();
 
             if (!$publish) {
                 continue;

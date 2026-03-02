@@ -12,9 +12,6 @@ use QUI\QDOM;
 
 /**
  * Class AbstractChannel
- *
- * @package quiqqer/feed
- * @author  www.pcsg.de (Henning Leutz)
  */
 abstract class AbstractChannel extends QDOM implements ChannelInterface
 {
@@ -28,14 +25,14 @@ abstract class AbstractChannel extends QDOM implements ChannelInterface
     /**
      * RSS Channel items
      *
-     * @var array
+     * @var array<int, FeedItemInterface>
      */
     protected array $items = [];
 
     /**
      * constructor
      *
-     * @param array $params
+     * @param array<string, mixed> $params
      */
     public function __construct(array $params = [])
     {
@@ -63,7 +60,7 @@ abstract class AbstractChannel extends QDOM implements ChannelInterface
     /**
      * Return the feed items
      *
-     * @return array
+     * @return array<int, FeedItemInterface>
      */
     public function getItems(): array
     {

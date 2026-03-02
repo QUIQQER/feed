@@ -22,6 +22,7 @@ use function explode;
 use function implode;
 use function in_array;
 use function is_numeric;
+use function is_string;
 use function method_exists;
 use function preg_match;
 use function rtrim;
@@ -31,10 +32,7 @@ use function time;
 
 /**
  * Class AbstractSiteFeedType
- *
  * Abstract class for feed types that publish CMS Site feeds.
- *
- * @author  www.pcsg.de (Patrick Müller)
  */
 abstract class AbstractSiteFeedType extends AbstractFeedType
 {
@@ -69,9 +67,21 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         $Dom = new DOMDocument('1.0', 'UTF-8');
         $Dom->preserveWhiteSpace = false;
         $Dom->formatOutput = true;
-        $Dom->loadXML($XML->asXML());
+        $xmlString = $XML->asXML();
 
-        return $Dom->saveXML();
+        if ($xmlString === false) {
+            throw new QUI\Exception('Could not serialize feed XML.');
+        }
+
+        $Dom->loadXML($xmlString);
+
+        $output = $Dom->saveXML();
+
+        if ($output === false) {
+            throw new QUI\Exception('Could not format feed XML.');
+        }
+
+        return $output;
     }
 
     /**
@@ -129,9 +139,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     'seoDirective' => $Site->getAttribute('quiqqer.meta.site.robots')
                 ]);
 
+                $Config = QUI::getPackage("quiqqer/feed")->getConfig();
+
                 try {
                     //Check if the creation user should be picked
-                    if (QUI::getPackage("quiqqer/feed")->getConfig()->get("common", "user") != "c_user") {
+                    if ($Config?->get("common", "user") != "c_user") {
                         throw new QUI\Exception("Invalid user field choice!");
                     }
 
@@ -140,7 +152,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                 } catch (Exception) {
                     $Item->setAttribute(
                         "author",
-                        QUI::getPackage("quiqqer/feed")->getConfig()->get("common", "author")
+                        $Config?->get("common", "author")
                     );
                 }
 
@@ -180,7 +192,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      * Gets the site ids which should be used for the feed
      *
      * @param FeedInstance $Feed - Get Site IDs from specific feed
-     * @return array
+     * @return array<int, int>
      * @throws QUI\Exception
      */
     protected function getSiteIds(FeedInstance $Feed): array
@@ -260,7 +272,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      * Get all Site IDs based on the values of the controls/projects/project/site/Select control
      *
      * @param FeedInstance $Feed
-     * @param array $values
+     * @param array<int, string|int> $values
      * @return int[]
      * @throws Exception
      */
@@ -268,7 +280,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     {
         $Project = $Feed->getProject();
         $PDO = QUI::getPDO();
-        $table = $Project->getAttribute('db_table');
+        $table = $this->getProjectTableName($Project);
         $idCount = 0;
         $strCount = 0;
 
@@ -392,7 +404,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      * @param QUI\Projects\Project $Project
      * @param string $siteSelectValue
      *
-     * @return array - Site IDs
+     * @return array<int, int> - Site IDs
      * @throws QUI\Exception
      */
     protected function parseSiteSelect(QUI\Projects\Project $Project, string $siteSelectValue): array
@@ -414,7 +426,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
 
         // Get the IDs of the selected sites
         $PDO = QUI::getPDO();
-        $table = $Project->getAttribute('db_table');
+        $table = $this->getProjectTableName($Project);
         $sites = explode(';', $siteSelectValue);
 
         $idCount = 0;
@@ -534,5 +546,21 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         }
 
         return parent::publishOnSite($Feed, $Site);
+    }
+
+    /**
+     * @param QUI\Projects\Project $Project
+     * @return string
+     * @throws QUI\Exception
+     */
+    protected function getProjectTableName(QUI\Projects\Project $Project): string
+    {
+        $table = $Project->getAttribute('db_table');
+
+        if (!is_string($table) || $table === '') {
+            throw new QUI\Exception('Project db_table attribute is invalid.');
+        }
+
+        return $table;
     }
 }

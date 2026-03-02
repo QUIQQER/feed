@@ -7,7 +7,7 @@
  * @return void
  */
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_backend_downloadCheck',
     function ($feedId) {
         $FeedManager = new QUI\Feed\Manager();

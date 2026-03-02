@@ -8,12 +8,10 @@
  * Returns the feed list
  *
  * @param string $gridParams - grid params
- *
  * @return array
- * @author www.pcsg.de (Henning Leutz)
  */
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_getList',
     function ($gridParams) {
         $FeedManager = new QUI\Feed\Manager();

@@ -10,8 +10,6 @@ use QUI\Feed\Handler\AbstractItem;
 
 /**
  * Class Item
- *
- * @package quiqqer/feed
  */
 class Item extends AbstractItem
 {

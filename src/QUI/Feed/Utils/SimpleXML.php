@@ -6,8 +6,6 @@ use SimpleXMLElement;
 
 /**
  * SimpleXMLElement extent
- *
- * @auth
  */
 class SimpleXML extends SimpleXMLElement
 {
@@ -19,8 +17,12 @@ class SimpleXML extends SimpleXMLElement
     public function addCData(string $cdata): void
     {
         $Node = dom_import_simplexml($this);
-        $OwnDoc = $Node->ownerDocument;
+        $CData = $Node->ownerDocument?->createCDATASection($cdata);
 
-        $Node->appendChild($OwnDoc->createCDATASection($cdata));
+        if (!$CData) {
+            return;
+        }
+
+        $Node->appendChild($CData);
     }
 }
