@@ -2,7 +2,7 @@
 
 use QUI\Feed\Manager;
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_frontend_controls_feedlist_getFeeds',
     function () {
         $Manager = new Manager();

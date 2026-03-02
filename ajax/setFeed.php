@@ -9,7 +9,7 @@
  * @throws QUI\Exception
  */
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_feed_ajax_setFeed',
     function ($feedId, $params) {
         $FeedManager = new QUI\Feed\Manager();
