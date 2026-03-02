@@ -16,7 +16,9 @@ use function class_exists;
 use function file_exists;
 use function hash;
 use function is_a;
+use function is_array;
 use function is_null;
+use function is_string;
 use function json_decode;
 use function preg_match_all;
 use function str_replace;
@@ -34,7 +36,7 @@ class Manager
     /**
      * Runtime cache for feed types
      *
-     * @var QUI\Feed\Interfaces\FeedTypeInterface[]
+     * @var array<string, QUI\Feed\Interfaces\FeedTypeInterface>
      */
     protected array $feedTypes = [];
 
@@ -42,7 +44,7 @@ class Manager
      * Add a new feed
      *
      * @param string $typeId - Feed type id
-     * @param array $params - Feed attributes
+     * @param array<string, mixed> $params - Feed attributes
      *
      * @return Feed
      *
@@ -61,6 +63,9 @@ class Manager
         }
 
         $DefaultProject = QUI::getProjectManager()::getStandard();
+        if (!$DefaultProject) {
+            throw new QUI\Exception('Unable to determine default project.');
+        }
 
         QUI::getDataBase()->insert(
             QUI::getDBTableName(self::TABLE),
@@ -71,7 +76,13 @@ class Manager
             ]
         );
 
-        $id = QUI::getDataBase()->getPDO()->lastInsertId();
+        $PDO = QUI::getDataBase()->getPDO();
+
+        if (!$PDO) {
+            throw new QUI\Exception('No PDO instance available.');
+        }
+
+        $id = $PDO->lastInsertId();
         $Feed = new Feed((int)$id);
 
         $Feed->setAttributes($this->filterFeedParams($typeId, $params));
@@ -115,9 +126,9 @@ class Manager
     /**
      * Return the feed entries
      *
-     * @param array $params
+     * @param array<string, mixed> $params
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      * @throws Exception
      */
     public function getList(array $params = []): array
@@ -153,7 +164,9 @@ class Manager
 
         foreach ($this->getTypes() as $typeData) {
             if ($typeId === $typeData['id']) {
-                $FeedType = new $typeData['class']($typeData);
+                /** @var class-string<QUI\Feed\Interfaces\FeedTypeInterface> $feedClass */
+                $feedClass = $typeData['class'];
+                $FeedType = new $feedClass($typeData);
 
                 $this->feedTypes[$typeId] = $FeedType;
 
@@ -173,14 +186,41 @@ class Manager
     /**
      * Get list of all available feed types
      *
-     * @return array
+     * @return array<int, array{
+     *   id: string,
+     *   class: class-string<QUI\Feed\Interfaces\FeedTypeInterface>,
+     *   title: string,
+     *   description: string|false,
+     *   settingsHtml: string,
+     *   attributes: array<int, string>,
+     *   publishable: bool,
+     *   pagination: bool,
+     *   mimeType: string
+     * }>
      */
     public function getTypes(): array
     {
         $cacheName = QUI\Feed\Utils\Utils::getFeedTypeCachePath();
 
         try {
-            return LongTermCache::get($cacheName);
+            $types = LongTermCache::get($cacheName);
+
+            if (!is_array($types)) {
+                return [];
+            }
+
+            /** @var array<int, array{
+             *   id: string,
+             *   class: class-string<QUI\Feed\Interfaces\FeedTypeInterface>,
+             *   title: string,
+             *   description: string|false,
+             *   settingsHtml: string,
+             *   attributes: array<int, string>,
+             *   publishable: bool,
+             *   pagination: bool,
+             *   mimeType: string
+             * }> $types */
+            return $types;
         } catch (\Exception) {
             // no worries; re-build cache
         }
@@ -222,6 +262,7 @@ class Manager
                     continue;
                 }
 
+                /** @var class-string<QUI\Feed\Interfaces\FeedTypeInterface> $feedClass */
                 $type = [
                     'id' => $this->parseFeedClassToHash($feedClass),
                     'class' => $feedClass
@@ -239,13 +280,23 @@ class Manager
                     continue;
                 }
 
-                $type['title'] = DOMUtils::getTextFromNode($title->item(0));
+                $titleNode = $title->item(0);
+                if (!$titleNode) {
+                    continue;
+                }
+
+                $type['title'] = $this->normalizeXmlTextValue(
+                    DOMUtils::getTextFromNode($titleNode)
+                );
 
                 // Description
                 $desc = $FeedTypeNode->getElementsByTagName('description');
 
                 if ($desc->length) {
-                    $type['description'] = DOMUtils::getTextFromNode($desc->item(0));
+                    $descNode = $desc->item(0);
+                    $type['description'] = $descNode
+                        ? $this->normalizeXmlTextValue(DOMUtils::getTextFromNode($descNode))
+                        : false;
                 } else {
                     $type['description'] = false;
                 }
@@ -274,14 +325,16 @@ class Manager
                 $type['publishable'] = false;
 
                 if ($publishable->length) {
-                    $type['publishable'] = !empty($publishable->item(0)->nodeValue);
+                    $publishableNode = $publishable->item(0);
+                    $type['publishable'] = $publishableNode ? !empty($publishableNode->nodeValue) : false;
                 }
 
                 $pagination = $FeedTypeNode->getElementsByTagName('pagination');
                 $type['pagination'] = false;
 
                 if ($pagination->length) {
-                    $type['pagination'] = !empty($pagination->item(0)->nodeValue);
+                    $paginationNode = $pagination->item(0);
+                    $type['pagination'] = $paginationNode ? !empty($paginationNode->nodeValue) : false;
                 }
 
                 // Mime type
@@ -289,7 +342,10 @@ class Manager
                 $type['mimeType'] = 'application/xml'; // fallback
 
                 if ($mimeType->length) {
-                    $type['mimeType'] = $mimeType->item(0)->nodeValue;
+                    $mimeTypeNode = $mimeType->item(0);
+                    $type['mimeType'] = $mimeTypeNode && $mimeTypeNode->nodeValue
+                        ? $mimeTypeNode->nodeValue
+                        : 'application/xml';
                 } else {
                     QUI\System\Log::addNotice(
                         'quiqqer/feed - Feed type "' . $feedClass . '" does not have a mimeType set in feed.xml.'
@@ -490,13 +546,15 @@ class Manager
      * Filter all feed parameters (from frontend/QUIQQER backend)
      *
      * @param string $typeId
-     * @param array $params
-     * @return array
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>
      * @throws QUI\Exception
      */
     public function filterFeedParams(string $typeId, array $params): array
     {
         $FeedType = $this->getType($typeId);
+        $feedTypeAttributes = $FeedType->getAttribute('attributes');
+        $feedTypeAttributes = is_array($feedTypeAttributes) ? $feedTypeAttributes : [];
 
         $feedAttributes = array_merge(
             [
@@ -512,12 +570,16 @@ class Manager
                 'split',
                 'directOutput'
             ],
-            $FeedType->getAttribute('attributes')
+            $feedTypeAttributes
         );
 
         $sanitizedAttributes = [];
 
         foreach ($feedAttributes as $attribute) {
+            if (!is_string($attribute)) {
+                continue;
+            }
+
             if (!array_key_exists($attribute, $params)) {
                 $sanitizedAttributes[$attribute] = null;
                 continue;
@@ -525,13 +587,22 @@ class Manager
 
             switch ($attribute) {
                 case 'project':
+                    if (!is_string($params['project'])) {
+                        break;
+                    }
+
                     $projects = json_decode($params['project'], true);
 
-                    if (!empty($projects)) {
+                    if (is_array($projects) && !empty($projects) && isset($projects[0]) && is_array($projects[0])) {
                         $project = $projects[0];
 
-                        $sanitizedAttributes['project'] = $project['project'];
-                        $sanitizedAttributes['lang'] = $project['lang'];
+                        if (isset($project['project'])) {
+                            $sanitizedAttributes['project'] = $project['project'];
+                        }
+
+                        if (isset($project['lang'])) {
+                            $sanitizedAttributes['lang'] = $project['lang'];
+                        }
                     }
                     break;
 
@@ -550,5 +621,28 @@ class Manager
     protected function parseFeedClassToHash(string $feedClass): string
     {
         return hash('sha256', $feedClass);
+    }
+
+    /**
+     * @param mixed $value
+     * @return string
+     */
+    protected function normalizeXmlTextValue(mixed $value): string
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+
+        if (!is_array($value)) {
+            return '';
+        }
+
+        foreach ($value as $entry) {
+            if (is_string($entry)) {
+                return $entry;
+            }
+        }
+
+        return '';
     }
 }
