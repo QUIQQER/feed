@@ -23,6 +23,7 @@ use function implode;
 use function in_array;
 use function is_numeric;
 use function is_string;
+use function ltrim;
 use function method_exists;
 use function preg_match;
 use function rtrim;
@@ -101,7 +102,13 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     {
         $Project = $Feed->getProject();
         $projectHost = $Project->getVHost(true, true);
+
+        if (!is_string($projectHost)) {
+            $projectHost = '';
+        }
+
         $ids = $this->getSiteIds($Feed);
+        $usedLinks = [];
 
         // create feed
         foreach ($ids as $id) {
@@ -116,12 +123,22 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                 $editDate = $Site->getAttribute('e_date');
 
                 // Workaround bug  $Site->getCanonical() come with protocol
-                $link = (string)($Site->getId() === 1 ? $projectHost : $Site->getUrlRewritten());
+                $link = $Site->getId() === 1
+                    ? rtrim($projectHost, '/') . '/'
+                    : (string)$Site->getUrlRewritten();
                 $permalink = $Site->getCanonical();
 
                 if (!str_contains($link, 'https:') && !str_contains($link, 'http:')) {
-                    $link = $projectHost . $link;
+                    $link = rtrim($projectHost, '/') . '/' . ltrim($link, '/');
                 }
+
+                $linkKey = rtrim($link, '/');
+
+                if (isset($usedLinks[$linkKey])) {
+                    continue;
+                }
+
+                $usedLinks[$linkKey] = true;
 
                 if (!str_contains($permalink, 'https:') && !str_contains($permalink, 'http:')) {
                     $permalink = $projectHost . $Site->getCanonical();
