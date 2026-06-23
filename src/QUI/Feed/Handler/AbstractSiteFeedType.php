@@ -116,11 +116,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                 $editDate = $Site->getAttribute('e_date');
 
                 // Workaround bug  $Site->getCanonical() come with protocol
-                $link = $Site->getUrlRewritten();
+                $link = (string)($Site->getId() === 1 ? $projectHost : $Site->getUrlRewritten());
                 $permalink = $Site->getCanonical();
 
                 if (!str_contains($link, 'https:') && !str_contains($link, 'http:')) {
-                    $link = $projectHost . $Site->getUrlRewritten();
+                    $link = $projectHost . $link;
                 }
 
                 if (!str_contains($permalink, 'https:') && !str_contains($permalink, 'http:')) {
