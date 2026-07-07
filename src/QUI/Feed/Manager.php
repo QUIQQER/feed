@@ -552,6 +552,10 @@ class Manager
      */
     public function filterFeedParams(string $typeId, array $params): array
     {
+        if (array_key_exists('publish-sites', $params) && !array_key_exists('publish_sites', $params)) {
+            $params['publish_sites'] = $params['publish-sites'];
+        }
+
         $FeedType = $this->getType($typeId);
         $feedTypeAttributes = $FeedType->getAttribute('attributes');
         $feedTypeAttributes = is_array($feedTypeAttributes) ? $feedTypeAttributes : [];
@@ -566,7 +570,7 @@ class Manager
                 'pageSize',
                 'project',
                 'publish',
-                'publish-sites',
+                'publish_sites',
                 'split',
                 'directOutput'
             ],

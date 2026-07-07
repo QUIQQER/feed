@@ -227,7 +227,7 @@ define('package/quiqqer/feed/bin/Feed', [
                 'pageSize',
                 'project',
                 'publish',
-                'publish-sites',
+                'publish_sites',
                 'split',
                 'directOutput'
             ];
