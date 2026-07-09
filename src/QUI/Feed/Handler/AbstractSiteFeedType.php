@@ -8,6 +8,7 @@ use QUI;
 use QUI\Exception;
 use QUI\Feed\Feed;
 use QUI\Feed\Feed as FeedInstance;
+use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Interfaces\ChannelInterface;
 use QUI\Feed\Utils\SimpleXML;
 
@@ -24,7 +25,6 @@ use function in_array;
 use function is_numeric;
 use function is_string;
 use function ltrim;
-use function method_exists;
 use function preg_match;
 use function rtrim;
 use function strtotime;
@@ -100,6 +100,59 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function addItemsToChannel(FeedInstance $Feed, ChannelInterface $Channel): void
     {
+        $this->collectFeedItems($Feed)->addToChannel($Channel);
+    }
+
+    /**
+     * Collect all feed items for a feed.
+     *
+     * Modules can add entries through the "quiqqerFeedCollectItems" event.
+     * Event signature: (Feed $Feed, FeedTypeInterface $FeedType, FeedItemCollection $Collection)
+     *
+     * @param FeedInstance $Feed
+     * @return FeedItemCollection
+     * @throws QUI\Exception
+     */
+    protected function collectFeedItems(FeedInstance $Feed): FeedItemCollection
+    {
+        $Collection = new FeedItemCollection();
+
+        $this->collectSiteFeedItems($Feed, $Collection);
+        $this->collectFeedTypeItems($Feed, $Collection);
+
+        QUI::getEvents()->fireEvent('quiqqerFeedCollectItems', [
+            $Feed,
+            $this,
+            $Collection
+        ]);
+
+        $Collection->sortByDate();
+        $Collection->deduplicate();
+
+        return $Collection;
+    }
+
+    /**
+     * Collect feed-type-specific entries.
+     *
+     * @param FeedInstance $Feed
+     * @param FeedItemCollection $Collection
+     * @return void
+     */
+    protected function collectFeedTypeItems(FeedInstance $Feed, FeedItemCollection $Collection): void
+    {
+    }
+
+    /**
+     * Add all relevant CMS site entries to a feed item collection.
+     *
+     * @param FeedInstance $Feed
+     * @param FeedItemCollection $Collection
+     * @return void
+     * @throws QUI\Exception
+     */
+    protected function collectSiteFeedItems(FeedInstance $Feed, FeedItemCollection $Collection): void
+    {
         $Project = $Feed->getProject();
         $projectHost = $Project->getVHost(true, true);
 
@@ -108,9 +161,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         }
 
         $ids = $this->getSiteIds($Feed);
-        $usedLinks = [];
 
-        // create feed
         foreach ($ids as $id) {
             try {
                 $Site = $Project->get($id);
@@ -132,20 +183,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     $link = rtrim($projectHost, '/') . '/' . ltrim($link, '/');
                 }
 
-                $linkKey = rtrim($link, '/');
-
-                if (isset($usedLinks[$linkKey])) {
-                    continue;
-                }
-
-                $usedLinks[$linkKey] = true;
-
                 if (!str_contains($permalink, 'https:') && !str_contains($permalink, 'http:')) {
                     $permalink = $projectHost . $Site->getCanonical();
                 }
 
-                /** @var QUI\Feed\Handler\AbstractItem $Item */
-                $Item = $Channel->createItem([
+                $item = [
                     'title' => $Site->getAttribute('title'),
                     'description' => $Site->getAttribute('short'),
                     'language' => $Project->getLang(),
@@ -154,7 +196,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     'link' => $link,
                     'permalink' => $permalink,
                     'seoDirective' => $Site->getAttribute('quiqqer.meta.site.robots')
-                ]);
+                ];
 
                 $Config = QUI::getPackage("quiqqer/feed")->getConfig();
 
@@ -165,22 +207,21 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     }
 
                     $User = QUI::getUsers()->get($Site->getAttribute("c_user"));
-                    $Item->setAttribute("author", $User->getName());
+                    $item['author'] = $User->getName();
                 } catch (Exception) {
-                    $Item->setAttribute(
-                        "author",
-                        $Config?->get("common", "author")
-                    );
+                    $item['author'] = $Config?->get("common", "author");
                 }
 
-                // Image
                 $image = $Site->getAttribute('image_site');
-                if (!$image) {
-                    continue;
+
+                try {
+                    if ($image) {
+                        $item['image'] = QUI\Projects\Media\Utils::getImageByUrl($image);
+                    }
+                } catch (QUI\Exception) {
                 }
 
-                $Image = QUI\Projects\Media\Utils::getImageByUrl($image);
-                $Item->setImage($Image);
+                $Collection->add($item);
             } catch (QUI\Exception) {
             }
         }
@@ -238,11 +279,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         // Some site types are always excluded!
         $feedSitesExclude[] = 'quiqqer/sitetypes:types/forwarding';
 
-        $feedLimit = (int)$Feed->getAttribute('feedlimit');
-
-        if (empty($feedLimit)) {
-            $feedLimit = 10;
-        }
+        $feedLimit = $this->getFeedLimit($Feed);
 
         $Project = QUI::getProject(
             $Feed->getAttribute('project'),
@@ -282,7 +319,24 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function getTotalItemCount(Feed $Feed): int
     {
-        return count($this->getSiteIds($Feed));
+        return $this->collectFeedItems($Feed)->count();
+    }
+
+    /**
+     * Return configured feed limit.
+     *
+     * @param FeedInstance $Feed
+     * @return int
+     */
+    protected function getFeedLimit(FeedInstance $Feed): int
+    {
+        $feedLimit = (int)$Feed->getAttribute('feedlimit');
+
+        if (empty($feedLimit)) {
+            return 10;
+        }
+
+        return $feedLimit;
     }
 
     /**
@@ -305,11 +359,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         $wherePrepared = [];
         $childPageIDs = [];
 
-        $feedLimit = (int)$Feed->getAttribute('feedlimit');
-
-        if (empty($feedLimit)) {
-            $feedLimit = 10;
-        }
+        $feedLimit = $this->getFeedLimit($Feed);
 
         foreach ($values as $needle) {
             if (is_numeric($needle)) {
