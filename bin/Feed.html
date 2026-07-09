@@ -8,9 +8,9 @@
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.feedType}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.feedType}}
+                </span>
                 <select name="feedtype" class="field-container-field">
                 </select>
             </label>
@@ -20,9 +20,9 @@
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.feedName}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.feedName}}
+                </span>
                 <input type="text" name="feedName" class="field-container-field"/>
             </label>
         </td>
@@ -30,29 +30,43 @@
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.feedDescription}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.feedDescription}}
+                </span>
                 <input type="text" name="feedDescription" class="field-container-field"/>
             </label>
         </td>
     </tr>
+    </tbody>
+</table>
+
+<table class="data-table data-table-flexbox">
+    <thead>
+    <tr>
+        <th>{{locales.headerProjectSettings}}</th>
+    </tr>
+    </thead>
+    <tbody>
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.project}}
-                    </span>
-                <input type="text" name="project" class="project" class="field-container-field"/>
+                <span class="field-container-item">
+                    {{locales.project}}
+                </span>
+                <input type="text"
+                       name="project"
+                       class="project field-container-field field-container-field-no-padding"
+                       style="width: 100%"
+                />
             </label>
         </td>
     </tr>
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.feedImage}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.feedImage}}
+                </span>
                 <input type="text"
                        name="feedImage"
                        class="field-container-field"
@@ -64,12 +78,51 @@
             </label>
         </td>
     </tr>
+    <tr class="qui-feed-feetwindow-publish">
+        <td>
+            <label class="field-container">
+                <span class="field-container-item">
+                    {{locales.publish}}
+                </span>
+                <span class="field-container-field">
+                    <input type="checkbox" name="publish"/>
+                </span>
+            </label>
+        </td>
+    </tr>
+    <tr class="qui-feed-publish-sites-container qui-control-feed__hidden">
+        <td>
+            <label class="field-container">
+                <span class="field-container-item">
+                    {{locales.publishSitesLabel}}
+                </span>
+                <span class="field-container-field">
+                    <input type="checkbox"
+                           name="publish_sites"
+                           class="field-container-field"
+                           data-qui="controls/projects/project/site/Select"
+                           data-qui-options-placeholder="{{locales.publishSitesPlaceholder}}"
+                    />
+                </span>
+            </label>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="data-table data-table-flexbox">
+    <thead>
+    <tr>
+        <th>{{locales.headerGenerationSettings}}</th>
+    </tr>
+    </thead>
+    <tbody>
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.feedlimit}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.feedlimit}}
+                </span>
                 <input type="number" name="feedlimit" class="field-container-field"/>
             </label>
         </td>
@@ -77,9 +130,9 @@
     <tr>
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.directOutput}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.directOutput}}
+                </span>
                 <span class="field-container-field">
                     <input type="checkbox" name="directOutput" checked/>
                 </span>
@@ -92,9 +145,9 @@
     <tr class="qui-feed-feedwindow-split">
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.split}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.split}}
+                </span>
                 <span class="field-container-field">
                     <input type="checkbox" name="split"/>
                 </span>
@@ -104,39 +157,10 @@
     <tr class="qui-feed-feetwindow-pageSize">
         <td>
             <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.pageSize}}
-                    </span>
+                <span class="field-container-item">
+                    {{locales.pageSize}}
+                </span>
                 <input class="field-container-field" type="number" name="pageSize"/>
-            </label>
-        </td>
-    </tr>
-    <tr class="qui-feed-feetwindow-publish">
-        <td>
-            <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.publish}}
-                    </span>
-                <span class="field-container-field">
-                    <input type="checkbox" name="publish"/>
-                </span>
-            </label>
-        </td>
-    </tr>
-    <tr class="qui-feed-publish-sites-container qui-control-feed__hidden">
-        <td>
-            <label class="field-container">
-                    <span class="field-container-item">
-                        {{locales.publishSitesLabel}}
-                    </span>
-                <span class="field-container-field">
-                    <input type="checkbox"
-                           name="publish_sites"
-                           class="field-container-field"
-                           data-qui="controls/projects/project/site/Select"
-                           data-qui-options-placeholder="{{locales.publishSitesPlaceholder}}"
-                    />
-                </span>
             </label>
         </td>
     </tr>

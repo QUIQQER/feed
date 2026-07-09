@@ -30,6 +30,7 @@ use function rtrim;
 use function strtotime;
 use function substr;
 use function time;
+use function trim;
 
 /**
  * Class AbstractSiteFeedType
@@ -279,33 +280,14 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         // Some site types are always excluded!
         $feedSitesExclude[] = 'quiqqer/sitetypes:types/forwarding';
 
-        $feedLimit = $this->getFeedLimit($Feed);
-
-        $Project = QUI::getProject(
-            $Feed->getAttribute('project'),
-            $Feed->getAttribute('lang')
-        );
-
         // All sites, if no sites were selected.
         if (empty($feedSites)) {
-            $queryParams = [
-                'order' => 'release_from DESC, c_date DESC'
-            ];
-
-            if ($feedLimit > 0) {
-                $queryParams['limit'] = $feedLimit;
-            }
-
-            $ids = $Project->getSitesIds($queryParams);
-
-            $siteIds = array_map(function ($entry) {
-                return (int)$entry['id'];
-            }, $ids);
+            $siteIds = $this->getAllSiteIds($Feed);
         } else {
             $siteIds = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSites);
         }
 
-        $siteIdsExclude = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSitesExclude);
+        $siteIdsExclude = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSitesExclude, false);
 
         return array_diff($siteIds, $siteIdsExclude);
     }
@@ -340,14 +322,130 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     }
 
     /**
+     * @param FeedInstance $Feed
+     * @return string
+     */
+    protected function getFeedSqlOrder(FeedInstance $Feed): string
+    {
+        return match ((string)$Feed->getAttribute('feedOrder')) {
+            'editDate' => 'e_date DESC',
+            default => 'release_from DESC, c_date DESC'
+        };
+    }
+
+    /**
+     * @param FeedInstance $Feed
+     * @return string
+     */
+    protected function getFeedSearch(FeedInstance $Feed): string
+    {
+        $feedSearch = $Feed->getAttribute('feedSearch');
+
+        if (!is_string($feedSearch)) {
+            return '';
+        }
+
+        return trim($feedSearch);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getFeedSearchFields(FeedInstance $Feed): array
+    {
+        $fields = [];
+
+        if (!empty($Feed->getAttribute('feedSearchFieldTitle'))) {
+            $fields[] = 'title';
+        }
+
+        if (!empty($Feed->getAttribute('feedSearchFieldShort'))) {
+            $fields[] = 'short';
+        }
+
+        if (!empty($Feed->getAttribute('feedSearchFieldContent'))) {
+            $fields[] = 'content';
+        }
+
+        if (!empty($fields)) {
+            return $fields;
+        }
+
+        return [
+            'title',
+            'short',
+            'content'
+        ];
+    }
+
+    /**
+     * @param FeedInstance $Feed
+     * @return array<int, int>
+     */
+    protected function getAllSiteIds(FeedInstance $Feed): array
+    {
+        $PDO = QUI::getPDO();
+        $Project = $Feed->getProject();
+        $table = $this->getProjectTableName($Project);
+        $feedLimit = $this->getFeedLimit($Feed);
+        $feedSearch = $this->getFeedSearch($Feed);
+        $searchWhere = '';
+
+        if ($feedSearch !== '') {
+            $searchParts = [];
+
+            foreach ($this->getFeedSearchFields($Feed) as $field) {
+                $searchParts[] = $field . ' LIKE :feedSearch';
+            }
+
+            $searchWhere = ' AND (' . implode(' OR ', $searchParts) . ')';
+        }
+
+        $order = $this->getFeedSqlOrder($Feed);
+
+        $query = "
+                SELECT id
+                FROM {$table}
+                WHERE active = 1 AND deleted = 0 {$searchWhere}
+                ORDER BY {$order}
+            ";
+
+        if ($feedLimit > 0) {
+            $query .= "LIMIT :limit";
+        }
+
+        $Statement = $PDO->prepare($query);
+
+        if ($feedSearch !== '') {
+            $Statement->bindValue(':feedSearch', '%' . $feedSearch . '%', PDO::PARAM_STR);
+        }
+
+        if ($feedLimit > 0) {
+            $Statement->bindValue(':limit', $feedLimit, PDO::PARAM_INT);
+        }
+
+        $Statement->execute();
+        $result = $Statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $ids = [];
+
+        foreach ($result as $row) {
+            $ids[] = (int)$row['id'];
+        }
+
+        return $ids;
+    }
+
+    /**
      * Get all Site IDs based on the values of the controls/projects/project/site/Select control
      *
      * @param FeedInstance $Feed
      * @param array<int, string|int> $values
+     * @param bool $useFeedLimit
      * @return int[]
      * @throws Exception
      */
-    protected function getSiteIdsBySiteIdControlValues(Feed $Feed, array $values): array
+    protected function getSiteIdsBySiteIdControlValues(Feed $Feed, array $values, bool $useFeedLimit = true): array
     {
         $Project = $Feed->getProject();
         $PDO = QUI::getPDO();
@@ -425,16 +523,30 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         }
 
         $where = implode(' OR ', $whereParts);
+        $feedSearch = $this->getFeedSearch($Feed);
+        $searchWhere = '';
+
+        if ($feedSearch !== '') {
+            $searchParts = [];
+
+            foreach ($this->getFeedSearchFields($Feed) as $field) {
+                $searchParts[] = $field . ' LIKE :feedSearch';
+            }
+
+            $searchWhere = ' AND (' . implode(' OR ', $searchParts) . ')';
+        }
+
+        $order = $this->getFeedSqlOrder($Feed);
 
         // query
         $query = "
                 SELECT id
                 FROM {$table}
-                WHERE active = 1 AND ($where)
-                ORDER BY release_from DESC, c_date DESC
+                WHERE active = 1 AND deleted = 0 AND ($where) {$searchWhere}
+                ORDER BY {$order}
             ";
 
-        if ($feedLimit > 0) {
+        if ($useFeedLimit && $feedLimit > 0) {
             $query .= "LIMIT :limit";
         }
 
@@ -449,7 +561,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             );
         }
 
-        if ($feedLimit > 0) {
+        if ($feedSearch !== '') {
+            $Statement->bindValue(':feedSearch', '%' . $feedSearch . '%', PDO::PARAM_STR);
+        }
+
+        if ($useFeedLimit && $feedLimit > 0) {
             $Statement->bindValue(':limit', $feedLimit, PDO::PARAM_INT);
         }
 
@@ -459,7 +575,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         $ids = [];
 
         foreach ($result as $row) {
-            $ids[] = $row['id'];
+            $ids[] = (int)$row['id'];
         }
 
         return $ids;
