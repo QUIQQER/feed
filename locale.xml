@@ -246,6 +246,14 @@
             <en>
                 <![CDATA[Create different feeds for your project and / or website. The Feed Modul allows you to manage different types of feeds and multiple feeds, such as RSS, Atom, or Google Sitemap]]></en>
         </locale>
+        <locale name="permission.quiqqer.feed._header">
+            <de><![CDATA[Feeds]]></de>
+            <en><![CDATA[Feeds]]></en>
+        </locale>
+        <locale name="permission.quiqqer.feed.mcp">
+            <de><![CDATA[Darf Feeds per MCP verwalten.]]></de>
+            <en><![CDATA[Can manage feeds via MCP.]]></en>
+        </locale>
         <locale name="package.description.long">
             <de><![CDATA[Liefert eine Verwaltung fon Feeds für Ihre Website. (RSS,Atom & Google Sitemap)
 
