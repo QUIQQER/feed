@@ -131,6 +131,7 @@ abstract class AbstractTool implements ToolInterface
 
     /**
      * @param array<string, mixed> $params
+     * @param array<string, mixed>|null $settings
      * @return array<string, mixed>
      */
     protected static function prepareFeedParams(
@@ -169,7 +170,7 @@ abstract class AbstractTool implements ToolInterface
         $result = [];
 
         foreach ($attributes ?? [] as $attribute => $value) {
-            if (!is_string($attribute) || $attribute === '') {
+            if ($attribute === '') {
                 continue;
             }
 

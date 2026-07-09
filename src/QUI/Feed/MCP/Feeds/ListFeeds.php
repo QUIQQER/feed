@@ -12,8 +12,6 @@ use QUI\AI\MCP\ToolHelper;
 use QUI\Feed\MCP\AbstractTool;
 use Throwable;
 
-use function array_values;
-
 class ListFeeds extends AbstractTool
 {
     public function register(Builder $serverBuilder): void
@@ -47,7 +45,7 @@ class ListFeeds extends AbstractTool
                     }
 
                     return [
-                        'feeds' => self::applyLimit(array_values($feeds), $limit, $offset)
+                        'feeds' => self::applyLimit($feeds, $limit, $offset)
                     ];
                 } catch (Throwable $Exception) {
                     return ToolHelper::parseExceptionToResult($Exception);
