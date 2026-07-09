@@ -242,6 +242,11 @@ class Feed extends QUI\QDOM
      */
     public function getUrl(): string
     {
-        return $this->Project->getVHost(true, true) . 'feed=' . $this->getId() . '.xml';
+        $extension = match ($this->FeedType->getAttribute('mimeType')) {
+            'text/csv' => 'csv',
+            default => 'xml'
+        };
+
+        return $this->Project->getVHost(true, true) . 'feed=' . $this->getId() . '.' . $extension;
     }
 }

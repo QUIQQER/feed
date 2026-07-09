@@ -93,6 +93,52 @@
 
         </feedType>
 
+        <!-- CSV -->
+        <feedType class="QUI\Feed\Handler\CSV\Feed">
+            <title>
+                <locale group="quiqqer/feed" var="feed.CSV.title"/>
+            </title>
+            <description>
+                <locale group="quiqqer/feed" var="feed.CSV.description"/>
+            </description>
+
+            <mimeType><![CDATA[text/csv]]></mimeType>
+            <publishable>1</publishable>
+
+            <categories>
+                <category>
+                    <settings>
+                        <title>
+                            <locale group="quiqqer/feed" var="feed.CSV.settings.title"/>
+                        </title>
+
+                        <input type="hidden"
+                               conf="feedsites"
+                               data-qui="controls/projects/project/site/Select"
+                        >
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites.description"/>
+                            </description>
+                        </input>
+
+                        <input type="hidden"
+                               conf="feedsites_exclude"
+                               data-qui="controls/projects/project/site/Select"
+                        >
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.title"/>
+                            </text>
+                        </input>
+                    </settings>
+                </category>
+
+            </categories>
+
+        </feedType>
+
         <!-- Google Sitemap -->
         <feedType class="QUI\Feed\Handler\GoogleSitemap\Feed">
             <title>

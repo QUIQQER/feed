@@ -145,11 +145,21 @@ class EventHandler
             return;
         }
 
-        if (!str_contains($url, '.xml')) {
+        $extension = '';
+
+        if (str_contains($url, '.xml')) {
+            $extension = '.xml';
+        }
+
+        if (str_contains($url, '.csv')) {
+            $extension = '.csv';
+        }
+
+        if ($extension === '') {
             return;
         }
 
-        $params = str_replace('.xml', '', $url);
+        $params = str_replace($extension, '', $url);
         $params = explode('=', $params);
 
         if (!isset($params[1])) {
@@ -282,11 +292,9 @@ class EventHandler
                 continue;
             }
 
-            $projectHost = $FeedProject->getVHost(true, true);
-            $url = $projectHost . URL_DIR . 'feed=' . $Feed->getId() . '.xml';
             $mimeType = $FeedType->getAttribute('mimeType');
 
-            $rssTag = '<link rel="alternate" type="' . $mimeType . '" href="' . $url . '" />' . PHP_EOL;
+            $rssTag = '<link rel="alternate" type="' . $mimeType . '" href="' . $Feed->getUrl() . '" />' . PHP_EOL;
             $Template->extendHeader($rssTag);
         }
     }

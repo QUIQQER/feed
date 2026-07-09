@@ -216,6 +216,19 @@
             <en><![CDATA[Restrict feed sites]]></en>
         </locale>
 
+        <locale name="feed.CSV.title">
+            <de><![CDATA[CMS-Seiten (CSV)]]></de>
+            <en><![CDATA[CMS sites (CSV)]]></en>
+        </locale>
+        <locale name="feed.CSV.description">
+            <de><![CDATA[Veröffentlichung von QUIQQER CMS-Seiten als CSV-Feed.]]></de>
+            <en><![CDATA[Publication of QUIQQER CMS sites as CSV feed.]]></en>
+        </locale>
+        <locale name="feed.CSV.settings.title">
+            <de><![CDATA[Feed-Seiten einschränken]]></de>
+            <en><![CDATA[Restrict feed sites]]></en>
+        </locale>
+
         <locale name="feed.GoogleSitemap.title">
             <de><![CDATA[Google Sitemap]]></de>
             <en><![CDATA[Google Sitemap]]></en>

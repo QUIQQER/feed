@@ -21,9 +21,11 @@ QUI::getAjax()->registerFunction(
         $result = $FeedManager->getList($gridParams);
 
         foreach ($result as $k => $row) {
+            $Feed = $FeedManager->getFeed((int)$row['id']);
             $FeedType = $FeedManager->getType($row['type_id']);
 
             $result[$k]['feedtype_title'] = $FeedType->getAttribute('title');
+            $result[$k]['url'] = $Feed->getUrl();
         }
 
         return $Grid->parseResult($result, $FeedManager->count());

@@ -15,6 +15,7 @@ Features
 - Feed types included:
   - RSS
   - Atom
+  - CSV
   - Google Sitemaps
 - `feed.xml` API for developers to expand the available feed types (docs: https://dev.quiqqer.com/quiqqer/package-feed/-/wikis/feed-xml-api)
 - Share your feeds in your websites header
@@ -94,4 +95,3 @@ We will try to fulfill your wishes and will redirect them to the according devel
 License
 -------
 GPL-3.0+
-
