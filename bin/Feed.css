@@ -1,3 +1,25 @@
+.qui-control-feed {
+    display : inline-block;
+    width   : 100%;
+}
+
+.qui-control-feed > .data-table:not(:last-of-type) {
+    margin-bottom : 18px;
+}
+
+.qui-control-feed > .data-table:last-of-type,
+.qui-control-feed-type-settings > .data-table:last-child {
+    margin-bottom : 0;
+}
+
+.qui-control-feed-type-settings > .data-table:first-child {
+    margin-top : 18px;
+}
+
+.qui-control-feed-type-settings > .data-table:not(:last-child) {
+    margin-bottom : 18px;
+}
+
 .qui-control-feed fieldset {
     border : none;
     clear  : both;
@@ -14,13 +36,52 @@
     width : 100%;
 }
 
+.qui-control-feed-type-settings .control-site-select-description {
+    display : none;
+}
+
 .qui-control-feed-project {
-    float : left;
-    width : 50%
+    float      : none;
+    min-height : 32px;
+    width      : 100%;
+}
+
+.qui-control-feed .projects-input.field-container-field,
+.qui-control-feed .field-container-field .projects-input {
+    max-width : none;
+    width     : 100% !important;
+}
+
+.qui-control-feed .field-container > .projects-input {
+    border        : 1px solid rgba(147, 128, 108, 0.25);
+    border-left   : 0;
+    border-radius : 0 2px 2px 0;
+    box-sizing    : border-box;
+    flex          : 1;
+    min-height    : 34px;
+    width         : 100% !important;
+}
+
+.qui-control-feed .projects-input.field-container-field-no-padding {
+    padding : 0;
 }
 
 .qui-control-feed-project input {
-    width : 100%;
+    box-sizing : border-box;
+    width      : 100%;
+}
+
+.qui-control-feed .projects-input-input {
+    border     : 0;
+    box-sizing : border-box;
+    margin     : 0;
+    min-height : 32px;
+    width      : 100% !important;
+}
+
+.qui-control-feed .projects-input-container {
+    background : transparent;
+    margin     : 0;
 }
 
 .qui-feed-feedwindow-split {

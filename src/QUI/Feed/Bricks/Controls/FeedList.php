@@ -79,7 +79,6 @@ class FeedList extends QUI\Control
         foreach ($configuredFeeds as $feed) {
             $feedID = $feed['id'];
             $name = $feed['feedName'];
-            $type = $feed['feedtype'];
             $description = $feed['feedDescription'];
             $project = $feed['project'];
             $language = $feed['lang'];
@@ -97,19 +96,19 @@ class FeedList extends QUI\Control
                 continue;
             }
 
-            if ($type == "googleSitemap") {
+            $Feed = $Manager->getFeed((int)$feedID);
+            $FeedType = $Feed->getFeedType();
+
+            if (empty($FeedType->getAttribute('publishable'))) {
                 continue;
             }
-
-            $projectHost = $curProject->getVHost(true, true);
-            $url = $projectHost . URL_DIR . 'feed=' . $feedID . '.xml';
 
             $result[] = [
                 "feedID" => $feedID,
                 "name" => $name,
-                "type" => $type,
+                "type" => $FeedType->getAttribute('title'),
                 "desc" => $description,
-                "url" => $url
+                "url" => $Feed->getUrl()
             ];
         }
 

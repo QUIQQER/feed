@@ -14,19 +14,14 @@ QUI::getAjax()->registerFunction(
                 continue;
             }
 
-            if ($feedRow['feedtype'] == "googleSitemap") {
+            $Feed = $Manager->getFeed((int)$feedRow['id']);
+            $FeedType = $Feed->getFeedType();
+
+            if (empty($FeedType->getAttribute('publishable'))) {
                 continue;
             }
 
-            $Project = QUI::getProject(
-                $feedRow['project'],
-                $feedRow['lang']
-            );
-
-            $projectHost = $Project->getVHost(true, true);
-            $feedUrl = $projectHost . URL_DIR . 'feed=' . $feedRow['id'] . '.xml';
-
-            $feedRow['url'] = $feedUrl;
+            $feedRow['url'] = $Feed->getUrl();
             $result[] = $feedRow;
         }
 

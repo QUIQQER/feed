@@ -8,6 +8,7 @@ use QUI;
 use QUI\Exception;
 use QUI\Feed\Feed;
 use QUI\Feed\Feed as FeedInstance;
+use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Interfaces\ChannelInterface;
 use QUI\Feed\Utils\SimpleXML;
 
@@ -24,12 +25,12 @@ use function in_array;
 use function is_numeric;
 use function is_string;
 use function ltrim;
-use function method_exists;
 use function preg_match;
 use function rtrim;
 use function strtotime;
 use function substr;
 use function time;
+use function trim;
 
 /**
  * Class AbstractSiteFeedType
@@ -100,6 +101,59 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function addItemsToChannel(FeedInstance $Feed, ChannelInterface $Channel): void
     {
+        $this->collectFeedItems($Feed)->addToChannel($Channel);
+    }
+
+    /**
+     * Collect all feed items for a feed.
+     *
+     * Modules can add entries through the "quiqqerFeedCollectItems" event.
+     * Event signature: (Feed $Feed, FeedTypeInterface $FeedType, FeedItemCollection $Collection)
+     *
+     * @param FeedInstance $Feed
+     * @return FeedItemCollection
+     * @throws QUI\Exception
+     */
+    protected function collectFeedItems(FeedInstance $Feed): FeedItemCollection
+    {
+        $Collection = new FeedItemCollection();
+
+        $this->collectSiteFeedItems($Feed, $Collection);
+        $this->collectFeedTypeItems($Feed, $Collection);
+
+        QUI::getEvents()->fireEvent('quiqqerFeedCollectItems', [
+            $Feed,
+            $this,
+            $Collection
+        ]);
+
+        $Collection->sortByDate();
+        $Collection->deduplicate();
+
+        return $Collection;
+    }
+
+    /**
+     * Collect feed-type-specific entries.
+     *
+     * @param FeedInstance $Feed
+     * @param FeedItemCollection $Collection
+     * @return void
+     */
+    protected function collectFeedTypeItems(FeedInstance $Feed, FeedItemCollection $Collection): void
+    {
+    }
+
+    /**
+     * Add all relevant CMS site entries to a feed item collection.
+     *
+     * @param FeedInstance $Feed
+     * @param FeedItemCollection $Collection
+     * @return void
+     * @throws QUI\Exception
+     */
+    protected function collectSiteFeedItems(FeedInstance $Feed, FeedItemCollection $Collection): void
+    {
         $Project = $Feed->getProject();
         $projectHost = $Project->getVHost(true, true);
 
@@ -108,9 +162,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         }
 
         $ids = $this->getSiteIds($Feed);
-        $usedLinks = [];
 
-        // create feed
         foreach ($ids as $id) {
             try {
                 $Site = $Project->get($id);
@@ -132,20 +184,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     $link = rtrim($projectHost, '/') . '/' . ltrim($link, '/');
                 }
 
-                $linkKey = rtrim($link, '/');
-
-                if (isset($usedLinks[$linkKey])) {
-                    continue;
-                }
-
-                $usedLinks[$linkKey] = true;
-
                 if (!str_contains($permalink, 'https:') && !str_contains($permalink, 'http:')) {
                     $permalink = $projectHost . $Site->getCanonical();
                 }
 
-                /** @var QUI\Feed\Handler\AbstractItem $Item */
-                $Item = $Channel->createItem([
+                $item = [
                     'title' => $Site->getAttribute('title'),
                     'description' => $Site->getAttribute('short'),
                     'language' => $Project->getLang(),
@@ -154,7 +197,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     'link' => $link,
                     'permalink' => $permalink,
                     'seoDirective' => $Site->getAttribute('quiqqer.meta.site.robots')
-                ]);
+                ];
 
                 $Config = QUI::getPackage("quiqqer/feed")->getConfig();
 
@@ -165,22 +208,21 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
                     }
 
                     $User = QUI::getUsers()->get($Site->getAttribute("c_user"));
-                    $Item->setAttribute("author", $User->getName());
+                    $item['author'] = $User->getName();
                 } catch (Exception) {
-                    $Item->setAttribute(
-                        "author",
-                        $Config?->get("common", "author")
-                    );
+                    $item['author'] = $Config?->get("common", "author");
                 }
 
-                // Image
                 $image = $Site->getAttribute('image_site');
-                if (!$image) {
-                    continue;
+
+                try {
+                    if ($image) {
+                        $item['image'] = QUI\Projects\Media\Utils::getImageByUrl($image);
+                    }
+                } catch (QUI\Exception) {
                 }
 
-                $Image = QUI\Projects\Media\Utils::getImageByUrl($image);
-                $Item->setImage($Image);
+                $Collection->add($item);
             } catch (QUI\Exception) {
             }
         }
@@ -238,37 +280,14 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         // Some site types are always excluded!
         $feedSitesExclude[] = 'quiqqer/sitetypes:types/forwarding';
 
-        $feedLimit = (int)$Feed->getAttribute('feedlimit');
-
-        if (empty($feedLimit)) {
-            $feedLimit = 10;
-        }
-
-        $Project = QUI::getProject(
-            $Feed->getAttribute('project'),
-            $Feed->getAttribute('lang')
-        );
-
         // All sites, if no sites were selected.
         if (empty($feedSites)) {
-            $queryParams = [
-                'order' => 'release_from DESC, c_date DESC'
-            ];
-
-            if ($feedLimit > 0) {
-                $queryParams['limit'] = $feedLimit;
-            }
-
-            $ids = $Project->getSitesIds($queryParams);
-
-            $siteIds = array_map(function ($entry) {
-                return (int)$entry['id'];
-            }, $ids);
+            $siteIds = $this->getAllSiteIds($Feed);
         } else {
             $siteIds = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSites);
         }
 
-        $siteIdsExclude = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSitesExclude);
+        $siteIdsExclude = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSitesExclude, false);
 
         return array_diff($siteIds, $siteIdsExclude);
     }
@@ -282,7 +301,139 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function getTotalItemCount(Feed $Feed): int
     {
-        return count($this->getSiteIds($Feed));
+        return $this->collectFeedItems($Feed)->count();
+    }
+
+    /**
+     * Return configured feed limit.
+     *
+     * @param FeedInstance $Feed
+     * @return int
+     */
+    protected function getFeedLimit(FeedInstance $Feed): int
+    {
+        $feedLimit = (int)$Feed->getAttribute('feedlimit');
+
+        if (empty($feedLimit)) {
+            return 10;
+        }
+
+        return $feedLimit;
+    }
+
+    /**
+     * @param FeedInstance $Feed
+     * @return string
+     */
+    protected function getFeedSqlOrder(FeedInstance $Feed): string
+    {
+        return match ((string)$Feed->getAttribute('feedOrder')) {
+            'editDate' => 'e_date DESC',
+            default => 'release_from DESC, c_date DESC'
+        };
+    }
+
+    /**
+     * @param FeedInstance $Feed
+     * @return string
+     */
+    protected function getFeedSearch(FeedInstance $Feed): string
+    {
+        $feedSearch = $Feed->getAttribute('feedSearch');
+
+        if (!is_string($feedSearch)) {
+            return '';
+        }
+
+        return trim($feedSearch);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getFeedSearchFields(FeedInstance $Feed): array
+    {
+        $fields = [];
+
+        if (!empty($Feed->getAttribute('feedSearchFieldTitle'))) {
+            $fields[] = 'title';
+        }
+
+        if (!empty($Feed->getAttribute('feedSearchFieldShort'))) {
+            $fields[] = 'short';
+        }
+
+        if (!empty($Feed->getAttribute('feedSearchFieldContent'))) {
+            $fields[] = 'content';
+        }
+
+        if (!empty($fields)) {
+            return $fields;
+        }
+
+        return [
+            'title',
+            'short',
+            'content'
+        ];
+    }
+
+    /**
+     * @param FeedInstance $Feed
+     * @return array<int, int>
+     */
+    protected function getAllSiteIds(FeedInstance $Feed): array
+    {
+        $PDO = QUI::getPDO();
+        $Project = $Feed->getProject();
+        $table = $this->getProjectTableName($Project);
+        $feedLimit = $this->getFeedLimit($Feed);
+        $feedSearch = $this->getFeedSearch($Feed);
+        $searchWhere = '';
+
+        if ($feedSearch !== '') {
+            $searchParts = [];
+
+            foreach ($this->getFeedSearchFields($Feed) as $field) {
+                $searchParts[] = $field . ' LIKE :feedSearch';
+            }
+
+            $searchWhere = ' AND (' . implode(' OR ', $searchParts) . ')';
+        }
+
+        $order = $this->getFeedSqlOrder($Feed);
+
+        $query = "
+                SELECT id
+                FROM {$table}
+                WHERE active = 1 AND deleted = 0 {$searchWhere}
+                ORDER BY {$order}
+            ";
+
+        if ($feedLimit > 0) {
+            $query .= "LIMIT :limit";
+        }
+
+        $Statement = $PDO->prepare($query);
+
+        if ($feedSearch !== '') {
+            $Statement->bindValue(':feedSearch', '%' . $feedSearch . '%', PDO::PARAM_STR);
+        }
+
+        if ($feedLimit > 0) {
+            $Statement->bindValue(':limit', $feedLimit, PDO::PARAM_INT);
+        }
+
+        $Statement->execute();
+        $result = $Statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $ids = [];
+
+        foreach ($result as $row) {
+            $ids[] = (int)$row['id'];
+        }
+
+        return $ids;
     }
 
     /**
@@ -290,10 +441,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      *
      * @param FeedInstance $Feed
      * @param array<int, string|int> $values
+     * @param bool $useFeedLimit
      * @return int[]
      * @throws Exception
      */
-    protected function getSiteIdsBySiteIdControlValues(Feed $Feed, array $values): array
+    protected function getSiteIdsBySiteIdControlValues(Feed $Feed, array $values, bool $useFeedLimit = true): array
     {
         $Project = $Feed->getProject();
         $PDO = QUI::getPDO();
@@ -305,11 +457,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         $wherePrepared = [];
         $childPageIDs = [];
 
-        $feedLimit = (int)$Feed->getAttribute('feedlimit');
-
-        if (empty($feedLimit)) {
-            $feedLimit = 10;
-        }
+        $feedLimit = $this->getFeedLimit($Feed);
 
         foreach ($values as $needle) {
             if (is_numeric($needle)) {
@@ -375,16 +523,30 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         }
 
         $where = implode(' OR ', $whereParts);
+        $feedSearch = $this->getFeedSearch($Feed);
+        $searchWhere = '';
+
+        if ($feedSearch !== '') {
+            $searchParts = [];
+
+            foreach ($this->getFeedSearchFields($Feed) as $field) {
+                $searchParts[] = $field . ' LIKE :feedSearch';
+            }
+
+            $searchWhere = ' AND (' . implode(' OR ', $searchParts) . ')';
+        }
+
+        $order = $this->getFeedSqlOrder($Feed);
 
         // query
         $query = "
                 SELECT id
                 FROM {$table}
-                WHERE active = 1 AND ($where)
-                ORDER BY release_from DESC, c_date DESC
+                WHERE active = 1 AND deleted = 0 AND ($where) {$searchWhere}
+                ORDER BY {$order}
             ";
 
-        if ($feedLimit > 0) {
+        if ($useFeedLimit && $feedLimit > 0) {
             $query .= "LIMIT :limit";
         }
 
@@ -399,7 +561,11 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             );
         }
 
-        if ($feedLimit > 0) {
+        if ($feedSearch !== '') {
+            $Statement->bindValue(':feedSearch', '%' . $feedSearch . '%', PDO::PARAM_STR);
+        }
+
+        if ($useFeedLimit && $feedLimit > 0) {
             $Statement->bindValue(':limit', $feedLimit, PDO::PARAM_INT);
         }
 
@@ -409,7 +575,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         $ids = [];
 
         foreach ($result as $row) {
-            $ids[] = $row['id'];
+            $ids[] = (int)$row['id'];
         }
 
         return $ids;

@@ -34,6 +34,10 @@
         <extra>
             <displayInStore>1</displayInStore>
         </extra>
+
+        <provider>
+            <mcp src="\QUI\Feed\MCP\Provider"/>
+        </provider>
       
     </package>
 </quiqqer>

@@ -11,6 +11,7 @@ use Exception;
 use QUI;
 use QUI\ERP\Products\Handler\Products;
 use QUI\Feed\Feed as FeedInstance;
+use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Handler\AbstractSiteFeedType;
 use QUI\Feed\Interfaces\ChannelInterface;
 use QUI\Feed\Interfaces\FeedItemInterface;
@@ -209,32 +210,14 @@ class Feed extends AbstractSiteFeedType
     }
 
     /**
-     * Get total item count for a feed.
+     * Collect Google sitemap specific feed entries.
      *
      * @param FeedInstance $Feed
-     * @return int
-     * @throws QUI\Exception
-     */
-    protected function getTotalItemCount(FeedInstance $Feed): int
-    {
-        $count = parent::getTotalItemCount($Feed);
-        $count += count($this->getFeedProductIds());
-
-        return $count;
-    }
-
-    /**
-     * Add all relevant items to a feed channel.
-     *
-     * @param FeedInstance $Feed
-     * @param ChannelInterface $Channel
+     * @param FeedItemCollection $Collection
      * @return void
-     * @throws QUI\Exception
      */
-    protected function addItemsToChannel(FeedInstance $Feed, ChannelInterface $Channel): void
+    protected function collectFeedTypeItems(FeedInstance $Feed, FeedItemCollection $Collection): void
     {
-        parent::addItemsToChannel($Feed, $Channel);
-
         if (!QUI::getPackageManager()->isInstalled('quiqqer/products')) {
             return;
         }
@@ -271,7 +254,7 @@ class Feed extends AbstractSiteFeedType
                 continue;
             }
 
-            $Channel->createItem([
+            $Collection->add([
                 'title' => $Product->getTitle($Locale),
                 'description' => $Product->getDescription($Locale),
                 'language' => $Project->getLang(),
