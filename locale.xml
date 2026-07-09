@@ -93,6 +93,14 @@
             <de><![CDATA[Allgemeine Feed-Einstellungen]]></de>
             <en><![CDATA[General feed settings]]></en>
         </locale>
+        <locale name="quiqqer.feed.headerProjectSettings">
+            <de><![CDATA[Projekt und Veröffentlichung]]></de>
+            <en><![CDATA[Project and publishing]]></en>
+        </locale>
+        <locale name="quiqqer.feed.headerGenerationSettings">
+            <de><![CDATA[Erzeugung und Cache]]></de>
+            <en><![CDATA[Generation and cache]]></en>
+        </locale>
         <locale name="quiqqer.feed.actions">
             <de><![CDATA[Aktionen]]></de>
             <en><![CDATA[Actions]]></en>
@@ -179,20 +187,56 @@
             <en><![CDATA[Publication of QUIQQER CMS sites as RSS feed.]]></en>
         </locale>
         <locale name="feed.RSS.settings.title">
-            <de><![CDATA[Feed-Seiten einschränken]]></de>
-            <en><![CDATA[Restrict feed sites]]></en>
+            <de><![CDATA[Feed-Inhalte]]></de>
+            <en><![CDATA[Feed content]]></en>
         </locale>
         <locale name="feed.settings.feedsites.title">
-            <de><![CDATA[Welche Seiten sollen im Feed enthalten sein? (Whitelist)]]></de>
-            <en><![CDATA[Which sites should be part of the feed? (Whitelist)]]></en>
+            <de><![CDATA[Enthaltene Seiten]]></de>
+            <en><![CDATA[Included sites]]></en>
         </locale>
         <locale name="feed.settings.feedsites.description" html="true">
-            <de><![CDATA[Sobald hier eine Seite angegeben ist, werden <b>ausschließlich</b> diese Seiten im Feed veröffentlich.]]></de>
-            <en><![CDATA[As soon as a site is specified here <b>only</b> these sites will be published in the feed.]]></en>
+            <de><![CDATA[Leer lassen, um alle aktiven Seiten des Projekts zu übernehmen. Sobald hier Seiten, Kindseiten oder Seitentypen ausgewählt sind, werden nur diese Inhalte verwendet.]]></de>
+            <en><![CDATA[Leave empty to include all active project sites. As soon as sites, child sites or site types are selected, only these entries are used.]]></en>
         </locale>
         <locale name="feed.settings.feedsites_exclude.title" html="true">
-            <de><![CDATA[Welche Seiten sollen <b>nicht</b> im Feed enthalten sein? (Blacklist)]]></de>
-            <en><![CDATA[Which sites should <b>nicht</b> be part of the feed? (Blacklist]]></en>
+            <de><![CDATA[Ausgeschlossene Seiten]]></de>
+            <en><![CDATA[Excluded sites]]></en>
+        </locale>
+        <locale name="feed.settings.feedsites_exclude.description" html="true">
+            <de><![CDATA[Diese Seiten, Kindseiten oder Seitentypen werden nach Auswahl und Suche aus dem Feed entfernt.]]></de>
+            <en><![CDATA[These sites, child sites or site types are removed from the feed after selection and search filters are applied.]]></en>
+        </locale>
+        <locale name="feed.settings.feedSearch.title">
+            <de><![CDATA[Seiten filtern nach]]></de>
+            <en><![CDATA[Filter sites by]]></en>
+        </locale>
+        <locale name="feed.settings.feedSearch.description">
+            <de><![CDATA[Optionaler Suchbegriff. Wenn gesetzt, werden nur Seiten übernommen, die den Begriff in den ausgewählten Feldern enthalten.]]></de>
+            <en><![CDATA[Optional search term. If set, only sites containing the term in the selected fields are included.]]></en>
+        </locale>
+        <locale name="feed.settings.feedSearchFieldTitle.title">
+            <de><![CDATA[Im Titel suchen]]></de>
+            <en><![CDATA[Search in title]]></en>
+        </locale>
+        <locale name="feed.settings.feedSearchFieldShort.title">
+            <de><![CDATA[In der Kurzbeschreibung suchen]]></de>
+            <en><![CDATA[Search in short description]]></en>
+        </locale>
+        <locale name="feed.settings.feedSearchFieldContent.title">
+            <de><![CDATA[Im Inhalt suchen]]></de>
+            <en><![CDATA[Search in content]]></en>
+        </locale>
+        <locale name="feed.settings.feedOrder.title">
+            <de><![CDATA[Sortierung]]></de>
+            <en><![CDATA[Sorting]]></en>
+        </locale>
+        <locale name="feed.settings.feedOrder.releaseDate">
+            <de><![CDATA[Nach Veröffentlichungsdatum]]></de>
+            <en><![CDATA[By release date]]></en>
+        </locale>
+        <locale name="feed.settings.feedOrder.editDate">
+            <de><![CDATA[Nach Änderungsdatum]]></de>
+            <en><![CDATA[By edit date]]></en>
         </locale>
         <locale name="feed.settings.includeProductUrls.title">
             <de><![CDATA[Produkt-URLs inkludieren]]></de>
@@ -212,8 +256,21 @@
             <en><![CDATA[Publication of QUIQQER CMS sites as Atom feed.]]></en>
         </locale>
         <locale name="feed.Atom.settings.title">
-            <de><![CDATA[Feed-Seiten einschränken]]></de>
-            <en><![CDATA[Restrict feed sites]]></en>
+            <de><![CDATA[Feed-Inhalte]]></de>
+            <en><![CDATA[Feed content]]></en>
+        </locale>
+
+        <locale name="feed.CSV.title">
+            <de><![CDATA[CMS-Seiten (CSV)]]></de>
+            <en><![CDATA[CMS sites (CSV)]]></en>
+        </locale>
+        <locale name="feed.CSV.description">
+            <de><![CDATA[Veröffentlichung von QUIQQER CMS-Seiten als CSV-Feed.]]></de>
+            <en><![CDATA[Publication of QUIQQER CMS sites as CSV feed.]]></en>
+        </locale>
+        <locale name="feed.CSV.settings.title">
+            <de><![CDATA[Feed-Inhalte]]></de>
+            <en><![CDATA[Feed content]]></en>
         </locale>
 
         <locale name="feed.GoogleSitemap.title">
@@ -225,8 +282,8 @@
             <en><![CDATA[Google Sitemap feed of the QUIQQER site hierarchy.]]></en>
         </locale>
         <locale name="feed.GoogleSitemap.settings.title">
-            <de><![CDATA[Feed-Seiten einschränken]]></de>
-            <en><![CDATA[Restrict feed sites]]></en>
+            <de><![CDATA[Feed-Inhalte]]></de>
+            <en><![CDATA[Feed content]]></en>
         </locale>
 
         <locale name="message.ajax.backend.recreate.success">
@@ -245,6 +302,14 @@
                 <![CDATA[Legen Sie verschiedene Feeds für Ihr Projekt und oder Webseite an. Das Feed Modul ermöglicht es Ihnen verschiedene Feed Arten und mehrere Feeds zu verwalten, wie zum Beispiel RSS, Atom oder eine Google Sitemap.]]></de>
             <en>
                 <![CDATA[Create different feeds for your project and / or website. The Feed Modul allows you to manage different types of feeds and multiple feeds, such as RSS, Atom, or Google Sitemap]]></en>
+        </locale>
+        <locale name="permission.quiqqer.feed._header">
+            <de><![CDATA[Feeds]]></de>
+            <en><![CDATA[Feeds]]></en>
+        </locale>
+        <locale name="permission.quiqqer.feed.mcp">
+            <de><![CDATA[Darf Feeds per MCP verwalten.]]></de>
+            <en><![CDATA[Can manage feeds via MCP.]]></en>
         </locale>
         <locale name="package.description.long">
             <de><![CDATA[Liefert eine Verwaltung fon Feeds für Ihre Website. (RSS,Atom & Google Sitemap)

@@ -39,7 +39,49 @@
                             <text>
                                 <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.title"/>
                             </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.description"/>
+                            </description>
                         </input>
+
+                        <input type="text" conf="feedSearch">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.description"/>
+                            </description>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldTitle">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldTitle.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldShort">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldShort.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldContent">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldContent.title"/>
+                            </text>
+                        </input>
+
+                        <select conf="feedOrder">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.title"/>
+                            </text>
+                            <option value="releaseDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.releaseDate"/>
+                            </option>
+                            <option value="editDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.editDate"/>
+                            </option>
+                        </select>
                     </settings>
                 </category>
 
@@ -85,7 +127,137 @@
                             <text>
                                 <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.title"/>
                             </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.description"/>
+                            </description>
                         </input>
+
+                        <input type="text" conf="feedSearch">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.description"/>
+                            </description>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldTitle">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldTitle.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldShort">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldShort.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldContent">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldContent.title"/>
+                            </text>
+                        </input>
+
+                        <select conf="feedOrder">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.title"/>
+                            </text>
+                            <option value="releaseDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.releaseDate"/>
+                            </option>
+                            <option value="editDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.editDate"/>
+                            </option>
+                        </select>
+                    </settings>
+                </category>
+
+            </categories>
+
+        </feedType>
+
+        <!-- CSV -->
+        <feedType class="QUI\Feed\Handler\CSV\Feed">
+            <title>
+                <locale group="quiqqer/feed" var="feed.CSV.title"/>
+            </title>
+            <description>
+                <locale group="quiqqer/feed" var="feed.CSV.description"/>
+            </description>
+
+            <mimeType><![CDATA[text/csv]]></mimeType>
+            <publishable>1</publishable>
+
+            <categories>
+                <category>
+                    <settings>
+                        <title>
+                            <locale group="quiqqer/feed" var="feed.CSV.settings.title"/>
+                        </title>
+
+                        <input type="hidden"
+                               conf="feedsites"
+                               data-qui="controls/projects/project/site/Select"
+                        >
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites.description"/>
+                            </description>
+                        </input>
+
+                        <input type="hidden"
+                               conf="feedsites_exclude"
+                               data-qui="controls/projects/project/site/Select"
+                        >
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.description"/>
+                            </description>
+                        </input>
+
+                        <input type="text" conf="feedSearch">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.description"/>
+                            </description>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldTitle">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldTitle.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldShort">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldShort.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldContent">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldContent.title"/>
+                            </text>
+                        </input>
+
+                        <select conf="feedOrder">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.title"/>
+                            </text>
+                            <option value="releaseDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.releaseDate"/>
+                            </option>
+                            <option value="editDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.editDate"/>
+                            </option>
+                        </select>
                     </settings>
                 </category>
 
@@ -143,7 +315,49 @@
                             <text>
                                 <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.title"/>
                             </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedsites_exclude.description"/>
+                            </description>
                         </input>
+
+                        <input type="text" conf="feedSearch">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearch.description"/>
+                            </description>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldTitle">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldTitle.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldShort">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldShort.title"/>
+                            </text>
+                        </input>
+
+                        <input type="checkbox" conf="feedSearchFieldContent">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedSearchFieldContent.title"/>
+                            </text>
+                        </input>
+
+                        <select conf="feedOrder">
+                            <text>
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.title"/>
+                            </text>
+                            <option value="releaseDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.releaseDate"/>
+                            </option>
+                            <option value="editDate">
+                                <locale group="quiqqer/feed" var="feed.settings.feedOrder.editDate"/>
+                            </option>
+                        </select>
                     </settings>
                 </category>
 

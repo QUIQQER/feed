@@ -11,11 +11,10 @@ define('package/quiqqer/feed/bin/Manager', [
     'package/quiqqer/feed/bin/FeedWindow',
     'Locale',
     'Ajax',
-    'Projects',
 
     'css!package/quiqqer/feed/bin/Manager.css'
 
-], function (QUIPanel, QUIConfirm, QUIButton, Grid, FeedWindow, QUILocale, QUIAjax, Projects) {
+], function (QUIPanel, QUIConfirm, QUIButton, Grid, FeedWindow, QUILocale, QUIAjax) {
     "use strict";
 
     var lg = 'quiqqer/feed';
@@ -148,19 +147,14 @@ define('package/quiqqer/feed/bin/Manager', [
 
                     Parent.set('html', '');
 
-                    var Project = Projects.get(rowData.project, rowData.lang);
+                    var url = rowData.url;
 
-                    Project.getHost(function (host) {
-
-                        var url = host + '/feed=' + rowData.id + '.xml';
-
-                        new Element('div', {
-                            html  : 'Feed URL: <a href="' + url + '" target="_blank">' + url + '</a>',
-                            styles: {
-                                padding: 10
-                            }
-                        }).inject(Parent);
-                    });
+                    new Element('div', {
+                        html  : 'Feed URL: <a href="' + url + '" target="_blank">' + url + '</a>',
+                        styles: {
+                            padding: 10
+                        }
+                    }).inject(Parent);
                 }
             });
 

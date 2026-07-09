@@ -98,7 +98,9 @@ define('package/quiqqer/feed/bin/Feed', [
                         publishSitesPlaceholder    : QUILocale.get(lg, 'quiqqer.feed.publish.sites.placeholder'),
                         feedImage                  : QUILocale.get(lg, 'quiqqer.feed.image'),
                         publishSitesLabel          : QUILocale.get(lg, 'quiqqer.feed.publishSitesLabel'),
-                        headerGeneralSettings      : QUILocale.get(lg, 'quiqqer.feed.headerGeneralSettings')
+                        headerGeneralSettings      : QUILocale.get(lg, 'quiqqer.feed.headerGeneralSettings'),
+                        headerProjectSettings      : QUILocale.get(lg, 'quiqqer.feed.headerProjectSettings'),
+                        headerGenerationSettings   : QUILocale.get(lg, 'quiqqer.feed.headerGenerationSettings')
                     }
                 })
             });
@@ -196,6 +198,7 @@ define('package/quiqqer/feed/bin/Feed', [
                     this.$Project.get('data-quiid')
                 );
 
+                this.$resizeProjectControl();
                 this.$onProjectChange();
                 this.$detectSplitOption();
 
@@ -334,6 +337,25 @@ define('package/quiqqer/feed/bin/Feed', [
                     );
                 });
             });
+        },
+
+        /**
+         * Project input controls derive their width from the original input.
+         * Force the generated wrapper to use the full field width in the feed form.
+         */
+        $resizeProjectControl: function () {
+            if (!this.$ProjectSelectControl || !this.$ProjectSelectControl.getElm) {
+                return;
+            }
+
+            const ProjectElm = this.$ProjectSelectControl.getElm();
+
+            if (!ProjectElm) {
+                return;
+            }
+
+            ProjectElm.setStyle('width', '100%');
+            ProjectElm.getElements('input, .projects-input-container').setStyle('width', '100%');
         },
 
         /**
