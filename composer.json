@@ -19,7 +19,8 @@
     },
     "require": {
         "php": "^8.2",
-        "quiqqer/core": "^2.24"
+        "quiqqer/core": "^2.24",
+        "quiqqer/utils": "^2"
     },
     "autoload": {
         "psr-4": {
