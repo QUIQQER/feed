@@ -3,17 +3,19 @@
     "type": "quiqqer-module",
     "description": "Create different feeds for your project and / or website. The Feed Modul allows you to manage different types of feeds and multiple feeds, such as RSS, Atom, or Google Sitemap",
     "license": "GPL-3.0-or-later",
+    "homepage": "https://www.quiqqer.com",
     "authors": [
         {
-            "name": "Henning Leutz",
-            "email": "leutz@pcsg.de",
-            "homepage": "https://www.pcsg.de",
-            "role": "Developer"
+            "name": "PCSG - Computer & Internet Service OHG",
+            "email": "info@quiqqer.com",
+            "homepage": "https://www.quiqqer.com",
+            "role": "Maintainer"
         }
     ],
     "support": {
         "email": "support@pcsg.de",
-        "url": "https://www.pcsg.de"
+        "issues": "https://dev.quiqqer.com/quiqqer/feed/-/issues",
+        "source": "https://dev.quiqqer.com/quiqqer/feed"
     },
     "require": {
         "php": "^8.2",
