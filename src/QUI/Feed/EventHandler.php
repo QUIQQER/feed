@@ -6,6 +6,7 @@ use Exception;
 use QUI;
 use QUI\Cache\LongTermCache;
 use QUI\Rewrite;
+use QUI\Utils\Doctrine;
 use Symfony\Component\HttpFoundation\Response;
 
 use function array_key_exists;
@@ -52,12 +53,15 @@ class EventHandler
      */
     protected static function patchV1(): void
     {
-        $result = QUI::getDataBase()->fetch([
-            'from' => QUI::getDBTableName(Manager::TABLE),
-            'where' => [
-                'type_id' => null
-            ]
-        ]);
+        $Connection = QUI::getDataBaseConnection();
+        $table = Doctrine::quoteIdentifier(QUI::getDBTableName(Manager::TABLE));
+        $typeId = Doctrine::quoteIdentifier('type_id');
+        $result = $Connection->createQueryBuilder()
+            ->select('*')
+            ->from($table)
+            ->where($typeId . ' IS NULL')
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         $feedIdRss = '1de938991bab7c523b9adbb631de5077588ecd348a68e7d993f619200f5a8bec';
         $feedIdAtom = 'b71ca88546347228c7a9057939de67a49852df3f5fc90fac389bc19f509f7bc1';
@@ -85,8 +89,8 @@ class EventHandler
                 'feedsites_exclude' => !empty($row['feedsites_exclude']) ? $row['feedsites_exclude'] : ''
             ]);
 
-            QUI::getDataBase()->update(
-                QUI::getDBTableName(Manager::TABLE),
+            $Connection->update(
+                $table,
                 $update,
                 [
                     'id' => $row['id']
@@ -103,10 +107,16 @@ class EventHandler
      */
     protected static function patchV2(): void
     {
-        $result = QUI::getDataBase()->fetch([
-            'select' => ['id', 'feed_settings'],
-            'from' => QUI::getDBTableName(Manager::TABLE)
-        ]);
+        $Connection = QUI::getDataBaseConnection();
+        $table = Doctrine::quoteIdentifier(QUI::getDBTableName(Manager::TABLE));
+        $result = $Connection->createQueryBuilder()
+            ->select(
+                Doctrine::quoteIdentifier('id'),
+                Doctrine::quoteIdentifier('feed_settings')
+            )
+            ->from($table)
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         foreach ($result as $row) {
             if (!empty($row['feed_settings'])) {
@@ -115,11 +125,15 @@ class EventHandler
                 $settings = [];
             }
 
+            if (!is_array($settings)) {
+                $settings = [];
+            }
+
             if (!array_key_exists('directOutput', $settings)) {
                 $settings['directOutput'] = true;
 
-                QUI::getDataBase()->update(
-                    QUI::getDBTableName(Manager::TABLE),
+                $Connection->update(
+                    $table,
                     [
                         'feed_settings' => json_encode($settings)
                     ],
