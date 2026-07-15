@@ -125,6 +125,10 @@ class EventHandler
                 $settings = [];
             }
 
+            if (!is_array($settings)) {
+                $settings = [];
+            }
+
             if (!array_key_exists('directOutput', $settings)) {
                 $settings['directOutput'] = true;
 
