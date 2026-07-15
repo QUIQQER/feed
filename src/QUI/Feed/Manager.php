@@ -3,11 +3,12 @@
 namespace QUI\Feed;
 
 use DOMDocument;
+use Doctrine\DBAL\Exception;
 use QUI;
 use QUI\Cache\LongTermCache;
-use QUI\Database\Exception;
 use QUI\Package\Package;
 use QUI\Utils\DOM as DOMUtils;
+use QUI\Utils\Doctrine;
 use QUI\Utils\Grid;
 
 use function array_key_exists;
@@ -67,8 +68,9 @@ class Manager
             throw new QUI\Exception('Unable to determine default project.');
         }
 
-        QUI::getDataBase()->insert(
-            QUI::getDBTableName(self::TABLE),
+        $Connection = QUI::getDataBaseConnection();
+        $Connection->insert(
+            Doctrine::quoteIdentifier(QUI::getDBTableName(self::TABLE)),
             [
                 'type_id' => $typeId,
                 'project' => $DefaultProject->getName(),
@@ -76,13 +78,7 @@ class Manager
             ]
         );
 
-        $PDO = QUI::getDataBase()->getPDO();
-
-        if (!$PDO) {
-            throw new QUI\Exception('No PDO instance available.');
-        }
-
-        $id = $PDO->lastInsertId();
+        $id = $Connection->lastInsertId();
         $Feed = new Feed((int)$id);
 
         $Feed->setAttributes($this->filterFeedParams($typeId, $params));
@@ -114,8 +110,8 @@ class Manager
         try {
             $this->getFeed($feedId);
 
-            QUI::getDataBase()->delete(
-                QUI::getDBTableName(Manager::TABLE),
+            QUI::getDataBaseConnection()->delete(
+                Doctrine::quoteIdentifier(QUI::getDBTableName(Manager::TABLE)),
                 ['id' => $feedId]
             );
         } catch (QUI\Exception $Exception) {
@@ -133,19 +129,17 @@ class Manager
      */
     public function getList(array $params = []): array
     {
-        if (empty($params)) {
-            return QUI::getDataBase()->fetch([
-                'from' => QUI::getDBTableName(self::TABLE)
-            ]);
+        $QueryBuilder = QUI::getDataBaseConnection()->createQueryBuilder()
+            ->select('*')
+            ->from(Doctrine::quoteIdentifier(QUI::getDBTableName(self::TABLE)));
+
+        if (!empty($params)) {
+            $Grid = new Grid();
+            $gridParams = $Grid->parseDBParams($params);
+            Doctrine::parseDbArrayToQueryBuilder($QueryBuilder, $gridParams);
         }
 
-        $Grid = new Grid();
-
-        $params = array_merge($Grid->parseDBParams($params), [
-            'from' => QUI::getDBTableName(self::TABLE)
-        ]);
-
-        return QUI::getDataBase()->fetch($params);
+        return $QueryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**
@@ -531,15 +525,11 @@ class Manager
      */
     public function count(): int
     {
-        $result = QUI::getDataBase()->fetch([
-            'count' => [
-                'select' => 'id',
-                'as' => 'count'
-            ],
-            'from' => QUI::getDBTableName(self::TABLE)
-        ]);
-
-        return (int)$result[0]['count'];
+        return (int)QUI::getDataBaseConnection()->createQueryBuilder()
+            ->select('COUNT(' . Doctrine::quoteIdentifier('id') . ')')
+            ->from(Doctrine::quoteIdentifier(QUI::getDBTableName(self::TABLE)))
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /**
