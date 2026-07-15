@@ -18,6 +18,7 @@ use function array_diff;
 use function array_filter;
 use function array_map;
 use function array_merge;
+use function array_pad;
 use function array_unique;
 use function ceil;
 use function explode;
@@ -28,6 +29,7 @@ use function ltrim;
 use function preg_match;
 use function rtrim;
 use function strtotime;
+use function strtoupper;
 use function substr;
 use function time;
 use function trim;
@@ -323,16 +325,13 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
 
     /**
      * @param FeedInstance $Feed
-     * @return array<int, array{0: string, 1: 'DESC'}>
+     * @return string
      */
-    protected function getFeedOrder(FeedInstance $Feed): array
+    protected function getFeedSqlOrder(FeedInstance $Feed): string
     {
         return match ((string)$Feed->getAttribute('feedOrder')) {
-            'editDate' => [['e_date', 'DESC']],
-            default => [
-                ['release_from', 'DESC'],
-                ['c_date', 'DESC']
-            ]
+            'editDate' => 'e_date DESC',
+            default => 'release_from DESC, c_date DESC'
         };
     }
 
@@ -342,7 +341,14 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function applyFeedOrder(QueryBuilder $QueryBuilder, FeedInstance $Feed): void
     {
-        foreach ($this->getFeedOrder($Feed) as [$field, $direction]) {
+        foreach (explode(',', $this->getFeedSqlOrder($Feed)) as $order) {
+            [$field, $direction] = array_pad(explode(' ', trim($order), 2), 2, 'ASC');
+            $direction = strtoupper($direction);
+
+            if ($direction !== 'ASC' && $direction !== 'DESC') {
+                $direction = 'ASC';
+            }
+
             $QueryBuilder->addOrderBy(Doctrine::quoteIdentifier($field), $direction);
         }
     }
