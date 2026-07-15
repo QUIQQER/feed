@@ -54,21 +54,20 @@ class Feed extends QUI\QDOM
     {
         $this->feedId = $feedId;
 
-        $data = QUI::getDataBase()->fetch([
-            'from' => QUI::getDBTableName(Manager::TABLE),
-            'where' => [
-                'id' => $this->feedId
-            ],
-            'limit' => 1
-        ]);
+        $data = QUI::getDataBaseConnection()->createQueryBuilder()
+            ->select('*')
+            ->from(QUI\Utils\Doctrine::quoteIdentifier(QUI::getDBTableName(Manager::TABLE)))
+            ->where(QUI\Utils\Doctrine::quoteIdentifier('id') . ' = :feedId')
+            ->setParameter('feedId', $this->feedId)
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-        if (!isset($data[0])) {
+        if ($data === false) {
             throw new QUI\Exception(
                 QUI::getLocale()->get('quiqqer/feed', 'exception.feed.not.found')
             );
         }
-
-        $data = $data[0];
 
         if (!empty($data['type_id'])) {
             $this->typeId = $data['type_id'];
@@ -182,7 +181,7 @@ class Feed extends QUI\QDOM
         // Special attributes that are set directly to the feed settings array
         $feedSettings['directOutput'] = $this->getAttribute('directOutput');
 
-        QUI::getDataBase()->update($table, [
+        QUI::getDataBaseConnection()->update(QUI\Utils\Doctrine::quoteIdentifier($table), [
             'project' => $this->getAttribute('project'),
             'lang' => $this->getAttribute('lang'),
 //            'feedtype'        => $this->getFeedType(),
