@@ -8,7 +8,9 @@ use PHPUnit\Framework\TestCase;
 use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Handler\CSV\Channel;
 use QUI\Feed\Handler\CSV\Feed as CsvFeed;
+use QUI\Feed\Handler\GoogleSitemap\Feed as SitemapFeed;
 use QUI\Feed\Utils\SimpleXML;
+use ReflectionMethod;
 
 class FeedRenderingTest extends TestCase
 {
@@ -118,6 +120,28 @@ class FeedRenderingTest extends TestCase
         $Xml->value->addCData('A < B & C');
 
         self::assertStringContainsString('<![CDATA[A < B & C]]>', (string)$Xml->asXML());
+    }
+
+    public function testSitemapIndexAddsPageSuffixBeforeXmlExtension(): void
+    {
+        $Feed = new SitemapFeed();
+        $Channel = $Feed->createChannel();
+        $Channel->setAttribute('link', 'https://example.test/feed=12.xml');
+        $Channel->createItem([
+            'link' => 'https://example.test/item',
+            'e_date' => 1_704_067_200
+        ]);
+
+        (new ReflectionMethod($Feed, 'setPageSize'))->invoke($Feed, 1);
+        (new ReflectionMethod($Feed, 'setPage'))->invoke($Feed, 0);
+
+        $xml = (string)$Feed->getXML()->asXML();
+
+        self::assertStringContainsString(
+            '<loc>https://example.test/feed=12-1.xml</loc>',
+            $xml
+        );
+        self::assertStringNotContainsString('feed=12.xml-1.xml', $xml);
     }
 
     /**
