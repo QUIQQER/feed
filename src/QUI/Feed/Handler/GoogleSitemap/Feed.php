@@ -100,10 +100,10 @@ class Feed extends AbstractSiteFeedType
 
         // Pagination - index
 
-        // The link attribute ends on .rss - we need to strip that
+        // Strip the feed extension before adding the page suffix.
         $baseURL = (string)$Channels[0]->getAttribute("link");
 
-        if (str_ends_with($baseURL, ".rss")) {
+        if (str_ends_with($baseURL, ".rss") || str_ends_with($baseURL, ".xml")) {
             $baseURL = substr($baseURL, 0, -4);
         }
 

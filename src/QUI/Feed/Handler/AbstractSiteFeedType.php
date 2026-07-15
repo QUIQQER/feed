@@ -3,7 +3,8 @@
 namespace QUI\Feed\Handler;
 
 use DOMDocument;
-use PDO;
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Query\QueryBuilder;
 use QUI;
 use QUI\Exception;
 use QUI\Feed\Feed;
@@ -11,16 +12,16 @@ use QUI\Feed\Feed as FeedInstance;
 use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Interfaces\ChannelInterface;
 use QUI\Feed\Utils\SimpleXML;
+use QUI\Utils\Doctrine;
 
 use function array_diff;
 use function array_filter;
 use function array_map;
 use function array_merge;
+use function array_pad;
 use function array_unique;
 use function ceil;
-use function count;
 use function explode;
-use function implode;
 use function in_array;
 use function is_numeric;
 use function is_string;
@@ -28,6 +29,7 @@ use function ltrim;
 use function preg_match;
 use function rtrim;
 use function strtotime;
+use function strtoupper;
 use function substr;
 use function time;
 use function trim;
@@ -334,6 +336,24 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     }
 
     /**
+     * @param QueryBuilder $QueryBuilder
+     * @param FeedInstance $Feed
+     */
+    protected function applyFeedOrder(QueryBuilder $QueryBuilder, FeedInstance $Feed): void
+    {
+        foreach (explode(',', $this->getFeedSqlOrder($Feed)) as $order) {
+            [$field, $direction] = array_pad(explode(' ', trim($order), 2), 2, 'ASC');
+            $direction = strtoupper($direction);
+
+            if ($direction !== 'ASC' && $direction !== 'DESC') {
+                $direction = 'ASC';
+            }
+
+            $QueryBuilder->addOrderBy(Doctrine::quoteIdentifier($field), $direction);
+        }
+    }
+
+    /**
      * @param FeedInstance $Feed
      * @return string
      */
@@ -378,62 +398,50 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         ];
     }
 
+    protected function applyFeedSearch(QueryBuilder $QueryBuilder, FeedInstance $Feed): void
+    {
+        $feedSearch = $this->getFeedSearch($Feed);
+
+        if ($feedSearch === '') {
+            return;
+        }
+
+        $searchParts = [];
+
+        foreach ($this->getFeedSearchFields($Feed) as $field) {
+            $searchParts[] = Doctrine::quoteIdentifier($field) . ' LIKE :feedSearch';
+        }
+
+        $QueryBuilder
+            ->andWhere($QueryBuilder->expr()->or(...$searchParts))
+            ->setParameter('feedSearch', '%' . $feedSearch . '%');
+    }
+
     /**
      * @param FeedInstance $Feed
      * @return array<int, int>
      */
     protected function getAllSiteIds(FeedInstance $Feed): array
     {
-        $PDO = QUI::getPDO();
         $Project = $Feed->getProject();
         $table = $this->getProjectTableName($Project);
         $feedLimit = $this->getFeedLimit($Feed);
-        $feedSearch = $this->getFeedSearch($Feed);
-        $searchWhere = '';
+        $QueryBuilder = QUI::getDataBaseConnection()->createQueryBuilder()
+            ->select(Doctrine::quoteIdentifier('id'))
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where(Doctrine::quoteIdentifier('active') . ' = :active')
+            ->andWhere(Doctrine::quoteIdentifier('deleted') . ' = :deleted')
+            ->setParameter('active', 1)
+            ->setParameter('deleted', 0);
 
-        if ($feedSearch !== '') {
-            $searchParts = [];
-
-            foreach ($this->getFeedSearchFields($Feed) as $field) {
-                $searchParts[] = $field . ' LIKE :feedSearch';
-            }
-
-            $searchWhere = ' AND (' . implode(' OR ', $searchParts) . ')';
-        }
-
-        $order = $this->getFeedSqlOrder($Feed);
-
-        $query = "
-                SELECT id
-                FROM {$table}
-                WHERE active = 1 AND deleted = 0 {$searchWhere}
-                ORDER BY {$order}
-            ";
+        $this->applyFeedSearch($QueryBuilder, $Feed);
+        $this->applyFeedOrder($QueryBuilder, $Feed);
 
         if ($feedLimit > 0) {
-            $query .= "LIMIT :limit";
+            $QueryBuilder->setMaxResults($feedLimit);
         }
 
-        $Statement = $PDO->prepare($query);
-
-        if ($feedSearch !== '') {
-            $Statement->bindValue(':feedSearch', '%' . $feedSearch . '%', PDO::PARAM_STR);
-        }
-
-        if ($feedLimit > 0) {
-            $Statement->bindValue(':limit', $feedLimit, PDO::PARAM_INT);
-        }
-
-        $Statement->execute();
-        $result = $Statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $ids = [];
-
-        foreach ($result as $row) {
-            $ids[] = (int)$row['id'];
-        }
-
-        return $ids;
+        return array_map('intval', $QueryBuilder->executeQuery()->fetchFirstColumn());
     }
 
     /**
@@ -448,28 +456,21 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     protected function getSiteIdsBySiteIdControlValues(Feed $Feed, array $values, bool $useFeedLimit = true): array
     {
         $Project = $Feed->getProject();
-        $PDO = QUI::getPDO();
         $table = $this->getProjectTableName($Project);
         $idCount = 0;
         $strCount = 0;
 
         $whereParts = [];
-        $wherePrepared = [];
+        $whereParameters = [];
         $childPageIDs = [];
 
         $feedLimit = $this->getFeedLimit($Feed);
 
         foreach ($values as $needle) {
             if (is_numeric($needle)) {
-                $_id = ':id' . $idCount;
-
-                $whereParts[] = " id = $_id ";
-
-                $wherePrepared[] = [
-                    'type' => PDO::PARAM_INT,
-                    'value' => $needle,
-                    'name' => $_id
-                ];
+                $parameter = 'id' . $idCount;
+                $whereParts[] = Doctrine::quoteIdentifier('id') . ' = :' . $parameter;
+                $whereParameters[$parameter] = (int)$needle;
 
                 $idCount++;
                 continue;
@@ -484,14 +485,9 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             }
 
             // Search for type
-            $_id = ':str' . $strCount;
-
-            $whereParts[] = " type LIKE $_id ";
-            $wherePrepared[] = [
-                'type' => PDO::PARAM_STR,
-                'value' => $needle,
-                'name' => $_id
-            ];
+            $parameter = 'type' . $strCount;
+            $whereParts[] = Doctrine::quoteIdentifier('type') . ' LIKE :' . $parameter;
+            $whereParameters[$parameter] = $needle;
 
             $strCount++;
         }
@@ -499,86 +495,40 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         // Create the part of the query for the site ids of child sites.
         // `id` IN ( id1, id2, id3, id4 )
         if (!empty($childPageIDs)) {
-            $childPageIDs = array_unique($childPageIDs);
-
-            $idString = "";
-
-            for ($i = 0; $i < count($childPageIDs); $i++) {
-                $idString .= ":pageid" . $i . ",";
-            }
-
-            $idString = rtrim($idString, ",");
-            $whereParts[] = " id IN ($idString) ";
-
-            $i = 0;
-
-            foreach ($childPageIDs as $id) {
-                $wherePrepared[] = [
-                    'type' => PDO::PARAM_INT,
-                    'value' => $id,
-                    'name' => ":pageid" . $i
-                ];
-                $i++;
-            }
+            $childPageIDs = array_map('intval', array_unique($childPageIDs));
+            $whereParts[] = Doctrine::quoteIdentifier('id') . ' IN (:childPageIds)';
         }
 
-        $where = implode(' OR ', $whereParts);
-        $feedSearch = $this->getFeedSearch($Feed);
-        $searchWhere = '';
-
-        if ($feedSearch !== '') {
-            $searchParts = [];
-
-            foreach ($this->getFeedSearchFields($Feed) as $field) {
-                $searchParts[] = $field . ' LIKE :feedSearch';
-            }
-
-            $searchWhere = ' AND (' . implode(' OR ', $searchParts) . ')';
+        if (empty($whereParts)) {
+            return [];
         }
 
-        $order = $this->getFeedSqlOrder($Feed);
+        $QueryBuilder = QUI::getDataBaseConnection()->createQueryBuilder()
+            ->select(Doctrine::quoteIdentifier('id'))
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where(Doctrine::quoteIdentifier('active') . ' = :active')
+            ->andWhere(Doctrine::quoteIdentifier('deleted') . ' = :deleted')
+            ->setParameter('active', 1)
+            ->setParameter('deleted', 0);
 
-        // query
-        $query = "
-                SELECT id
-                FROM {$table}
-                WHERE active = 1 AND deleted = 0 AND ($where) {$searchWhere}
-                ORDER BY {$order}
-            ";
+        $QueryBuilder->andWhere($QueryBuilder->expr()->or(...$whereParts));
+
+        foreach ($whereParameters as $parameter => $value) {
+            $QueryBuilder->setParameter($parameter, $value);
+        }
+
+        if (!empty($childPageIDs)) {
+            $QueryBuilder->setParameter('childPageIds', $childPageIDs, ArrayParameterType::INTEGER);
+        }
+
+        $this->applyFeedSearch($QueryBuilder, $Feed);
+        $this->applyFeedOrder($QueryBuilder, $Feed);
 
         if ($useFeedLimit && $feedLimit > 0) {
-            $query .= "LIMIT :limit";
+            $QueryBuilder->setMaxResults($feedLimit);
         }
 
-        // search
-        $Statement = $PDO->prepare($query);
-
-        foreach ($wherePrepared as $prepared) {
-            $Statement->bindValue(
-                $prepared['name'],
-                $prepared['value'],
-                $prepared['type']
-            );
-        }
-
-        if ($feedSearch !== '') {
-            $Statement->bindValue(':feedSearch', '%' . $feedSearch . '%', PDO::PARAM_STR);
-        }
-
-        if ($useFeedLimit && $feedLimit > 0) {
-            $Statement->bindValue(':limit', $feedLimit, PDO::PARAM_INT);
-        }
-
-        $Statement->execute();
-        $result = $Statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $ids = [];
-
-        foreach ($result as $row) {
-            $ids[] = (int)$row['id'];
-        }
-
-        return $ids;
+        return array_map('intval', $QueryBuilder->executeQuery()->fetchFirstColumn());
     }
 
     /**
@@ -608,7 +558,6 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         }
 
         // Get the IDs of the selected sites
-        $PDO = QUI::getPDO();
         $table = $this->getProjectTableName($Project);
         $sites = explode(';', $siteSelectValue);
 
@@ -616,21 +565,15 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         $strCount = 0;
 
         $whereParts = [];
-        $wherePrepared = [];
+        $whereParameters = [];
         $childPageIDs = [];
 
         foreach ($sites as $needle) {
             //
             if (is_numeric($needle)) {
-                $_id = ':id' . $idCount;
-
-                $whereParts[] = " id = $_id ";
-
-                $wherePrepared[] = [
-                    'type' => PDO::PARAM_INT,
-                    'value' => $needle,
-                    'name' => $_id
-                ];
+                $parameter = 'id' . $idCount;
+                $whereParts[] = Doctrine::quoteIdentifier('id') . ' = :' . $parameter;
+                $whereParameters[$parameter] = (int)$needle;
 
                 $idCount++;
                 continue;
@@ -644,14 +587,9 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             }
 
             // Search for type
-            $_id = ':str' . $strCount;
-
-            $whereParts[] = " type LIKE $_id ";
-            $wherePrepared[] = [
-                'type' => PDO::PARAM_STR,
-                'value' => $needle,
-                'name' => $_id
-            ];
+            $parameter = 'type' . $strCount;
+            $whereParts[] = Doctrine::quoteIdentifier('type') . ' LIKE :' . $parameter;
+            $whereParameters[$parameter] = $needle;
 
             $strCount++;
         }
@@ -659,56 +597,33 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         // Create the part of the query for the site ids of child sites.
         // `id` IN ( id1, id2, id3, id4 )
         if (!empty($childPageIDs)) {
-            $childPageIDs = array_unique($childPageIDs);
-            $idString = "";
-
-            for ($i = 0; $i < count($childPageIDs); $i++) {
-                $idString .= ":pageid" . $i . ",";
-            }
-
-            $idString = rtrim($idString, ",");
-            $whereParts[] = " id IN ($idString) ";
-
-            $i = 0;
-            foreach ($childPageIDs as $id) {
-                $wherePrepared[] = [
-                    'type' => PDO::PARAM_INT,
-                    'value' => $id,
-                    'name' => ":pageid" . $i
-                ];
-                $i++;
-            }
+            $childPageIDs = array_map('intval', array_unique($childPageIDs));
+            $whereParts[] = Doctrine::quoteIdentifier('id') . ' IN (:childPageIds)';
         }
 
-        $where = implode(' OR ', $whereParts);
-
-        // query
-        $query = "
-                SELECT id
-                FROM {$table}
-                WHERE active = 1 AND ($where)
-                ORDER BY release_from DESC, c_date DESC
-            ";
-
-        // search
-        $Statement = $PDO->prepare($query);
-
-        foreach ($wherePrepared as $prepared) {
-            $Statement->bindValue(
-                $prepared['name'],
-                $prepared['value'],
-                $prepared['type']
-            );
+        if (empty($whereParts)) {
+            return [];
         }
 
-        $Statement->execute();
-        $result = $Statement->fetchAll(PDO::FETCH_ASSOC);
+        $QueryBuilder = QUI::getDataBaseConnection()->createQueryBuilder()
+            ->select(Doctrine::quoteIdentifier('id'))
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where(Doctrine::quoteIdentifier('active') . ' = :active')
+            ->setParameter('active', 1)
+            ->addOrderBy(Doctrine::quoteIdentifier('release_from'), 'DESC')
+            ->addOrderBy(Doctrine::quoteIdentifier('c_date'), 'DESC');
 
-        foreach ($result as $row) {
-            $ids[] = $row['id'];
+        $QueryBuilder->andWhere($QueryBuilder->expr()->or(...$whereParts));
+
+        foreach ($whereParameters as $parameter => $value) {
+            $QueryBuilder->setParameter($parameter, $value);
         }
 
-        return $ids;
+        if (!empty($childPageIDs)) {
+            $QueryBuilder->setParameter('childPageIds', $childPageIDs, ArrayParameterType::INTEGER);
+        }
+
+        return array_map('intval', $QueryBuilder->executeQuery()->fetchFirstColumn());
     }
 
     /**

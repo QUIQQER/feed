@@ -60,7 +60,7 @@ abstract class AbstractItem extends QDOM implements InterfaceItem
      */
     public function setDate(int $timestamp): void
     {
-        $this->setAttribute('time', $timestamp);
+        $this->setAttribute('date', $timestamp);
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class AbstractItem extends QDOM implements InterfaceItem
      */
     public function setLanguage(string $language): void
     {
-        $this->setAttribute('lang', $language);
+        $this->setAttribute('language', $language);
     }
 
     /**
