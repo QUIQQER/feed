@@ -42,7 +42,7 @@ try {
 
     $xmlString = $FeedManager->getFeedOutput($Feed);
     $varDir = QUI::getPackage('quiqqer/feed')->getVarDir();
-    $tmpFile = $varDir . hash('sha256', microtime(true)) . '.' . $fileExt;
+    $tmpFile = $varDir . hash('sha256', microtime()) . '.' . $fileExt;
 
     file_put_contents($tmpFile, $xmlString);
 
