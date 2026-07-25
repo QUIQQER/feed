@@ -246,6 +246,6 @@ class Feed extends QUI\QDOM
             default => 'xml'
         };
 
-        return $this->Project->getVHost(true, true) . 'feed=' . $this->getId() . '.' . $extension;
+        return $this->Project->getVHost(true, true) . URL_DIR . 'feed=' . $this->getId() . '.' . $extension;
     }
 }
