@@ -59,11 +59,6 @@ class Feed extends AbstractSiteFeedType
     {
         $Project = $Feed->getProject();
         $projectHost = $Project->getVHost(true, true);
-
-        if (!is_string($projectHost)) {
-            $projectHost = '';
-        }
-
         $feedUrl = $projectHost . URL_DIR . 'feed=' . $Feed->getId() . '.csv';
 
         $Channel = $this->createChannel();

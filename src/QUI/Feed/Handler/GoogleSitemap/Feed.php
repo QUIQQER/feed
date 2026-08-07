@@ -16,6 +16,8 @@ use QUI\Feed\Handler\AbstractSiteFeedType;
 use QUI\Feed\Interfaces\ChannelInterface;
 use QUI\Feed\Interfaces\FeedItemInterface;
 use QUI\Feed\Utils\SimpleXML;
+use QUI\Projects\Project;
+use QUI\System\VhostManager;
 
 use function array_filter;
 use function count;
@@ -36,6 +38,92 @@ class Feed extends AbstractSiteFeedType
      * @var int
      */
     protected int $page = 0;
+
+    /**
+     * Include configured Path-languages of the feed's root VHost.
+     *
+     * Languages with their own root VHost are deliberately excluded.
+     *
+     * @return array<int, Project>
+     */
+    public function getFeedProjects(FeedInstance $Feed): array
+    {
+        $Project = $Feed->getProject();
+        $projects = [$Project];
+
+        if (empty($Feed->getAttribute('includeVhostPathLanguages'))) {
+            return $projects;
+        }
+
+        $route = $Project->getVHostRoute();
+
+        if ($route === null || $route['path'] !== '') {
+            return $projects;
+        }
+
+        foreach ($this->getVhostLanguages($Project) as $language) {
+            if ($language === $Project->getLang()) {
+                continue;
+            }
+
+            try {
+                $LanguageProject = $this->getLanguageProject($Project->getName(), $language);
+            } catch (Exception $Exception) {
+                QUI\System\Log::writeDebugException($Exception);
+                continue;
+            }
+
+            $languageRoute = $LanguageProject->getVHostRoute();
+
+            if (
+                $languageRoute === null
+                || $languageRoute['host'] !== $route['host']
+                || $languageRoute['path'] === ''
+            ) {
+                continue;
+            }
+
+            $projects[] = $LanguageProject;
+        }
+
+        return $projects;
+    }
+
+    public function includesProjectLanguage(FeedInstance $Feed, Project $Project): bool
+    {
+        foreach ($this->getFeedProjects($Feed) as $FeedProject) {
+            if (
+                $FeedProject->getName() === $Project->getName()
+                && $FeedProject->getLang() === $Project->getLang()
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getVhostLanguages(Project $Project): array
+    {
+        $route = $Project->getVHostRoute();
+
+        if ($route === null) {
+            return [];
+        }
+
+        return (new VhostManager())->getLanguagesByHost($route['host']);
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getLanguageProject(string $projectName, string $language): Project
+    {
+        return QUI::getProject($projectName, $language);
+    }
 
     /**
      * Create a channel
@@ -218,6 +306,22 @@ class Feed extends AbstractSiteFeedType
      */
     protected function collectFeedTypeItems(FeedInstance $Feed, FeedItemCollection $Collection): void
     {
+        $this->collectGoogleSitemapItems($Feed, $Collection, $Feed->getProject());
+    }
+
+    protected function collectFeedTypeItemsForProject(
+        FeedInstance $Feed,
+        FeedItemCollection $Collection,
+        Project $Project
+    ): void {
+        $this->collectGoogleSitemapItems($Feed, $Collection, $Project);
+    }
+
+    protected function collectGoogleSitemapItems(
+        FeedInstance $Feed,
+        FeedItemCollection $Collection,
+        Project $Project
+    ): void {
         if (!QUI::getPackageManager()->isInstalled('quiqqer/products')) {
             return;
         }
@@ -231,7 +335,6 @@ class Feed extends AbstractSiteFeedType
         }
 
         $productIds = $this->getFeedProductIds();
-        $Project = $Feed->getProject();
         $lang = $Project->getLang();
         $Locale = new QUI\Locale();
         $Locale->setCurrent($lang);

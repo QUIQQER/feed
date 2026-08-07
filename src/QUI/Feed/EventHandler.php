@@ -5,6 +5,7 @@ namespace QUI\Feed;
 use Exception;
 use QUI;
 use QUI\Cache\LongTermCache;
+use QUI\Feed\Handler\GoogleSitemap\Feed as GoogleSitemapFeed;
 use QUI\Rewrite;
 use QUI\Utils\Doctrine;
 use Symfony\Component\HttpFoundation\Response;
@@ -241,12 +242,30 @@ class EventHandler
                 continue;
             }
 
-            if ($projectLang != $feed['lang']) {
+            if ($projectLang == $feed['lang']) {
+                QUI\Cache\Manager::clear('quiqqer/feed/' . $feed['id']);
                 continue;
             }
 
-            // clear cache
-            QUI\Cache\Manager::clear('quiqqer/feed/' . $feed['id']);
+            try {
+                $Feed = $Manager->getFeed((int)$feed['id']);
+                $FeedType = $Feed->getFeedType();
+
+                if (
+                    !$FeedType instanceof GoogleSitemapFeed
+                    || empty($Feed->getAttribute('includeVhostPathLanguages'))
+                ) {
+                    continue;
+                }
+
+                if (!$FeedType->includesProjectLanguage($Feed, $Project)) {
+                    continue;
+                }
+
+                QUI\Cache\Manager::clear('quiqqer/feed/' . $feed['id']);
+            } catch (Exception $Exception) {
+                QUI\System\Log::writeDebugException($Exception);
+            }
         }
     }
 

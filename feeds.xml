@@ -296,6 +296,19 @@
                             </description>
                         </input>
 
+                        <input type="checkbox"
+                               conf="includeVhostPathLanguages"
+                        >
+                            <text>
+                                <locale group="quiqqer/feed"
+                                        var="feed.settings.includeVhostPathLanguages.title"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/feed"
+                                        var="feed.settings.includeVhostPathLanguages.description"/>
+                            </description>
+                        </input>
+
                         <input type="hidden"
                                conf="feedsites"
                                data-qui="controls/projects/project/site/Select"
