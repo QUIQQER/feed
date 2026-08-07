@@ -12,6 +12,7 @@ use QUI\Feed\Feed as FeedInstance;
 use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Interfaces\ChannelInterface;
 use QUI\Feed\Utils\SimpleXML;
+use QUI\Projects\Project;
 use QUI\Utils\Doctrine;
 
 use function array_diff;
@@ -119,9 +120,21 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     protected function collectFeedItems(FeedInstance $Feed): FeedItemCollection
     {
         $Collection = new FeedItemCollection();
+        $FeedProject = $Feed->getProject();
 
-        $this->collectSiteFeedItems($Feed, $Collection);
-        $this->collectFeedTypeItems($Feed, $Collection);
+        foreach ($this->getFeedProjects($Feed) as $Project) {
+            if (
+                $Project->getName() === $FeedProject->getName()
+                && $Project->getLang() === $FeedProject->getLang()
+            ) {
+                $this->collectSiteFeedItems($Feed, $Collection);
+                $this->collectFeedTypeItems($Feed, $Collection);
+                continue;
+            }
+
+            $this->collectSiteFeedItemsForProject($Feed, $Collection, $Project);
+            $this->collectFeedTypeItemsForProject($Feed, $Collection, $Project);
+        }
 
         QUI::getEvents()->fireEvent('quiqqerFeedCollectItems', [
             $Feed,
@@ -136,6 +149,16 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
     }
 
     /**
+     * Return the project languages whose entries belong in this feed.
+     *
+     * @return array<int, Project>
+     */
+    public function getFeedProjects(FeedInstance $Feed): array
+    {
+        return [$Feed->getProject()];
+    }
+
+    /**
      * Collect feed-type-specific entries.
      *
      * @param FeedInstance $Feed
@@ -144,6 +167,16 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function collectFeedTypeItems(FeedInstance $Feed, FeedItemCollection $Collection): void
     {
+    }
+
+    /**
+     * Collect feed-type-specific entries for an additional project language.
+     */
+    protected function collectFeedTypeItemsForProject(
+        FeedInstance $Feed,
+        FeedItemCollection $Collection,
+        Project $Project
+    ): void {
     }
 
     /**
@@ -156,14 +189,20 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function collectSiteFeedItems(FeedInstance $Feed, FeedItemCollection $Collection): void
     {
-        $Project = $Feed->getProject();
-        $projectHost = $Project->getVHost(true, true);
+        $this->collectSiteFeedItemsForProject($Feed, $Collection, $Feed->getProject());
+    }
 
-        if (!is_string($projectHost)) {
-            $projectHost = '';
-        }
-
-        $ids = $this->getSiteIds($Feed);
+    /**
+     * Add relevant CMS site entries from a specific project language.
+     *
+     * @throws QUI\Exception
+     */
+    protected function collectSiteFeedItemsForProject(
+        FeedInstance $Feed,
+        FeedItemCollection $Collection,
+        Project $Project
+    ): void {
+        $ids = $this->getSiteIdsForProject($Feed, $Project);
 
         foreach ($ids as $id) {
             try {
@@ -176,18 +215,15 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
 
                 $editDate = $Site->getAttribute('e_date');
 
-                // Workaround bug  $Site->getCanonical() come with protocol
-                $link = $Site->getId() === 1
-                    ? rtrim($projectHost, '/') . '/'
-                    : (string)$Site->getUrlRewritten();
+                $link = (string)$Site->getUrlRewritten();
                 $permalink = $Site->getCanonical();
 
                 if (!str_contains($link, 'https:') && !str_contains($link, 'http:')) {
-                    $link = rtrim($projectHost, '/') . '/' . ltrim($link, '/');
+                    $link = rtrim($Project->getVHost(true, true), '/') . '/' . ltrim($link, '/');
                 }
 
                 if (!str_contains($permalink, 'https:') && !str_contains($permalink, 'http:')) {
-                    $permalink = $projectHost . $Site->getCanonical();
+                    $permalink = $link;
                 }
 
                 $item = [
@@ -258,6 +294,15 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function getSiteIds(FeedInstance $Feed): array
     {
+        return $this->getSiteIdsForProject($Feed, $Feed->getProject());
+    }
+
+    /**
+     * @return array<int, int>
+     * @throws QUI\Exception
+     */
+    protected function getSiteIdsForProject(FeedInstance $Feed, Project $Project): array
+    {
         $feedSites = $Feed->getAttribute('feedsites');
         $feedSitesExclude = $Feed->getAttribute('feedsites_exclude');
 
@@ -282,16 +327,102 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
         // Some site types are always excluded!
         $feedSitesExclude[] = 'quiqqer/sitetypes:types/forwarding';
 
+        $hasFeedSiteSelection = !empty($feedSites);
+        $feedSites = $this->translateSiteIdControlValues($Feed, $Project, $feedSites);
+        $feedSitesExclude = $this->translateSiteIdControlValues($Feed, $Project, $feedSitesExclude);
+
         // All sites, if no sites were selected.
-        if (empty($feedSites)) {
-            $siteIds = $this->getAllSiteIds($Feed);
+        if (!$hasFeedSiteSelection) {
+            $siteIds = $this->getAllSiteIdsForProject($Feed, $Project);
+        } elseif (empty($feedSites)) {
+            $siteIds = [];
         } else {
-            $siteIds = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSites);
+            $siteIds = $this->getSiteIdsBySiteIdControlValuesForProject(
+                $Feed,
+                $Project,
+                $feedSites
+            );
         }
 
-        $siteIdsExclude = $this->getSiteIdsBySiteIdControlValues($Feed, $feedSitesExclude, false);
+        $siteIdsExclude = $this->getSiteIdsBySiteIdControlValuesForProject(
+            $Feed,
+            $Project,
+            $feedSitesExclude,
+            false
+        );
 
         return array_diff($siteIds, $siteIdsExclude);
+    }
+
+    /**
+     * Translate explicitly selected sites and parent-site selectors to a feed language.
+     *
+     * Site type selectors are language-independent and remain unchanged.
+     *
+     * @param array<int, string|int> $values
+     * @return array<int, string|int>
+     */
+    protected function translateSiteIdControlValues(
+        FeedInstance $Feed,
+        Project $Project,
+        array $values
+    ): array {
+        $SourceProject = $Feed->getProject();
+
+        if (
+            $SourceProject->getName() === $Project->getName()
+            && $SourceProject->getLang() === $Project->getLang()
+        ) {
+            return $values;
+        }
+
+        $translatedValues = [];
+
+        foreach ($values as $value) {
+            $isParentSelector = is_string($value) && preg_match('~^p([0-9]+)$~i', $value, $matches);
+
+            if (!is_numeric($value) && !$isParentSelector) {
+                $translatedValues[] = $value;
+                continue;
+            }
+
+            $siteId = $isParentSelector ? (int)$matches[1] : (int)$value;
+            $translatedSiteId = $this->getTranslatedSiteId($SourceProject, $Project, $siteId);
+
+            if ($translatedSiteId === null) {
+                continue;
+            }
+
+            $translatedValues[] = $isParentSelector
+                ? 'p' . $translatedSiteId
+                : $translatedSiteId;
+        }
+
+        return $translatedValues;
+    }
+
+    protected function getTranslatedSiteId(
+        Project $SourceProject,
+        Project $TargetProject,
+        int $siteId
+    ): ?int {
+        if ($siteId === 1) {
+            return 1;
+        }
+
+        try {
+            $Site = $SourceProject->get($siteId);
+            $languageIds = $Site->getLangIds();
+            $translatedSiteId = $languageIds[$TargetProject->getLang()] ?? false;
+
+            if (!is_numeric($translatedSiteId) || (int)$translatedSiteId <= 0) {
+                return null;
+            }
+
+            return (int)$translatedSiteId;
+        } catch (QUI\Exception) {
+            return null;
+        }
     }
 
     /**
@@ -423,7 +554,14 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function getAllSiteIds(FeedInstance $Feed): array
     {
-        $Project = $Feed->getProject();
+        return $this->getAllSiteIdsForProject($Feed, $Feed->getProject());
+    }
+
+    /**
+     * @return array<int, int>
+     */
+    protected function getAllSiteIdsForProject(FeedInstance $Feed, Project $Project): array
+    {
         $table = $this->getProjectTableName($Project);
         $feedLimit = $this->getFeedLimit($Feed);
         $QueryBuilder = QUI::getDataBaseConnection()->createQueryBuilder()
@@ -453,9 +591,30 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      * @return int[]
      * @throws Exception
      */
-    protected function getSiteIdsBySiteIdControlValues(Feed $Feed, array $values, bool $useFeedLimit = true): array
-    {
-        $Project = $Feed->getProject();
+    protected function getSiteIdsBySiteIdControlValues(
+        Feed $Feed,
+        array $values,
+        bool $useFeedLimit = true
+    ): array {
+        return $this->getSiteIdsBySiteIdControlValuesForProject(
+            $Feed,
+            $Feed->getProject(),
+            $values,
+            $useFeedLimit
+        );
+    }
+
+    /**
+     * @param array<int, string|int> $values
+     * @return array<int, int>
+     * @throws Exception
+     */
+    protected function getSiteIdsBySiteIdControlValuesForProject(
+        Feed $Feed,
+        Project $Project,
+        array $values,
+        bool $useFeedLimit = true
+    ): array {
         $table = $this->getProjectTableName($Project);
         $idCount = 0;
         $strCount = 0;
