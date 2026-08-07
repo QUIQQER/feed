@@ -246,6 +246,14 @@
             <de><![CDATA[URLs von Produkten sollen in die Sitemap eingefügt werden. Setzt voraus, dass das ecoyn Produkte-Modul installiert ist.]]></de>
             <en><![CDATA[URLs of products are to be inserted into the sitemap. Requires that the ecoyn products module is installed.]]></en>
         </locale>
+        <locale name="feed.settings.includeVhostPathLanguages.title">
+            <de><![CDATA[Zugewiesene Pfadsprachen einbeziehen]]></de>
+            <en><![CDATA[Include assigned Path-languages]]></en>
+        </locale>
+        <locale name="feed.settings.includeVhostPathLanguages.description">
+            <de><![CDATA[Nimmt die URLs aller Sprachen auf, die dem VHost der gewählten Root-Sprache als Sprachpfad (z. B. /en/) zugewiesen sind. Sprachen mit eigener Domain werden nicht einbezogen.]]></de>
+            <en><![CDATA[Includes URLs for all languages assigned to the selected Root-language VHost as a language path (for example /en/). Languages with their own domain are excluded.]]></en>
+        </locale>
 
         <locale name="feed.Atom.title">
             <de><![CDATA[CMS-Seiten (Atom)]]></de>
