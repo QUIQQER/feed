@@ -14,6 +14,10 @@
             <de><![CDATA[Maximale Einträge]]></de>
             <en><![CDATA[Maximum entries]]></en>
         </locale>
+        <locale name="quiqqer.feed.feedlimitDescription">
+            <de><![CDATA[Maximale Anzahl der Einträge im Feed. 0 bedeutet unbegrenzt.]]></de>
+            <en><![CDATA[Maximum number of entries in the feed. 0 means unlimited.]]></en>
+        </locale>
         <locale name="quiqqer.feed.directOutput">
             <de><![CDATA[Feed bei Anfrage erstellen]]></de>
             <en><![CDATA[Create feed on request]]></en>

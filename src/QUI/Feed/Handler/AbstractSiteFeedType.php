@@ -27,6 +27,7 @@ use function in_array;
 use function is_numeric;
 use function is_string;
 use function ltrim;
+use function max;
 use function preg_match;
 use function rtrim;
 use function strtotime;
@@ -445,13 +446,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
      */
     protected function getFeedLimit(FeedInstance $Feed): int
     {
-        $feedLimit = (int)$Feed->getAttribute('feedlimit');
-
-        if (empty($feedLimit)) {
-            return 10;
-        }
-
-        return $feedLimit;
+        return max(0, (int)$Feed->getAttribute('feedlimit'));
     }
 
     /**
@@ -651,8 +646,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             $strCount++;
         }
 
-        // Create the part of the query for the site ids of child sites.
-        // `id` IN ( id1, id2, id3, id4 )
+        // Add the recursively collected child site IDs to the filter.
         if (!empty($childPageIDs)) {
             $childPageIDs = array_map('intval', array_unique($childPageIDs));
             $whereParts[] = Doctrine::quoteIdentifier('id') . ' IN (:childPageIds)';
@@ -753,8 +747,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             $strCount++;
         }
 
-        // Create the part of the query for the site ids of child sites.
-        // `id` IN ( id1, id2, id3, id4 )
+        // Add the recursively collected child site IDs to the filter.
         if (!empty($childPageIDs)) {
             $childPageIDs = array_map('intval', array_unique($childPageIDs));
             $whereParts[] = Doctrine::quoteIdentifier('id') . ' IN (:childPageIds)';

@@ -123,8 +123,16 @@
                 <span class="field-container-item">
                     {{locales.feedlimit}}
                 </span>
-                <input type="number" name="feedlimit" class="field-container-field"/>
+                <input type="number"
+                       name="feedlimit"
+                       min="0"
+                       class="field-container-field"
+                       aria-describedby="qui-feed-feedlimit-description"
+                />
             </label>
+            <div id="qui-feed-feedlimit-description" class="field-container-item-desc">
+                {{locales.feedlimitDescription}}
+            </div>
         </td>
     </tr>
     <tr>

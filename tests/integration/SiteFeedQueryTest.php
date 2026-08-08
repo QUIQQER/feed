@@ -92,6 +92,19 @@ class SiteFeedQueryTest extends TestCase
         self::assertSame([], $this->FeedType->getSelectedIds($this->Feed, []));
     }
 
+    public function testZeroFeedLimitReturnsAllSites(): void
+    {
+        $this->feedAttributes['feedSearch'] = '';
+        $this->feedAttributes['feedlimit'] = 0;
+
+        for ($id = 6; $id <= 13; $id++) {
+            $date = sprintf('2026-06-%02d', $id);
+            $this->insertSite($id, true, false, 'article', 'additional site', $date, $date);
+        }
+
+        self::assertCount(11, $this->FeedType->getAllIds($this->Feed));
+    }
+
     private function createSiteTable(): void
     {
         $Schema = new Schema();
