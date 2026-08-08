@@ -87,6 +87,7 @@ define('package/quiqqer/feed/bin/Feed', [
                         feedDescription            : QUILocale.get(lg, 'quiqqer.feed.feedDescription'),
                         project                    : QUILocale.get('quiqqer/system', 'project'),
                         feedlimit                  : QUILocale.get(lg, 'quiqqer.feed.feedlimit'),
+                        feedlimitDescription       : QUILocale.get(lg, 'quiqqer.feed.feedlimitDescription'),
                         directOutput               : QUILocale.get(lg, 'quiqqer.feed.directOutput'),
                         directOutputDescription    : QUILocale.get(lg, 'quiqqer.feed.directOutputDescription'),
                         feedSites                  : QUILocale.get(lg, 'quiqqer.feed.feedSites'),
