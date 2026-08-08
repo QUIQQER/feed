@@ -646,8 +646,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             $strCount++;
         }
 
-        // Create the part of the query for the site ids of child sites.
-        // `id` IN ( id1, id2, id3, id4 )
+        // Add the recursively collected child site IDs to the filter.
         if (!empty($childPageIDs)) {
             $childPageIDs = array_map('intval', array_unique($childPageIDs));
             $whereParts[] = Doctrine::quoteIdentifier('id') . ' IN (:childPageIds)';
@@ -748,8 +747,7 @@ abstract class AbstractSiteFeedType extends AbstractFeedType
             $strCount++;
         }
 
-        // Create the part of the query for the site ids of child sites.
-        // `id` IN ( id1, id2, id3, id4 )
+        // Add the recursively collected child site IDs to the filter.
         if (!empty($childPageIDs)) {
             $childPageIDs = array_map('intval', array_unique($childPageIDs));
             $whereParts[] = Doctrine::quoteIdentifier('id') . ' IN (:childPageIds)';
