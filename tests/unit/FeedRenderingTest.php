@@ -9,6 +9,7 @@ use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Handler\CSV\Channel;
 use QUI\Feed\Handler\CSV\Feed as CsvFeed;
 use QUI\Feed\Handler\GoogleSitemap\Feed as SitemapFeed;
+use QUI\Feed\Handler\RSS\Feed as RssFeed;
 use QUI\Feed\Utils\SimpleXML;
 use ReflectionMethod;
 
@@ -120,6 +121,25 @@ class FeedRenderingTest extends TestCase
         $Xml->value->addCData('A < B & C');
 
         self::assertStringContainsString('<![CDATA[A < B & C]]>', (string)$Xml->asXML());
+    }
+
+    public function testRssUsesAtomProtocolNamespace(): void
+    {
+        $Feed = new RssFeed();
+        $Channel = $Feed->createChannel();
+        $Channel->setAttribute('link', 'https://example.test/feed.xml');
+
+        $Xml = $Feed->getXML();
+        $xml = (string)$Xml->asXML();
+
+        self::assertStringContainsString(
+            'xmlns:atom="http://www.w3.org/2005/Atom"',
+            $xml
+        );
+        self::assertStringContainsString(
+            '<atom:link href="https://example.test/feed.xml" rel="self" type="application/rss+xml"/>',
+            $xml
+        );
     }
 
     public function testSitemapUsesProtocolNamespace(): void
