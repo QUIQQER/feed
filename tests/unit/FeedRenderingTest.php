@@ -9,6 +9,7 @@ use QUI\Feed\FeedItemCollection;
 use QUI\Feed\Handler\CSV\Channel;
 use QUI\Feed\Handler\CSV\Feed as CsvFeed;
 use QUI\Feed\Handler\GoogleSitemap\Feed as SitemapFeed;
+use QUI\Feed\Handler\RSS\Feed as RssFeed;
 use QUI\Feed\Utils\SimpleXML;
 use ReflectionMethod;
 
@@ -122,6 +123,42 @@ class FeedRenderingTest extends TestCase
         self::assertStringContainsString('<![CDATA[A < B & C]]>', (string)$Xml->asXML());
     }
 
+    public function testRssUsesAtomProtocolNamespace(): void
+    {
+        $Feed = new RssFeed();
+        $Channel = $Feed->createChannel();
+        $Channel->setAttribute('link', 'https://example.test/feed.xml');
+
+        $Xml = $Feed->getXML();
+        $xml = (string)$Xml->asXML();
+
+        self::assertStringContainsString(
+            'xmlns:atom="http://www.w3.org/2005/Atom"',
+            $xml
+        );
+        self::assertStringContainsString(
+            '<atom:link href="https://example.test/feed.xml" rel="self" type="application/rss+xml"/>',
+            $xml
+        );
+    }
+
+    public function testSitemapUsesProtocolNamespace(): void
+    {
+        $Feed = new SitemapFeed();
+        $Channel = $Feed->createChannel();
+        $Channel->createItem([
+            'link' => 'https://example.test/item',
+            'e_date' => 1_704_067_200
+        ]);
+
+        $xml = (string)$Feed->getXML()->asXML();
+
+        self::assertStringContainsString(
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+            $xml
+        );
+    }
+
     public function testSitemapIndexAddsPageSuffixBeforeXmlExtension(): void
     {
         $Feed = new SitemapFeed();
@@ -139,6 +176,10 @@ class FeedRenderingTest extends TestCase
 
         self::assertStringContainsString(
             '<loc>https://example.test/feed=12-1.xml</loc>',
+            $xml
+        );
+        self::assertStringContainsString(
+            '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
             $xml
         );
         self::assertStringNotContainsString('feed=12.xml-1.xml', $xml);
