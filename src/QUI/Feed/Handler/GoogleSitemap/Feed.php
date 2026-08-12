@@ -225,7 +225,7 @@ class Feed extends AbstractSiteFeedType
     {
         $XML = new SimpleXML(
             '<?xml version="1.0" encoding="UTF-8"?>
-            <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" />'
+            <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" />'
         );
 
         foreach ($items as $Item) {
@@ -252,7 +252,7 @@ class Feed extends AbstractSiteFeedType
     protected function createSitemapIndexXML(int $pages, string $baseURL): SimpleXML
     {
         $XML = new SimpleXML(
-            '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" />'
+            '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" />'
         );
 
         for ($i = 1; $i <= $pages; $i++) {
