@@ -8,6 +8,24 @@
             <locale group="quiqqer/feed" var="package.description"/>
         </description>
 
+        <capabilities schemaVersion="1">
+            <capability id="content.feed-publishing">
+                <title>Content feed publishing</title>
+                <description>
+                    Creates and manages configurable RSS, Atom, and CSV feeds from QUIQQER content, with filtering,
+                    scheduled regeneration, website discovery links, feed listings, and extensible item collection.
+                </description>
+            </capability>
+
+            <capability id="seo.xml-sitemaps">
+                <title>XML sitemaps</title>
+                <description>
+                    Generates paginated Google-compatible XML sitemaps for project pages and optional product URLs,
+                    including multilingual VHost paths and noindex filtering.
+                </description>
+            </capability>
+        </capabilities>
+
          <!--Hauptbild -->
         <image src="URL_OPT_DIR/quiqqer/feed/bin/images/Logo.jpg"/>
 
