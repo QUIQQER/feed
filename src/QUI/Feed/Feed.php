@@ -87,12 +87,6 @@ class Feed extends QUI\QDOM
             $Project = QUI::getProjectManager()::getStandard();
         }
 
-        if (!$Project) {
-            throw new QUI\Exception(
-                QUI::getLocale()->get('quiqqer/feed', 'exception.feed.project.not.found')
-            );
-        }
-
         $this->Project = $Project;
 
         // Build FeedType

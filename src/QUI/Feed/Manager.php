@@ -64,9 +64,6 @@ class Manager
         }
 
         $DefaultProject = QUI::getProjectManager()::getStandard();
-        if (!$DefaultProject) {
-            throw new QUI\Exception('Unable to determine default project.');
-        }
 
         $Connection = QUI::getDataBaseConnection();
         $Connection->insert(
