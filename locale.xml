@@ -3,168 +3,366 @@
 
     <groups name="quiqqer/feed" datatype="js">
         <locale name="feed.manager.title">
-            <de><![CDATA[Feed Manager]]></de>
+            <de><![CDATA[Feed-Manager]]></de>
             <en><![CDATA[Feed manager]]></en>
+            <es><![CDATA[Gestor de feeds]]></es>
+            <pt><![CDATA[Gestor de feeds]]></pt>
+            <fr><![CDATA[Gestionnaire de flux]]></fr>
+            <it><![CDATA[Gestore dei feed]]></it>
+            <pl><![CDATA[Menedżer kanałów]]></pl>
         </locale>
         <locale name="quiqqer.feed.feedtype">
             <de><![CDATA[Feed-Art]]></de>
             <en><![CDATA[Feed type]]></en>
+            <es><![CDATA[Tipo de feed]]></es>
+            <pt><![CDATA[Tipo de feed]]></pt>
+            <fr><![CDATA[Type de flux]]></fr>
+            <it><![CDATA[Tipo di feed]]></it>
+            <pl><![CDATA[Typ kanału]]></pl>
         </locale>
         <locale name="quiqqer.feed.feedlimit">
             <de><![CDATA[Maximale Einträge]]></de>
             <en><![CDATA[Maximum entries]]></en>
+            <es><![CDATA[Número máximo de entradas]]></es>
+            <pt><![CDATA[Número máximo de entradas]]></pt>
+            <fr><![CDATA[Nombre maximal d'entrées]]></fr>
+            <it><![CDATA[Numero massimo di voci]]></it>
+            <pl><![CDATA[Maksymalna liczba wpisów]]></pl>
         </locale>
         <locale name="quiqqer.feed.feedlimitDescription">
             <de><![CDATA[Maximale Anzahl der Einträge im Feed. 0 bedeutet unbegrenzt.]]></de>
             <en><![CDATA[Maximum number of entries in the feed. 0 means unlimited.]]></en>
+            <es><![CDATA[Número máximo de entradas del feed. 0 significa sin límite.]]></es>
+            <pt><![CDATA[Número máximo de entradas do feed. 0 significa sem limite.]]></pt>
+            <fr><![CDATA[Nombre maximal d'entrées dans le flux. 0 signifie sans limite.]]></fr>
+            <it><![CDATA[Numero massimo di voci nel feed. 0 significa senza limiti.]]></it>
+            <pl><![CDATA[Maksymalna liczba wpisów w kanale. 0 oznacza brak limitu.]]></pl>
         </locale>
         <locale name="quiqqer.feed.directOutput">
             <de><![CDATA[Feed bei Anfrage erstellen]]></de>
             <en><![CDATA[Create feed on request]]></en>
+            <es><![CDATA[Generar el feed al solicitarlo]]></es>
+            <pt><![CDATA[Gerar o feed quando é solicitado]]></pt>
+            <fr><![CDATA[Générer le flux à la demande]]></fr>
+            <it><![CDATA[Genera il feed su richiesta]]></it>
+            <pl><![CDATA[Generuj kanał na żądanie]]></pl>
         </locale>
         <locale name="quiqqer.feed.directOutputDescription">
             <de><![CDATA[Bei Anfrage des Feeds über die Feed URL soll der Feed erstellt werden, wenn er noch nicht erstellt wurde. Die Anfragezeit erhöht sich je nach Umfang des Feeds. Bei Feeds mit sehr vielen Einträgen (z.B. bei sehr vielen Seiten im System) sollte diese Option deaktiviert werden. Dann wird der Feed ausschließlich über den Cron "Feeds cachen" erstellt.]]></de>
-            <en><![CDATA[When requesting the feed via the feed URL, the feed should be created if it has not been created yet. The request time increases depending on the size of the feed. For feeds with a lot of entries (e.g. with a lot of Sites in the system) this option should be deactivated. Then the feed is created exclusively via the cron "Cache feeds".]]></en>
+            <en><![CDATA[When requesting the feed via the feed URL, the feed should be created if it has not been created yet. The request time increases depending on the size of the feed. For feeds with a lot of entries (e.g. with a lot of Pages in the system) this option should be deactivated. Then the feed is created exclusively via the cron "Cache feeds".]]></en>
+            <es><![CDATA[Genera el feed al acceder a su URL si todavía no se ha generado. El tiempo de respuesta aumenta según el tamaño del feed. Desactiva esta opción para feeds con muchas entradas, por ejemplo, si hay muchas páginas en el sistema. En ese caso, el feed se genera únicamente mediante la tarea cron «Guardar feeds en caché».]]></es>
+            <pt><![CDATA[Gera o feed ao aceder ao respetivo URL, caso ainda não tenha sido gerado. O tempo de resposta aumenta consoante o tamanho do feed. Desativa esta opção para feeds com muitas entradas, por exemplo, se existirem muitas páginas no sistema. Nesse caso, o feed é gerado apenas pela tarefa cron «Guardar feeds em cache».]]></pt>
+            <fr><![CDATA[Génère le flux lors de l'accès à son URL s'il n'a pas encore été généré. Le temps de réponse augmente selon la taille du flux. Désactivez cette option pour les flux comportant de nombreuses entrées, par exemple si le système contient beaucoup de pages. Le flux sera alors généré uniquement par la tâche cron « Mettre les flux en cache ».]]></fr>
+            <it><![CDATA[Genera il feed quando si accede al suo URL, se non è ancora stato generato. Il tempo di risposta aumenta in base alle dimensioni del feed. Disattiva questa opzione per feed con molte voci, ad esempio se il sistema contiene molte pagine. In tal caso, il feed viene generato solo dall'attività cron «Salva i feed nella cache».]]></it>
+            <pl><![CDATA[Generuje kanał po wywołaniu jego adresu URL, jeśli nie został jeszcze wygenerowany. Czas odpowiedzi rośnie wraz z rozmiarem kanału. Wyłącz tę opcję dla kanałów z wieloma wpisami, np. gdy system zawiera wiele stron. Wtedy kanał będzie generowany wyłącznie przez zadanie cron „Zapisz kanały w pamięci podręcznej”.]]></pl>
         </locale>
         <locale name="quiqqer.feed.feedName">
             <de><![CDATA[Name des Feeds]]></de>
             <en><![CDATA[Name of the feed]]></en>
+            <es><![CDATA[Nombre del feed]]></es>
+            <pt><![CDATA[Nome do feed]]></pt>
+            <fr><![CDATA[Nom du flux]]></fr>
+            <it><![CDATA[Nome del feed]]></it>
+            <pl><![CDATA[Nazwa kanału]]></pl>
         </locale>
         <locale name="quiqqer.feed.feedDescription">
             <de><![CDATA[Beschreibung des Feeds]]></de>
             <en><![CDATA[Description of the feed]]></en>
+            <es><![CDATA[Descripción del feed]]></es>
+            <pt><![CDATA[Descrição do feed]]></pt>
+            <fr><![CDATA[Description du flux]]></fr>
+            <it><![CDATA[Descrizione del feed]]></it>
+            <pl><![CDATA[Opis kanału]]></pl>
         </locale>
 
         <locale name="window.title.feed.create">
             <de><![CDATA[Neuen Feed anlegen]]></de>
             <en><![CDATA[Create a new feed]]></en>
+            <es><![CDATA[Crear un feed]]></es>
+            <pt><![CDATA[Criar um feed]]></pt>
+            <fr><![CDATA[Créer un flux]]></fr>
+            <it><![CDATA[Crea un feed]]></it>
+            <pl><![CDATA[Utwórz kanał]]></pl>
         </locale>
         <locale name="window.title.feed.edit">
             <de><![CDATA[Feed bearbeiten]]></de>
             <en><![CDATA[Edit the feed]]></en>
+            <es><![CDATA[Editar feed]]></es>
+            <pt><![CDATA[Editar feed]]></pt>
+            <fr><![CDATA[Modifier le flux]]></fr>
+            <it><![CDATA[Modifica feed]]></it>
+            <pl><![CDATA[Edytuj kanał]]></pl>
         </locale>
         <locale name="quiqqer.feed.feedSites">
             <de><![CDATA[Welche Seiten sollen im Feed enthalten sein?]]></de>
-            <en><![CDATA[Which Sites should be included in the feed?]]></en>
+            <en><![CDATA[Which Pages should be included in the feed?]]></en>
+            <es><![CDATA[¿Qué páginas deben incluirse en el feed?]]></es>
+            <pt><![CDATA[Que páginas devem ser incluídas no feed?]]></pt>
+            <fr><![CDATA[Quelles pages faut-il inclure dans le flux ?]]></fr>
+            <it><![CDATA[Quali pagine devono essere incluse nel feed?]]></it>
+            <pl><![CDATA[Które strony mają być uwzględnione w kanale?]]></pl>
         </locale>
         <locale name="quiqqer.feed.split">
             <de><![CDATA[Soll der Feed ab einer bestimmten Größe aufgeteilt werden?]]></de>
             <en><![CDATA[Should the feed be split with more than x entries?]]></en>
+            <es><![CDATA[¿Dividir el feed al superar un determinado tamaño?]]></es>
+            <pt><![CDATA[Dividir o feed a partir de um determinado tamanho?]]></pt>
+            <fr><![CDATA[Diviser le flux au-delà d'une certaine taille ?]]></fr>
+            <it><![CDATA[Suddividere il feed oltre una certa dimensione?]]></it>
+            <pl><![CDATA[Dzielić kanał po przekroczeniu określonego rozmiaru?]]></pl>
         </locale>
         <locale name="quiqqer.feed.pageSize">
             <de><![CDATA[Seitengröße]]></de>
-            <en><![CDATA[Pagesize]]></en>
+            <en><![CDATA[Page size]]></en>
+            <es><![CDATA[Tamaño de página]]></es>
+            <pt><![CDATA[Tamanho da página]]></pt>
+            <fr><![CDATA[Taille de page]]></fr>
+            <it><![CDATA[Dimensione della pagina]]></it>
+            <pl><![CDATA[Rozmiar strony]]></pl>
         </locale>
         <locale name="quiqqer.feed.publish">
             <de><![CDATA[Soll der Feed auf der Website publiziert werden?]]></de>
             <en><![CDATA[Should the feed get published on the website?]]></en>
+            <es><![CDATA[¿Publicar el feed en el sitio web?]]></es>
+            <pt><![CDATA[Publicar o feed no sítio web?]]></pt>
+            <fr><![CDATA[Publier le flux sur le site web ?]]></fr>
+            <it><![CDATA[Pubblicare il feed sul sito web?]]></it>
+            <pl><![CDATA[Opublikować kanał w witrynie?]]></pl>
         </locale>
         <locale name="quiqqer.feed.publish.all">
             <de><![CDATA[Auf ALLEN Seiten in den Header integrieren]]></de>
             <en><![CDATA[Integrate the feed in the header of ALL pages]]></en>
+            <es><![CDATA[Incluir el feed en la cabecera de TODAS las páginas]]></es>
+            <pt><![CDATA[Incluir o feed no cabeçalho de TODAS as páginas]]></pt>
+            <fr><![CDATA[Intégrer le flux dans l'en-tête de TOUTES les pages]]></fr>
+            <it><![CDATA[Inserisci il feed nell'intestazione di TUTTE le pagine]]></it>
+            <pl><![CDATA[Dodaj kanał do nagłówka WSZYSTKICH stron]]></pl>
         </locale>
         <locale name="quiqqer.feed.image">
             <de><![CDATA[Bild]]></de>
             <en><![CDATA[Image]]></en>
+            <es><![CDATA[Imagen]]></es>
+            <pt><![CDATA[Imagem]]></pt>
+            <fr><![CDATA[Image]]></fr>
+            <it><![CDATA[Immagine]]></it>
+            <pl><![CDATA[Obraz]]></pl>
         </locale>
         <locale name="quiqqer.feed.button.subscribe">
             <de><![CDATA[Abonnieren]]></de>
             <en><![CDATA[Subscribe]]></en>
+            <es><![CDATA[Suscribirse]]></es>
+            <pt><![CDATA[Subscrever]]></pt>
+            <fr><![CDATA[S'abonner]]></fr>
+            <it><![CDATA[Iscriviti]]></it>
+            <pl><![CDATA[Subskrybuj]]></pl>
         </locale>
         <locale name="quiqqer.feed.publish.sites.placeholder">
-            <de>
-                <![CDATA[Wählen Sie die Seiten, auf welchen der Feed eingebunden werden soll. Wenn keine Seiten ausgewählt wurden, wird der Feed auf allen Seiten veröffentlicht.]]></de>
-            <en>
-                <![CDATA[Choose the pages, which will integrate the feed in their header tag. If no sites are selected, the feed will be integrated on every page.]]></en>
+            <de><![CDATA[Wählen Sie die Seiten, auf welchen der Feed eingebunden werden soll. Wenn keine Seiten ausgewählt wurden, wird der Feed auf allen Seiten veröffentlicht.]]></de>
+            <en><![CDATA[Choose the pages, which will integrate the feed in their header tag. If no pages are selected, the feed will be integrated on every page.]]></en>
+            <es><![CDATA[Selecciona las páginas en cuya cabecera se incluirá el feed. Si no seleccionas ninguna, se publicará en todas las páginas.]]></es>
+            <pt><![CDATA[Seleciona as páginas em cujo cabeçalho será incluído o feed. Se não selecionares nenhuma, será publicado em todas as páginas.]]></pt>
+            <fr><![CDATA[Sélectionnez les pages dont l'en-tête doit intégrer le flux. Si aucune page n'est sélectionnée, le flux sera publié sur toutes les pages.]]></fr>
+            <it><![CDATA[Seleziona le pagine nella cui intestazione inserire il feed. Se non selezioni alcuna pagina, il feed verrà pubblicato su tutte le pagine.]]></it>
+            <pl><![CDATA[Wybierz strony, w których nagłówku ma zostać umieszczony kanał. Jeśli nie wybierzesz żadnej, kanał zostanie opublikowany na wszystkich stronach.]]></pl>
         </locale>
         <locale name="quiqqer.feed.sites.placeholder">
             <de><![CDATA[Bitte wählen Sie die Seiten, welche im Feed aufgeführt werden sollen.]]></de>
             <en><![CDATA[Please select the pages which should be included in the feed.]]></en>
+            <es><![CDATA[Selecciona las páginas que deben incluirse en el feed.]]></es>
+            <pt><![CDATA[Seleciona as páginas a incluir no feed.]]></pt>
+            <fr><![CDATA[Sélectionnez les pages à inclure dans le flux.]]></fr>
+            <it><![CDATA[Seleziona le pagine da includere nel feed.]]></it>
+            <pl><![CDATA[Wybierz strony, które mają zostać uwzględnione w kanale.]]></pl>
         </locale>
         <locale name="quiqqer.feed.sites_exclude.placeholder">
             <de><![CDATA[Bitte wählen Sie die Seiten, welche explizit NICHT im Feed aufgeführt werden sollen.]]></de>
             <en><![CDATA[Please select the pages which should be explicitly EXCLUDED from the feed.]]></en>
+            <es><![CDATA[Selecciona las páginas que deben EXCLUIRSE del feed.]]></es>
+            <pt><![CDATA[Seleciona as páginas que devem ser EXCLUÍDAS do feed.]]></pt>
+            <fr><![CDATA[Sélectionnez les pages à EXCLURE du flux.]]></fr>
+            <it><![CDATA[Seleziona le pagine da ESCLUDERE dal feed.]]></it>
+            <pl><![CDATA[Wybierz strony, które mają zostać WYKLUCZONE z kanału.]]></pl>
         </locale>
         <locale name="quiqqer.feed.displayInHeader">
             <de><![CDATA[im Header]]></de>
             <en><![CDATA[in header]]></en>
+            <es><![CDATA[en la cabecera]]></es>
+            <pt><![CDATA[no cabeçalho]]></pt>
+            <fr><![CDATA[dans l'en-tête]]></fr>
+            <it><![CDATA[nell'intestazione]]></it>
+            <pl><![CDATA[w nagłówku]]></pl>
         </locale>
         <locale name="quiqqer.feed.publishSitesLabel">
             <de><![CDATA[Seiten, auf denen der Feed publiziert werden soll]]></de>
-            <en><![CDATA[Sites on which the feed should be published]]></en>
+            <en><![CDATA[Pages on which the feed should be published]]></en>
+            <es><![CDATA[Páginas en las que se publicará el feed]]></es>
+            <pt><![CDATA[Páginas onde o feed será publicado]]></pt>
+            <fr><![CDATA[Pages sur lesquelles publier le flux]]></fr>
+            <it><![CDATA[Pagine su cui pubblicare il feed]]></it>
+            <pl><![CDATA[Strony, na których ma być opublikowany kanał]]></pl>
         </locale>
         <locale name="quiqqer.feed.headerGeneralSettings">
             <de><![CDATA[Allgemeine Feed-Einstellungen]]></de>
             <en><![CDATA[General feed settings]]></en>
+            <es><![CDATA[Configuración general del feed]]></es>
+            <pt><![CDATA[Definições gerais do feed]]></pt>
+            <fr><![CDATA[Paramètres généraux du flux]]></fr>
+            <it><![CDATA[Impostazioni generali del feed]]></it>
+            <pl><![CDATA[Ogólne ustawienia kanału]]></pl>
         </locale>
         <locale name="quiqqer.feed.headerProjectSettings">
             <de><![CDATA[Projekt und Veröffentlichung]]></de>
             <en><![CDATA[Project and publishing]]></en>
+            <es><![CDATA[Proyecto y publicación]]></es>
+            <pt><![CDATA[Projeto e publicação]]></pt>
+            <fr><![CDATA[Projet et publication]]></fr>
+            <it><![CDATA[Progetto e pubblicazione]]></it>
+            <pl><![CDATA[Projekt i publikacja]]></pl>
         </locale>
         <locale name="quiqqer.feed.headerGenerationSettings">
             <de><![CDATA[Erzeugung und Cache]]></de>
             <en><![CDATA[Generation and cache]]></en>
+            <es><![CDATA[Generación y caché]]></es>
+            <pt><![CDATA[Geração e cache]]></pt>
+            <fr><![CDATA[Génération et cache]]></fr>
+            <it><![CDATA[Generazione e cache]]></it>
+            <pl><![CDATA[Generowanie i pamięć podręczna]]></pl>
         </locale>
         <locale name="quiqqer.feed.actions">
             <de><![CDATA[Aktionen]]></de>
             <en><![CDATA[Actions]]></en>
+            <es><![CDATA[Acciones]]></es>
+            <pt><![CDATA[Ações]]></pt>
+            <fr><![CDATA[Actions]]></fr>
+            <it><![CDATA[Azioni]]></it>
+            <pl><![CDATA[Działania]]></pl>
         </locale>
 
         <locale name="quiqqer.feed.action.download">
             <de><![CDATA[Hier klicken, um die Feed-Datei herunterzuladen]]></de>
             <en><![CDATA[Click here to download the feed file]]></en>
+            <es><![CDATA[Haz clic aquí para descargar el archivo del feed]]></es>
+            <pt><![CDATA[Clica aqui para descarregar o ficheiro do feed]]></pt>
+            <fr><![CDATA[Cliquez ici pour télécharger le fichier du flux]]></fr>
+            <it><![CDATA[Fai clic qui per scaricare il file del feed]]></it>
+            <pl><![CDATA[Kliknij tutaj, aby pobrać plik kanału]]></pl>
         </locale>
         <locale name="quiqqer.feed.action.recreate">
             <de><![CDATA[Hier klicken, um den Feed neu zu erstellen]]></de>
             <en><![CDATA[Click here to recreate the feed]]></en>
+            <es><![CDATA[Haz clic aquí para volver a generar el feed]]></es>
+            <pt><![CDATA[Clica aqui para gerar novamente o feed]]></pt>
+            <fr><![CDATA[Cliquez ici pour régénérer le flux]]></fr>
+            <it><![CDATA[Fai clic qui per rigenerare il feed]]></it>
+            <pl><![CDATA[Kliknij tutaj, aby ponownie wygenerować kanał]]></pl>
         </locale>
         <locale name="quiqqer.feed.action.delete.title">
             <de><![CDATA[Feed(s) löschen]]></de>
             <en><![CDATA[Delete feed(s)]]></en>
+            <es><![CDATA[Eliminar feeds]]></es>
+            <pt><![CDATA[Eliminar feeds]]></pt>
+            <fr><![CDATA[Supprimer des flux]]></fr>
+            <it><![CDATA[Elimina feed]]></it>
+            <pl><![CDATA[Usuń kanały]]></pl>
         </locale>
         <locale name="quiqqer.feed.action.delete.text">
             <de><![CDATA[Sollen folgende Feeds unwiderruflich gelöscht werden?]]></de>
             <en><![CDATA[Shall the following feeds be deleted permanently?]]></en>
+            <es><![CDATA[¿Quieres eliminar definitivamente los siguientes feeds?]]></es>
+            <pt><![CDATA[Queres eliminar definitivamente os seguintes feeds?]]></pt>
+            <fr><![CDATA[Voulez-vous supprimer définitivement les flux suivants ?]]></fr>
+            <it><![CDATA[Vuoi eliminare definitivamente i seguenti feed?]]></it>
+            <pl><![CDATA[Czy chcesz trwale usunąć poniższe kanały?]]></pl>
         </locale>
         <locale name="quiqqer.feed.prompot.not_downloadable.information">
             <de><![CDATA[Der Feed ist bisher noch nicht erzeugt und so eingestellt, dass er nur durch den Cron "Feeds cachen" erstellt werden kann. Bitte führe zunächst diesen Cron aus, um den Feed verfügbar zu machen.]]></de>
             <en><![CDATA[The feed has not been created yet and is set to be created only by the cron "Cache feeds". Please run this cron first to make the feed available.]]></en>
+            <es><![CDATA[El feed aún no se ha generado y está configurado para generarse solo mediante la tarea cron «Guardar feeds en caché». Ejecuta primero esa tarea para que el feed esté disponible.]]></es>
+            <pt><![CDATA[O feed ainda não foi gerado e está configurado para ser gerado apenas pela tarefa cron «Guardar feeds em cache». Executa primeiro essa tarefa para disponibilizar o feed.]]></pt>
+            <fr><![CDATA[Le flux n'a pas encore été généré et sa configuration prévoit une génération uniquement par la tâche cron « Mettre les flux en cache ». Exécutez d'abord cette tâche pour rendre le flux disponible.]]></fr>
+            <it><![CDATA[Il feed non è ancora stato generato ed è configurato per essere generato solo dall'attività cron «Salva i feed nella cache». Esegui prima questa attività per rendere disponibile il feed.]]></it>
+            <pl><![CDATA[Kanał nie został jeszcze wygenerowany i jest skonfigurowany do generowania wyłącznie przez zadanie cron „Zapisz kanały w pamięci podręcznej”. Najpierw uruchom to zadanie, aby udostępnić kanał.]]></pl>
         </locale>
         <locale name="quiqqer.feed.prompot.not_downloadable.title">
             <de><![CDATA[Feed noch nicht verfügbar]]></de>
             <en><![CDATA[Feed not yet available]]></en>
+            <es><![CDATA[El feed aún no está disponible]]></es>
+            <pt><![CDATA[O feed ainda não está disponível]]></pt>
+            <fr><![CDATA[Flux pas encore disponible]]></fr>
+            <it><![CDATA[Feed non ancora disponibile]]></it>
+            <pl><![CDATA[Kanał nie jest jeszcze dostępny]]></pl>
         </locale>
         <locale name="quiqqer.feed.prompot.not_downloadable.ok">
             <de><![CDATA[Ok]]></de>
             <en><![CDATA[Ok]]></en>
+            <es><![CDATA[Aceptar]]></es>
+            <pt><![CDATA[OK]]></pt>
+            <fr><![CDATA[OK]]></fr>
+            <it><![CDATA[OK]]></it>
+            <pl><![CDATA[OK]]></pl>
         </locale>
         <locale name="quiqqer.feed.prompot.not_downloadable.text">
             <de><![CDATA[Feed noch nicht verfügbar]]></de>
             <en><![CDATA[Feed not yet available]]></en>
+            <es><![CDATA[El feed aún no está disponible]]></es>
+            <pt><![CDATA[O feed ainda não está disponível]]></pt>
+            <fr><![CDATA[Flux pas encore disponible]]></fr>
+            <it><![CDATA[Feed non ancora disponibile]]></it>
+            <pl><![CDATA[Kanał nie jest jeszcze dostępny]]></pl>
         </locale>
         <locale name="quiqqer.feed.btn.create">
             <de><![CDATA[Neuer Feed]]></de>
             <en><![CDATA[New feed]]></en>
+            <es><![CDATA[Nuevo feed]]></es>
+            <pt><![CDATA[Novo feed]]></pt>
+            <fr><![CDATA[Nouveau flux]]></fr>
+            <it><![CDATA[Nuovo feed]]></it>
+            <pl><![CDATA[Nowy kanał]]></pl>
         </locale>
         <locale name="quiqqer.feed.btn.delete">
             <de><![CDATA[Markierte(n) Feed(s) löschen]]></de>
             <en><![CDATA[Delete selected feed(s)]]></en>
+            <es><![CDATA[Eliminar los feeds seleccionados]]></es>
+            <pt><![CDATA[Eliminar os feeds selecionados]]></pt>
+            <fr><![CDATA[Supprimer les flux sélectionnés]]></fr>
+            <it><![CDATA[Elimina i feed selezionati]]></it>
+            <pl><![CDATA[Usuń zaznaczone kanały]]></pl>
         </locale>
         <locale name="quiqqer.feed.dialog.recreate.title">
             <de><![CDATA[Feed neu erstellen]]></de>
             <en><![CDATA[Recreate feed]]></en>
+            <es><![CDATA[Volver a generar el feed]]></es>
+            <pt><![CDATA[Gerar novamente o feed]]></pt>
+            <fr><![CDATA[Régénérer le flux]]></fr>
+            <it><![CDATA[Rigenera il feed]]></it>
+            <pl><![CDATA[Wygeneruj kanał ponownie]]></pl>
         </locale>
         <locale name="quiqqer.feed.dialog.recreate.text">
             <de><![CDATA[Feed neu erstellen]]></de>
             <en><![CDATA[Recreate feed]]></en>
+            <es><![CDATA[Volver a generar el feed]]></es>
+            <pt><![CDATA[Gerar novamente o feed]]></pt>
+            <fr><![CDATA[Régénérer le flux]]></fr>
+            <it><![CDATA[Rigenera il feed]]></it>
+            <pl><![CDATA[Wygeneruj kanał ponownie]]></pl>
         </locale>
         <locale name="quiqqer.feed.dialog.recreate.information">
             <de><![CDATA[Soll Feed #[feedId] neu erstellt werden? Die im Cache befindlichen Feed-Daten werden gelöscht und der Feed bei der nächsten Anfrage oder per Cron neu erstellt.]]></de>
             <en><![CDATA[Should feed #[feedId] be recreated? The cached feed data is deleted and the feed is recreated on the next request or cronjob.]]></en>
+            <es><![CDATA[¿Quieres volver a generar el feed #[feedId]? Se eliminarán los datos almacenados en caché y el feed se generará de nuevo en la próxima solicitud o ejecución de la tarea cron.]]></es>
+            <pt><![CDATA[Queres gerar novamente o feed #[feedId]? Os dados em cache serão eliminados e o feed será gerado de novo no próximo pedido ou na próxima execução da tarefa cron.]]></pt>
+            <fr><![CDATA[Voulez-vous régénérer le flux #[feedId] ? Les données en cache seront supprimées et le flux sera régénéré à la prochaine requête ou exécution de la tâche cron.]]></fr>
+            <it><![CDATA[Vuoi rigenerare il feed #[feedId]? I dati nella cache verranno eliminati e il feed sarà rigenerato alla prossima richiesta o esecuzione dell'attività cron.]]></it>
+            <pl><![CDATA[Czy chcesz ponownie wygenerować kanał #[feedId]? Dane z pamięci podręcznej zostaną usunięte, a kanał zostanie wygenerowany przy kolejnym żądaniu lub uruchomieniu zadania cron.]]></pl>
         </locale>
         <locale name="quiqqer.feed.dialog.recreate.btn.confirm">
             <de><![CDATA[Feed neu erstellen]]></de>
             <en><![CDATA[Recreate feed]]></en>
+            <es><![CDATA[Volver a generar el feed]]></es>
+            <pt><![CDATA[Gerar novamente o feed]]></pt>
+            <fr><![CDATA[Régénérer le flux]]></fr>
+            <it><![CDATA[Rigenera il feed]]></it>
+            <pl><![CDATA[Wygeneruj kanał ponownie]]></pl>
         </locale>
     </groups>
 
@@ -172,135 +370,295 @@
         <locale name="exception.feed.not.found">
             <de><![CDATA[Feed wurde nicht gefunden]]></de>
             <en><![CDATA[Feed not found]]></en>
+            <es><![CDATA[No se ha encontrado el feed]]></es>
+            <pt><![CDATA[O feed não foi encontrado]]></pt>
+            <fr><![CDATA[Flux introuvable]]></fr>
+            <it><![CDATA[Feed non trovato]]></it>
+            <pl><![CDATA[Nie znaleziono kanału]]></pl>
         </locale>
         <locale name="exception.ajax.setFeed.missing_type">
             <de><![CDATA[Es wurde kein Feed-Typ angegeben.]]></de>
             <en><![CDATA[No feed type has been specified.]]></en>
+            <es><![CDATA[No se ha indicado ningún tipo de feed.]]></es>
+            <pt><![CDATA[Não foi indicado nenhum tipo de feed.]]></pt>
+            <fr><![CDATA[Aucun type de flux n'a été indiqué.]]></fr>
+            <it><![CDATA[Non è stato specificato alcun tipo di feed.]]></it>
+            <pl><![CDATA[Nie podano typu kanału.]]></pl>
         </locale>
         <locale name="exception.Manager.type_does_not_exist">
             <de><![CDATA[Ein Feed-Typ mit der ID "[typeId]" konnte nicht gefunden werden. Bitte stellen Sie sicher, dass das passende Feed-Paket installiert ist.]]></de>
             <en><![CDATA[A feed type with ID "[typeId]" could not be found. Please make sure that the matching feed package is installed.]]></en>
+            <es><![CDATA[No se ha encontrado ningún tipo de feed con el ID «[typeId]». Comprueba que está instalado el paquete de feeds correspondiente.]]></es>
+            <pt><![CDATA[Não foi encontrado nenhum tipo de feed com o ID «[typeId]». Verifica se o pacote de feeds correspondente está instalado.]]></pt>
+            <fr><![CDATA[Aucun type de flux portant l'ID « [typeId] » n'a été trouvé. Vérifiez que le paquet de flux correspondant est installé.]]></fr>
+            <it><![CDATA[Non è stato trovato un tipo di feed con ID «[typeId]». Verifica che sia installato il pacchetto di feed corrispondente.]]></it>
+            <pl><![CDATA[Nie znaleziono typu kanału o identyfikatorze „[typeId]”. Upewnij się, że odpowiedni pakiet kanałów jest zainstalowany.]]></pl>
         </locale>
 
         <locale name="feed.RSS.title">
             <de><![CDATA[CMS-Seiten (RSS)]]></de>
-            <en><![CDATA[CMS sites (RSS)]]></en>
+            <en><![CDATA[CMS pages (RSS)]]></en>
+            <es><![CDATA[Páginas del CMS (RSS)]]></es>
+            <pt><![CDATA[Páginas do CMS (RSS)]]></pt>
+            <fr><![CDATA[Pages du CMS (RSS)]]></fr>
+            <it><![CDATA[Pagine del CMS (RSS)]]></it>
+            <pl><![CDATA[Strony CMS (RSS)]]></pl>
         </locale>
         <locale name="feed.RSS.description">
             <de><![CDATA[Veröffentlichung von QUIQQER CMS-Seiten als RSS-Feed.]]></de>
-            <en><![CDATA[Publication of QUIQQER CMS sites as RSS feed.]]></en>
+            <en><![CDATA[Publication of QUIQQER CMS pages as RSS feed.]]></en>
+            <es><![CDATA[Publica páginas del CMS de QUIQQER como feed RSS.]]></es>
+            <pt><![CDATA[Publica páginas do CMS do QUIQQER como feed RSS.]]></pt>
+            <fr><![CDATA[Publie les pages du CMS QUIQQER sous forme de flux RSS.]]></fr>
+            <it><![CDATA[Pubblica le pagine del CMS QUIQQER come feed RSS.]]></it>
+            <pl><![CDATA[Publikuje strony CMS QUIQQER jako kanał RSS.]]></pl>
         </locale>
         <locale name="feed.RSS.settings.title">
             <de><![CDATA[Feed-Inhalte]]></de>
             <en><![CDATA[Feed content]]></en>
+            <es><![CDATA[Contenido del feed]]></es>
+            <pt><![CDATA[Conteúdo do feed]]></pt>
+            <fr><![CDATA[Contenu du flux]]></fr>
+            <it><![CDATA[Contenuto del feed]]></it>
+            <pl><![CDATA[Zawartość kanału]]></pl>
         </locale>
         <locale name="feed.settings.feedsites.title">
             <de><![CDATA[Enthaltene Seiten]]></de>
-            <en><![CDATA[Included sites]]></en>
+            <en><![CDATA[Included pages]]></en>
+            <es><![CDATA[Páginas incluidas]]></es>
+            <pt><![CDATA[Páginas incluídas]]></pt>
+            <fr><![CDATA[Pages incluses]]></fr>
+            <it><![CDATA[Pagine incluse]]></it>
+            <pl><![CDATA[Uwzględnione strony]]></pl>
         </locale>
         <locale name="feed.settings.feedsites.description" html="true">
             <de><![CDATA[Leer lassen, um alle aktiven Seiten des Projekts zu übernehmen. Sobald hier Seiten, Kindseiten oder Seitentypen ausgewählt sind, werden nur diese Inhalte verwendet.]]></de>
-            <en><![CDATA[Leave empty to include all active project sites. As soon as sites, child sites or site types are selected, only these entries are used.]]></en>
+            <en><![CDATA[Leave empty to include all active project pages. As soon as pages, child pages or page types are selected, only these entries are used.]]></en>
+            <es><![CDATA[Deja el campo vacío para incluir todas las páginas activas del proyecto. Si seleccionas páginas, subpáginas o tipos de página, solo se incluirán esos contenidos.]]></es>
+            <pt><![CDATA[Deixa em branco para incluir todas as páginas ativas do projeto. Se selecionares páginas, subpáginas ou tipos de página, só serão incluídos esses conteúdos.]]></pt>
+            <fr><![CDATA[Laissez ce champ vide pour inclure toutes les pages actives du projet. Dès que des pages, des sous-pages ou des types de pages sont sélectionnés, seuls ces contenus sont inclus.]]></fr>
+            <it><![CDATA[Lascia vuoto per includere tutte le pagine attive del progetto. Se selezioni pagine, sottopagine o tipi di pagina, verranno inclusi solo quei contenuti.]]></it>
+            <pl><![CDATA[Pozostaw puste, aby uwzględnić wszystkie aktywne strony projektu. Jeśli wybierzesz strony, podstrony lub typy stron, uwzględnione zostaną tylko te treści.]]></pl>
         </locale>
         <locale name="feed.settings.feedsites_exclude.title" html="true">
             <de><![CDATA[Ausgeschlossene Seiten]]></de>
-            <en><![CDATA[Excluded sites]]></en>
+            <en><![CDATA[Excluded pages]]></en>
+            <es><![CDATA[Páginas excluidas]]></es>
+            <pt><![CDATA[Páginas excluídas]]></pt>
+            <fr><![CDATA[Pages exclues]]></fr>
+            <it><![CDATA[Pagine escluse]]></it>
+            <pl><![CDATA[Wykluczone strony]]></pl>
         </locale>
         <locale name="feed.settings.feedsites_exclude.description" html="true">
             <de><![CDATA[Diese Seiten, Kindseiten oder Seitentypen werden nach Auswahl und Suche aus dem Feed entfernt.]]></de>
-            <en><![CDATA[These sites, child sites or site types are removed from the feed after selection and search filters are applied.]]></en>
+            <en><![CDATA[These pages, child pages or page types are removed from the feed after selection and search filters are applied.]]></en>
+            <es><![CDATA[Estas páginas, subpáginas o tipos de página se eliminan del feed después de aplicar la selección y los filtros de búsqueda.]]></es>
+            <pt><![CDATA[Estas páginas, subpáginas ou tipos de página são removidos do feed depois de aplicar a seleção e os filtros de pesquisa.]]></pt>
+            <fr><![CDATA[Ces pages, sous-pages ou types de pages sont retirés du flux après l'application de la sélection et des filtres de recherche.]]></fr>
+            <it><![CDATA[Queste pagine, sottopagine o tipi di pagina vengono rimossi dal feed dopo l'applicazione della selezione e dei filtri di ricerca.]]></it>
+            <pl><![CDATA[Te strony, podstrony lub typy stron są usuwane z kanału po zastosowaniu wyboru i filtrów wyszukiwania.]]></pl>
         </locale>
         <locale name="feed.settings.feedSearch.title">
             <de><![CDATA[Seiten filtern nach]]></de>
-            <en><![CDATA[Filter sites by]]></en>
+            <en><![CDATA[Filter pages by]]></en>
+            <es><![CDATA[Filtrar páginas por]]></es>
+            <pt><![CDATA[Filtrar páginas por]]></pt>
+            <fr><![CDATA[Filtrer les pages par]]></fr>
+            <it><![CDATA[Filtra le pagine per]]></it>
+            <pl><![CDATA[Filtruj strony według]]></pl>
         </locale>
         <locale name="feed.settings.feedSearch.description">
             <de><![CDATA[Optionaler Suchbegriff. Wenn gesetzt, werden nur Seiten übernommen, die den Begriff in den ausgewählten Feldern enthalten.]]></de>
-            <en><![CDATA[Optional search term. If set, only sites containing the term in the selected fields are included.]]></en>
+            <en><![CDATA[Optional search term. If set, only pages containing the term in the selected fields are included.]]></en>
+            <es><![CDATA[Término de búsqueda opcional. Si se indica, solo se incluyen las páginas que lo contengan en los campos seleccionados.]]></es>
+            <pt><![CDATA[Termo de pesquisa opcional. Se for indicado, só são incluídas as páginas que o contenham nos campos selecionados.]]></pt>
+            <fr><![CDATA[Terme de recherche facultatif. S'il est renseigné, seules les pages contenant ce terme dans les champs sélectionnés sont incluses.]]></fr>
+            <it><![CDATA[Termine di ricerca facoltativo. Se specificato, vengono incluse solo le pagine che lo contengono nei campi selezionati.]]></it>
+            <pl><![CDATA[Opcjonalne hasło wyszukiwania. Jeśli je podasz, uwzględnione zostaną tylko strony zawierające je w wybranych polach.]]></pl>
         </locale>
         <locale name="feed.settings.feedSearchFieldTitle.title">
             <de><![CDATA[Im Titel suchen]]></de>
             <en><![CDATA[Search in title]]></en>
+            <es><![CDATA[Buscar en el título]]></es>
+            <pt><![CDATA[Pesquisar no título]]></pt>
+            <fr><![CDATA[Rechercher dans le titre]]></fr>
+            <it><![CDATA[Cerca nel titolo]]></it>
+            <pl><![CDATA[Szukaj w tytule]]></pl>
         </locale>
         <locale name="feed.settings.feedSearchFieldShort.title">
             <de><![CDATA[In der Kurzbeschreibung suchen]]></de>
             <en><![CDATA[Search in short description]]></en>
+            <es><![CDATA[Buscar en la descripción breve]]></es>
+            <pt><![CDATA[Pesquisar na descrição breve]]></pt>
+            <fr><![CDATA[Rechercher dans la description courte]]></fr>
+            <it><![CDATA[Cerca nella descrizione breve]]></it>
+            <pl><![CDATA[Szukaj w krótkim opisie]]></pl>
         </locale>
         <locale name="feed.settings.feedSearchFieldContent.title">
             <de><![CDATA[Im Inhalt suchen]]></de>
             <en><![CDATA[Search in content]]></en>
+            <es><![CDATA[Buscar en el contenido]]></es>
+            <pt><![CDATA[Pesquisar no conteúdo]]></pt>
+            <fr><![CDATA[Rechercher dans le contenu]]></fr>
+            <it><![CDATA[Cerca nel contenuto]]></it>
+            <pl><![CDATA[Szukaj w treści]]></pl>
         </locale>
         <locale name="feed.settings.feedOrder.title">
             <de><![CDATA[Sortierung]]></de>
             <en><![CDATA[Sorting]]></en>
+            <es><![CDATA[Ordenación]]></es>
+            <pt><![CDATA[Ordenação]]></pt>
+            <fr><![CDATA[Tri]]></fr>
+            <it><![CDATA[Ordinamento]]></it>
+            <pl><![CDATA[Sortowanie]]></pl>
         </locale>
         <locale name="feed.settings.feedOrder.releaseDate">
             <de><![CDATA[Nach Veröffentlichungsdatum]]></de>
             <en><![CDATA[By release date]]></en>
+            <es><![CDATA[Por fecha de publicación]]></es>
+            <pt><![CDATA[Por data de publicação]]></pt>
+            <fr><![CDATA[Par date de publication]]></fr>
+            <it><![CDATA[Per data di pubblicazione]]></it>
+            <pl><![CDATA[Według daty publikacji]]></pl>
         </locale>
         <locale name="feed.settings.feedOrder.editDate">
             <de><![CDATA[Nach Änderungsdatum]]></de>
             <en><![CDATA[By edit date]]></en>
+            <es><![CDATA[Por fecha de modificación]]></es>
+            <pt><![CDATA[Por data de alteração]]></pt>
+            <fr><![CDATA[Par date de modification]]></fr>
+            <it><![CDATA[Per data di modifica]]></it>
+            <pl><![CDATA[Według daty modyfikacji]]></pl>
         </locale>
         <locale name="feed.settings.includeProductUrls.title">
             <de><![CDATA[Produkt-URLs inkludieren]]></de>
             <en><![CDATA[Include product URLs]]></en>
+            <es><![CDATA[Incluir URL de productos]]></es>
+            <pt><![CDATA[Incluir URLs de produtos]]></pt>
+            <fr><![CDATA[Inclure les URL des produits]]></fr>
+            <it><![CDATA[Includi gli URL dei prodotti]]></it>
+            <pl><![CDATA[Uwzględnij adresy URL produktów]]></pl>
         </locale>
         <locale name="feed.settings.includeProductUrls.description">
             <de><![CDATA[URLs von Produkten sollen in die Sitemap eingefügt werden. Setzt voraus, dass das ecoyn Produkte-Modul installiert ist.]]></de>
             <en><![CDATA[URLs of products are to be inserted into the sitemap. Requires that the ecoyn products module is installed.]]></en>
+            <es><![CDATA[Incluye las URL de los productos en el mapa del sitio. Requiere tener instalado el módulo de productos de ecoyn.]]></es>
+            <pt><![CDATA[Inclui os URLs dos produtos no mapa do sítio. Requer que o módulo de produtos do ecoyn esteja instalado.]]></pt>
+            <fr><![CDATA[Inclut les URL des produits dans le sitemap. Nécessite l'installation du module de produits ecoyn.]]></fr>
+            <it><![CDATA[Include gli URL dei prodotti nella sitemap. Richiede l'installazione del modulo prodotti di ecoyn.]]></it>
+            <pl><![CDATA[Dodaje adresy URL produktów do mapy witryny. Wymaga zainstalowanego modułu produktów ecoyn.]]></pl>
         </locale>
         <locale name="feed.settings.includeVhostPathLanguages.title">
             <de><![CDATA[Zugewiesene Pfadsprachen einbeziehen]]></de>
             <en><![CDATA[Include assigned Path-languages]]></en>
+            <es><![CDATA[Incluir idiomas asignados mediante rutas]]></es>
+            <pt><![CDATA[Incluir idiomas atribuídos através de caminhos]]></pt>
+            <fr><![CDATA[Inclure les langues attribuées par chemin]]></fr>
+            <it><![CDATA[Includi le lingue assegnate tramite percorso]]></it>
+            <pl><![CDATA[Uwzględnij języki przypisane jako ścieżki]]></pl>
         </locale>
         <locale name="feed.settings.includeVhostPathLanguages.description">
             <de><![CDATA[Nimmt die URLs aller Sprachen auf, die dem VHost der gewählten Root-Sprache als Sprachpfad (z. B. /en/) zugewiesen sind. Sprachen mit eigener Domain werden nicht einbezogen.]]></de>
             <en><![CDATA[Includes URLs for all languages assigned to the selected Root-language VHost as a language path (for example /en/). Languages with their own domain are excluded.]]></en>
+            <es><![CDATA[Incluye las URL de todos los idiomas asignados al VHost del idioma raíz seleccionado mediante una ruta de idioma (por ejemplo, /en/). No se incluyen los idiomas con dominio propio.]]></es>
+            <pt><![CDATA[Inclui os URLs de todos os idiomas atribuídos ao VHost do idioma raiz selecionado através de um caminho de idioma (por exemplo, /en/). Os idiomas com domínio próprio não são incluídos.]]></pt>
+            <fr><![CDATA[Inclut les URL de toutes les langues attribuées au VHost de la langue racine sélectionnée sous forme de chemin de langue (par exemple /en/). Les langues ayant leur propre domaine sont exclues.]]></fr>
+            <it><![CDATA[Include gli URL di tutte le lingue assegnate al VHost della lingua radice selezionata tramite un percorso di lingua (ad esempio /en/). Le lingue con un dominio proprio sono escluse.]]></it>
+            <pl><![CDATA[Uwzględnia adresy URL wszystkich języków przypisanych do VHost wybranego języka głównego jako ścieżki językowe (np. /en/). Języki z własną domeną są pomijane.]]></pl>
         </locale>
 
         <locale name="feed.Atom.title">
             <de><![CDATA[CMS-Seiten (Atom)]]></de>
-            <en><![CDATA[CMS sites (Atom)]]></en>
+            <en><![CDATA[CMS pages (Atom)]]></en>
+            <es><![CDATA[Páginas del CMS (Atom)]]></es>
+            <pt><![CDATA[Páginas do CMS (Atom)]]></pt>
+            <fr><![CDATA[Pages du CMS (Atom)]]></fr>
+            <it><![CDATA[Pagine del CMS (Atom)]]></it>
+            <pl><![CDATA[Strony CMS (Atom)]]></pl>
         </locale>
         <locale name="feed.Atom.description">
             <de><![CDATA[Veröffentlichung von QUIQQER CMS-Seiten als Atom-Feed.]]></de>
-            <en><![CDATA[Publication of QUIQQER CMS sites as Atom feed.]]></en>
+            <en><![CDATA[Publication of QUIQQER CMS pages as Atom feed.]]></en>
+            <es><![CDATA[Publica páginas del CMS de QUIQQER como feed Atom.]]></es>
+            <pt><![CDATA[Publica páginas do CMS do QUIQQER como feed Atom.]]></pt>
+            <fr><![CDATA[Publie les pages du CMS QUIQQER sous forme de flux Atom.]]></fr>
+            <it><![CDATA[Pubblica le pagine del CMS QUIQQER come feed Atom.]]></it>
+            <pl><![CDATA[Publikuje strony CMS QUIQQER jako kanał Atom.]]></pl>
         </locale>
         <locale name="feed.Atom.settings.title">
             <de><![CDATA[Feed-Inhalte]]></de>
             <en><![CDATA[Feed content]]></en>
+            <es><![CDATA[Contenido del feed]]></es>
+            <pt><![CDATA[Conteúdo do feed]]></pt>
+            <fr><![CDATA[Contenu du flux]]></fr>
+            <it><![CDATA[Contenuto del feed]]></it>
+            <pl><![CDATA[Zawartość kanału]]></pl>
         </locale>
 
         <locale name="feed.CSV.title">
             <de><![CDATA[CMS-Seiten (CSV)]]></de>
-            <en><![CDATA[CMS sites (CSV)]]></en>
+            <en><![CDATA[CMS pages (CSV)]]></en>
+            <es><![CDATA[Páginas del CMS (CSV)]]></es>
+            <pt><![CDATA[Páginas do CMS (CSV)]]></pt>
+            <fr><![CDATA[Pages du CMS (CSV)]]></fr>
+            <it><![CDATA[Pagine del CMS (CSV)]]></it>
+            <pl><![CDATA[Strony CMS (CSV)]]></pl>
         </locale>
         <locale name="feed.CSV.description">
             <de><![CDATA[Veröffentlichung von QUIQQER CMS-Seiten als CSV-Feed.]]></de>
-            <en><![CDATA[Publication of QUIQQER CMS sites as CSV feed.]]></en>
+            <en><![CDATA[Publication of QUIQQER CMS pages as CSV feed.]]></en>
+            <es><![CDATA[Publica páginas del CMS de QUIQQER como feed CSV.]]></es>
+            <pt><![CDATA[Publica páginas do CMS do QUIQQER como feed CSV.]]></pt>
+            <fr><![CDATA[Publie les pages du CMS QUIQQER sous forme de flux CSV.]]></fr>
+            <it><![CDATA[Pubblica le pagine del CMS QUIQQER come feed CSV.]]></it>
+            <pl><![CDATA[Publikuje strony CMS QUIQQER jako kanał CSV.]]></pl>
         </locale>
         <locale name="feed.CSV.settings.title">
             <de><![CDATA[Feed-Inhalte]]></de>
             <en><![CDATA[Feed content]]></en>
+            <es><![CDATA[Contenido del feed]]></es>
+            <pt><![CDATA[Conteúdo do feed]]></pt>
+            <fr><![CDATA[Contenu du flux]]></fr>
+            <it><![CDATA[Contenuto del feed]]></it>
+            <pl><![CDATA[Zawartość kanału]]></pl>
         </locale>
 
         <locale name="feed.GoogleSitemap.title">
             <de><![CDATA[Google Sitemap]]></de>
             <en><![CDATA[Google Sitemap]]></en>
+            <es><![CDATA[Google Sitemap]]></es>
+            <pt><![CDATA[Google Sitemap]]></pt>
+            <fr><![CDATA[Google Sitemap]]></fr>
+            <it><![CDATA[Google Sitemap]]></it>
+            <pl><![CDATA[Google Sitemap]]></pl>
         </locale>
         <locale name="feed.GoogleSitemap.description">
             <de><![CDATA[Google Sitemap Feed der QUIQQER Seiten-Hierarchie.]]></de>
             <en><![CDATA[Google Sitemap feed of the QUIQQER site hierarchy.]]></en>
+            <es><![CDATA[Feed Google Sitemap de la jerarquía de páginas de QUIQQER.]]></es>
+            <pt><![CDATA[Feed Google Sitemap da hierarquia de páginas do QUIQQER.]]></pt>
+            <fr><![CDATA[Flux Google Sitemap de la hiérarchie des pages QUIQQER.]]></fr>
+            <it><![CDATA[Feed Google Sitemap della gerarchia delle pagine QUIQQER.]]></it>
+            <pl><![CDATA[Kanał Google Sitemap hierarchii stron QUIQQER.]]></pl>
         </locale>
         <locale name="feed.GoogleSitemap.settings.title">
             <de><![CDATA[Feed-Inhalte]]></de>
             <en><![CDATA[Feed content]]></en>
+            <es><![CDATA[Contenido del feed]]></es>
+            <pt><![CDATA[Conteúdo do feed]]></pt>
+            <fr><![CDATA[Contenu du flux]]></fr>
+            <it><![CDATA[Contenuto del feed]]></it>
+            <pl><![CDATA[Zawartość kanału]]></pl>
         </locale>
 
         <locale name="message.ajax.backend.recreate.success">
             <de><![CDATA[Cache-Daten von Feed #[feedId] wurden erfolgreich gelöscht.]]></de>
             <en><![CDATA[Cache data of feed #[feedId] were deleted successfully.]]></en>
+            <es><![CDATA[Se han eliminado los datos en caché del feed #[feedId].]]></es>
+            <pt><![CDATA[Os dados em cache do feed #[feedId] foram eliminados.]]></pt>
+            <fr><![CDATA[Les données en cache du flux #[feedId] ont été supprimées.]]></fr>
+            <it><![CDATA[I dati nella cache del feed #[feedId] sono stati eliminati.]]></it>
+            <pl><![CDATA[Dane kanału #[feedId] zostały usunięte z pamięci podręcznej.]]></pl>
         </locale>
     </groups>
 
@@ -308,38 +666,56 @@
         <locale name="package.title">
             <de><![CDATA[QUIQQER Feeds]]></de>
             <en><![CDATA[QUIQQER Feeds]]></en>
+            <es><![CDATA[QUIQQER Feeds]]></es>
+            <pt><![CDATA[QUIQQER Feeds]]></pt>
+            <fr><![CDATA[QUIQQER Flux]]></fr>
+            <it><![CDATA[QUIQQER Feed]]></it>
+            <pl><![CDATA[QUIQQER Kanały]]></pl>
         </locale>
         <locale name="package.description">
-            <de>
-                <![CDATA[Legen Sie verschiedene Feeds für Ihr Projekt und oder Webseite an. Das Feed Modul ermöglicht es Ihnen verschiedene Feed Arten und mehrere Feeds zu verwalten, wie zum Beispiel RSS, Atom oder eine Google Sitemap.]]></de>
-            <en>
-                <![CDATA[Create different feeds for your project and / or website. The Feed Modul allows you to manage different types of feeds and multiple feeds, such as RSS, Atom, or Google Sitemap]]></en>
+            <de><![CDATA[Legen Sie verschiedene Feeds für Ihr Projekt und/oder Ihre Website an. Das Feed-Modul ermöglicht es Ihnen, mehrere Feeds verschiedener Arten zu verwalten, zum Beispiel RSS, Atom oder Google Sitemap.]]></de>
+            <en><![CDATA[Create different feeds for your project and/or website. The Feed module allows you to manage multiple feeds of different types, such as RSS, Atom or Google Sitemap.]]></en>
+            <es><![CDATA[Crea distintos feeds para tu proyecto o sitio web. El módulo permite gestionar varios feeds de distintos tipos, como RSS, Atom o Google Sitemap.]]></es>
+            <pt><![CDATA[Cria diferentes feeds para o teu projeto ou sítio web. O módulo permite gerir vários feeds de diferentes tipos, como RSS, Atom ou Google Sitemap.]]></pt>
+            <fr><![CDATA[Créez différents flux pour votre projet ou votre site web. Ce module permet de gérer plusieurs flux de différents types, tels que RSS, Atom ou Google Sitemap.]]></fr>
+            <it><![CDATA[Crea diversi feed per il tuo progetto o sito web. Il modulo consente di gestire più feed di vari tipi, come RSS, Atom o Google Sitemap.]]></it>
+            <pl><![CDATA[Twórz różne kanały dla projektu lub witryny. Moduł umożliwia zarządzanie wieloma kanałami różnych typów, takimi jak RSS, Atom i Google Sitemap.]]></pl>
         </locale>
         <locale name="permission.quiqqer.feed._header">
             <de><![CDATA[Feeds]]></de>
             <en><![CDATA[Feeds]]></en>
+            <es><![CDATA[Feeds]]></es>
+            <pt><![CDATA[Feeds]]></pt>
+            <fr><![CDATA[Flux]]></fr>
+            <it><![CDATA[Feed]]></it>
+            <pl><![CDATA[Kanały]]></pl>
         </locale>
         <locale name="permission.quiqqer.feed.mcp">
             <de><![CDATA[Darf Feeds per MCP verwalten.]]></de>
             <en><![CDATA[Can manage feeds via MCP.]]></en>
+            <es><![CDATA[Puede gestionar feeds mediante MCP.]]></es>
+            <pt><![CDATA[Pode gerir feeds através de MCP.]]></pt>
+            <fr><![CDATA[Peut gérer les flux via MCP.]]></fr>
+            <it><![CDATA[Può gestire i feed tramite MCP.]]></it>
+            <pl><![CDATA[Może zarządzać kanałami przez MCP.]]></pl>
         </locale>
         <locale name="package.description.long">
-            <de><![CDATA[Liefert eine Verwaltung fon Feeds für Ihre Website. (RSS,Atom & Google Sitemap)
+            <de><![CDATA[Liefert eine Verwaltung von Feeds für Ihre Website. (RSS, Atom & Google Sitemap)
 
-Unterstütze Features:
-* Feed Verwaltung: Anlegen, Löschen und Bearbeiten
-* RSS Feed
-* Atom Feed
+Unterstützte Features:
+* Feed-Verwaltung: Anlegen, Löschen und Bearbeiten
+* RSS-Feed
+* Atom-Feed
 * Google Sitemap
 * Anlegen mehrerer Feeds mit Bild, Name und Beschreibung
-* Auswahl der enthaltenden Seiten anhand mehrer Filter
-* Anzeigen der erstellten Feeds auf ihrer Website
-* Integrieren ausgewählter Feeds in das <header>-Tag ihrer website
+* Auswahl der enthaltenen Seiten anhand mehrerer Filter
+* Anzeigen der erstellten Feeds auf Ihrer Website
+* Integrieren ausgewählter Feeds in das <header>-Tag Ihrer Website
 
-Legen Sie im Handumdrehen einen RSS Feed für ihren Content an oder erstellen Sie zur leichten Indexierung ihrer Website eine Sitemap für Google und co.
-Dieses Plugin ermöglicht es kinderleicht Feeds zu konfigurieren, damit ihre Besucher immer auf dem Laufenden sind.
+Legen Sie im Handumdrehen einen RSS-Feed für Ihren Content an oder erstellen Sie zur leichten Indexierung Ihrer Website eine Sitemap für Google und Co.
+Dieses Plugin ermöglicht es, kinderleicht Feeds zu konfigurieren, damit Ihre Besucher immer auf dem Laufenden sind.
 ]]></de>
-            <en><![CDATA[Provides a management for feeds (RSS,Atom & Google Sitemaps)
+            <en><![CDATA[Manage feeds for your website (RSS, Atom & Google Sitemaps)
 Supported Features:
 * Feed management: Create, edit and delete
 * RSS Feed
@@ -350,122 +726,313 @@ Supported Features:
 * Display your feeds on your website
 * Integrate your feeds in the <header>-tag of your website
 ]]></en>
+            <es><![CDATA[Gestiona los feeds de tu sitio web (RSS, Atom y Google Sitemap).
+Funciones disponibles:
+* Gestión de feeds: crear, editar y eliminar
+* Feed RSS
+* Feed Atom
+* Google Sitemap
+* Creación de varios feeds con nombre, descripción e imagen
+* Selección de las páginas incluidas mediante varios filtros
+* Visualización de los feeds en tu sitio web
+* Integración de feeds seleccionados en la etiqueta <header> de tu sitio web
+
+Crea rápidamente un feed RSS para tu contenido o un mapa del sitio para facilitar su indexación por Google y otros buscadores. Configura los feeds fácilmente para mantener informados a tus visitantes.]]></es>
+            <pt><![CDATA[Gere os feeds do teu sítio web (RSS, Atom e Google Sitemap).
+Funcionalidades disponíveis:
+* Gestão de feeds: criar, editar e eliminar
+* Feed RSS
+* Feed Atom
+* Google Sitemap
+* Criação de vários feeds com nome, descrição e imagem
+* Seleção das páginas incluídas através de vários filtros
+* Apresentação dos feeds no teu sítio web
+* Integração de feeds selecionados na etiqueta <header> do teu sítio web
+
+Cria rapidamente um feed RSS para os teus conteúdos ou um mapa do sítio para facilitar a indexação pelo Google e outros motores de pesquisa. Configura os feeds facilmente para manter os visitantes informados.]]></pt>
+            <fr><![CDATA[Gérez les flux de votre site web (RSS, Atom et Google Sitemap).
+Fonctionnalités disponibles :
+* Gestion des flux : création, modification et suppression
+* Flux RSS
+* Flux Atom
+* Google Sitemap
+* Création de plusieurs flux avec nom, description et image
+* Sélection des pages incluses à l'aide de plusieurs filtres
+* Affichage des flux sur votre site web
+* Intégration des flux sélectionnés dans la balise <header> de votre site web
+
+Créez rapidement un flux RSS pour votre contenu ou un sitemap pour faciliter l'indexation de votre site par Google et d'autres moteurs de recherche. Configurez facilement les flux pour tenir vos visiteurs informés.]]></fr>
+            <it><![CDATA[Gestisci i feed del tuo sito web (RSS, Atom e Google Sitemap).
+Funzionalità disponibili:
+* Gestione dei feed: creazione, modifica ed eliminazione
+* Feed RSS
+* Feed Atom
+* Google Sitemap
+* Creazione di più feed con nome, descrizione e immagine
+* Selezione delle pagine incluse tramite diversi filtri
+* Visualizzazione dei feed sul tuo sito web
+* Integrazione dei feed selezionati nel tag <header> del tuo sito web
+
+Crea rapidamente un feed RSS per i tuoi contenuti o una sitemap per facilitare l'indicizzazione del sito da parte di Google e altri motori di ricerca. Configura facilmente i feed per tenere aggiornati i visitatori.]]></it>
+            <pl><![CDATA[Zarządzaj kanałami witryny (RSS, Atom i Google Sitemap).
+Dostępne funkcje:
+* Zarządzanie kanałami: tworzenie, edycja i usuwanie
+* Kanał RSS
+* Kanał Atom
+* Google Sitemap
+* Tworzenie wielu kanałów z nazwą, opisem i obrazem
+* Wybór uwzględnianych stron za pomocą różnych filtrów
+* Wyświetlanie kanałów w witrynie
+* Dodawanie wybranych kanałów do znacznika <header> witryny
+
+Szybko utwórz kanał RSS dla swoich treści lub mapę witryny ułatwiającą indeksowanie przez Google i inne wyszukiwarki. W prosty sposób skonfiguruj kanały, aby odwiedzający byli na bieżąco.]]></pl>
         </locale>
         <locale name="admin.types.feed.list">
             <de><![CDATA[Feedliste]]></de>
-            <en><![CDATA[Feedlist]]></en>
+            <en><![CDATA[Feed list]]></en>
+            <es><![CDATA[Lista de feeds]]></es>
+            <pt><![CDATA[Lista de feeds]]></pt>
+            <fr><![CDATA[Liste des flux]]></fr>
+            <it><![CDATA[Elenco dei feed]]></it>
+            <pl><![CDATA[Lista kanałów]]></pl>
         </locale>
 
         <locale name="brick.feedlist.title">
-            <de><![CDATA[Feed Liste]]></de>
-            <en><![CDATA[Feedlist]]></en>
+            <de><![CDATA[Feedliste]]></de>
+            <en><![CDATA[Feed list]]></en>
+            <es><![CDATA[Lista de feeds]]></es>
+            <pt><![CDATA[Lista de feeds]]></pt>
+            <fr><![CDATA[Liste des flux]]></fr>
+            <it><![CDATA[Elenco dei feed]]></it>
+            <pl><![CDATA[Lista kanałów]]></pl>
         </locale>
         <locale name="brick.feedlist.desc">
             <de><![CDATA[Eine Liste mit den vorhandenen Feeds]]></de>
             <en><![CDATA[A list with the configured feeds]]></en>
+            <es><![CDATA[Lista de los feeds configurados]]></es>
+            <pt><![CDATA[Lista dos feeds configurados]]></pt>
+            <fr><![CDATA[Liste des flux configurés]]></fr>
+            <it><![CDATA[Elenco dei feed configurati]]></it>
+            <pl><![CDATA[Lista skonfigurowanych kanałów]]></pl>
         </locale>
         <locale name="brick.feedbar.title">
-            <de><![CDATA[Feed Leiste]]></de>
-            <en><![CDATA[Feedbar]]></en>
+            <de><![CDATA[Feedleiste]]></de>
+            <en><![CDATA[Feed bar]]></en>
+            <es><![CDATA[Barra de feeds]]></es>
+            <pt><![CDATA[Barra de feeds]]></pt>
+            <fr><![CDATA[Barre de flux]]></fr>
+            <it><![CDATA[Barra dei feed]]></it>
+            <pl><![CDATA[Pasek kanałów]]></pl>
         </locale>
         <locale name="brick.feedbar.desc">
             <de><![CDATA[Leiste mit Icons der vorhandenen Feeds]]></de>
             <en><![CDATA[A bar with icons of the configured feeds]]></en>
+            <es><![CDATA[Barra con los iconos de los feeds configurados]]></es>
+            <pt><![CDATA[Barra com os ícones dos feeds configurados]]></pt>
+            <fr><![CDATA[Barre contenant les icônes des flux configurés]]></fr>
+            <it><![CDATA[Barra con le icone dei feed configurati]]></it>
+            <pl><![CDATA[Pasek z ikonami skonfigurowanych kanałów]]></pl>
         </locale>
         <locale name="feedlist.setting.newwinwdow">
             <de><![CDATA[Links in neuem Fenster öffnen?]]></de>
             <en><![CDATA[Open links in new window?]]></en>
+            <es><![CDATA[¿Abrir los enlaces en una ventana nueva?]]></es>
+            <pt><![CDATA[Abrir as ligações numa nova janela?]]></pt>
+            <fr><![CDATA[Ouvrir les liens dans une nouvelle fenêtre ?]]></fr>
+            <it><![CDATA[Aprire i link in una nuova finestra?]]></it>
+            <pl><![CDATA[Otwierać linki w nowym oknie?]]></pl>
         </locale>
         <locale name="feedlist.setting.limit">
             <de><![CDATA[Maximale Einträge]]></de>
             <en><![CDATA[Limit number of entries to]]></en>
+            <es><![CDATA[Número máximo de entradas]]></es>
+            <pt><![CDATA[Número máximo de entradas]]></pt>
+            <fr><![CDATA[Nombre maximal d'entrées]]></fr>
+            <it><![CDATA[Numero massimo di voci]]></it>
+            <pl><![CDATA[Maksymalna liczba wpisów]]></pl>
         </locale>
         <locale name="feedlist.setting.layout">
             <de><![CDATA[Layout]]></de>
             <en><![CDATA[Layout]]></en>
+            <es><![CDATA[Diseño]]></es>
+            <pt><![CDATA[Disposição]]></pt>
+            <fr><![CDATA[Mise en page]]></fr>
+            <it><![CDATA[Layout]]></it>
+            <pl><![CDATA[Układ]]></pl>
         </locale>
         <locale name="feedlist.setting.layout.list">
             <de><![CDATA[Liste]]></de>
             <en><![CDATA[List]]></en>
+            <es><![CDATA[Lista]]></es>
+            <pt><![CDATA[Lista]]></pt>
+            <fr><![CDATA[Liste]]></fr>
+            <it><![CDATA[Elenco]]></it>
+            <pl><![CDATA[Lista]]></pl>
         </locale>
         <locale name="feedlist.setting.layout.icons">
             <de><![CDATA[Icons]]></de>
             <en><![CDATA[Icons]]></en>
+            <es><![CDATA[Iconos]]></es>
+            <pt><![CDATA[Ícones]]></pt>
+            <fr><![CDATA[Icônes]]></fr>
+            <it><![CDATA[Icone]]></it>
+            <pl><![CDATA[Ikony]]></pl>
         </locale>
         <locale name="cron.feeds.build.name">
             <de><![CDATA[Feeds cachen]]></de>
             <en><![CDATA[Cache feeds]]></en>
+            <es><![CDATA[Guardar feeds en caché]]></es>
+            <pt><![CDATA[Guardar feeds em cache]]></pt>
+            <fr><![CDATA[Mettre les flux en cache]]></fr>
+            <it><![CDATA[Salva i feed nella cache]]></it>
+            <pl><![CDATA[Zapisz kanały w pamięci podręcznej]]></pl>
         </locale>
         <locale name="cron.feeds.build.desc">
             <de><![CDATA[Erzeugt alle Feeds, um sie in den Cache zu speichern]]></de>
             <en><![CDATA[Generates all feeds and saves them into the cache]]></en>
+            <es><![CDATA[Genera todos los feeds y los guarda en caché]]></es>
+            <pt><![CDATA[Gera todos os feeds e guarda-os em cache]]></pt>
+            <fr><![CDATA[Génère tous les flux et les enregistre en cache]]></fr>
+            <it><![CDATA[Genera tutti i feed e li salva nella cache]]></it>
+            <pl><![CDATA[Generuje wszystkie kanały i zapisuje je w pamięci podręcznej]]></pl>
         </locale>
 
         <locale name="settings.images.title">
             <de><![CDATA[Bilder]]></de>
             <en><![CDATA[Images]]></en>
+            <es><![CDATA[Imágenes]]></es>
+            <pt><![CDATA[Imagens]]></pt>
+            <fr><![CDATA[Images]]></fr>
+            <it><![CDATA[Immagini]]></it>
+            <pl><![CDATA[Obrazy]]></pl>
         </locale>
         <locale name="settings.images.maxsize.title">
             <de><![CDATA[Max. Größe]]></de>
             <en><![CDATA[Max. size]]></en>
+            <es><![CDATA[Tamaño máximo]]></es>
+            <pt><![CDATA[Tamanho máximo]]></pt>
+            <fr><![CDATA[Dimensions maximales]]></fr>
+            <it><![CDATA[Dimensioni massime]]></it>
+            <pl><![CDATA[Maksymalny rozmiar]]></pl>
         </locale>
         <locale name="settings.images.maxsize.desc">
             <de><![CDATA[Die maximale Ausdehnung von Bildern im Feed.]]></de>
             <en><![CDATA[The maximum dimensions of images within the feed.]]></en>
+            <es><![CDATA[Dimensiones máximas de las imágenes del feed.]]></es>
+            <pt><![CDATA[Dimensões máximas das imagens no feed.]]></pt>
+            <fr><![CDATA[Dimensions maximales des images dans le flux.]]></fr>
+            <it><![CDATA[Dimensioni massime delle immagini nel feed.]]></it>
+            <pl><![CDATA[Maksymalne wymiary obrazów w kanale.]]></pl>
         </locale>
         <locale name="settings.feed.title">
             <de><![CDATA[Feed]]></de>
             <en><![CDATA[Feed]]></en>
+            <es><![CDATA[Feed]]></es>
+            <pt><![CDATA[Feed]]></pt>
+            <fr><![CDATA[Flux]]></fr>
+            <it><![CDATA[Feed]]></it>
+            <pl><![CDATA[Kanał]]></pl>
         </locale>
         <locale name="settings.feeds.title">
             <de><![CDATA[Feeds]]></de>
             <en><![CDATA[Feeds]]></en>
+            <es><![CDATA[Feeds]]></es>
+            <pt><![CDATA[Feeds]]></pt>
+            <fr><![CDATA[Flux]]></fr>
+            <it><![CDATA[Feed]]></it>
+            <pl><![CDATA[Kanały]]></pl>
         </locale>
         <locale name="settings.feeds.common.title">
             <de><![CDATA[Allgemein]]></de>
             <en><![CDATA[Common]]></en>
+            <es><![CDATA[General]]></es>
+            <pt><![CDATA[Geral]]></pt>
+            <fr><![CDATA[Général]]></fr>
+            <it><![CDATA[Generale]]></it>
+            <pl><![CDATA[Ogólne]]></pl>
         </locale>
         <locale name="settings.feeds.common.user.title">
-            <de><![CDATA[Author: Benutzer]]></de>
+            <de><![CDATA[Autor: Benutzer]]></de>
             <en><![CDATA[Author: User]]></en>
+            <es><![CDATA[Autor: usuario]]></es>
+            <pt><![CDATA[Autor: utilizador]]></pt>
+            <fr><![CDATA[Auteur : utilisateur]]></fr>
+            <it><![CDATA[Autore: utente]]></it>
+            <pl><![CDATA[Autor: użytkownik]]></pl>
         </locale>
         <locale name="settings.feeds.common.user.desc">
-            <de>
-                <![CDATA[Bestimmt ob der Benutzer, der die Seite erstellt als Auzhor verwendet werden soll oder der Standard Author]]></de>
-            <en><![CDATA[Defines if the creating user or the default author should be displayd as author.]]></en>
+            <de><![CDATA[Bestimmt, ob der Benutzer, der die Seite erstellt hat, oder der Standardautor als Autor angezeigt wird.]]></de>
+            <en><![CDATA[Defines whether the user who created the page or the default author is displayed as the author.]]></en>
+            <es><![CDATA[Determina si se muestra como autor al usuario que creó la página o al autor predeterminado.]]></es>
+            <pt><![CDATA[Define se é apresentado como autor o utilizador que criou a página ou o autor predefinido.]]></pt>
+            <fr><![CDATA[Détermine si l'auteur affiché est l'utilisateur qui a créé la page ou l'auteur par défaut.]]></fr>
+            <it><![CDATA[Determina se mostrare come autore l'utente che ha creato la pagina o l'autore predefinito.]]></it>
+            <pl><![CDATA[Określa, czy jako autor ma być wyświetlany użytkownik, który utworzył stronę, czy autor domyślny.]]></pl>
         </locale>
         <locale name="settings.feeds.common.user.option.custom">
-            <de><![CDATA[Benutzerdefinierter Author]]></de>
+            <de><![CDATA[Benutzerdefinierter Autor]]></de>
             <en><![CDATA[Custom author]]></en>
+            <es><![CDATA[Autor personalizado]]></es>
+            <pt><![CDATA[Autor personalizado]]></pt>
+            <fr><![CDATA[Auteur personnalisé]]></fr>
+            <it><![CDATA[Autore personalizzato]]></it>
+            <pl><![CDATA[Autor niestandardowy]]></pl>
         </locale>
         <locale name="settings.feeds.common.user.option.create">
-            <de><![CDATA[Erstellender user]]></de>
+            <de><![CDATA[Erstellender Benutzer]]></de>
             <en><![CDATA[Creating user]]></en>
+            <es><![CDATA[Usuario que creó la página]]></es>
+            <pt><![CDATA[Utilizador que criou a página]]></pt>
+            <fr><![CDATA[Utilisateur ayant créé la page]]></fr>
+            <it><![CDATA[Utente che ha creato la pagina]]></it>
+            <pl><![CDATA[Użytkownik, który utworzył stronę]]></pl>
         </locale>
         <locale name="settings.feeds.common.author.title">
-            <de><![CDATA[Standard Author]]></de>
+            <de><![CDATA[Standardautor]]></de>
             <en><![CDATA[Default author]]></en>
+            <es><![CDATA[Autor predeterminado]]></es>
+            <pt><![CDATA[Autor predefinido]]></pt>
+            <fr><![CDATA[Auteur par défaut]]></fr>
+            <it><![CDATA[Autore predefinito]]></it>
+            <pl><![CDATA[Autor domyślny]]></pl>
         </locale>
         <locale name="settings.feeds.common.author.desc">
-            <de>
-                <![CDATA[Dieser Wert wird als Author verwendet, falls kein Author anhand des Benutzers ermittelt werden konnte.]]></de>
-            <en><![CDATA[This value will be used as author if no author could be detected by user.]]></en>
+            <de><![CDATA[Dieser Wert wird als Autor verwendet, falls kein Autor anhand des Benutzers ermittelt werden konnte.]]></de>
+            <en><![CDATA[This value is used as the author if no author can be determined from the user.]]></en>
+            <es><![CDATA[Este valor se utiliza como autor si no se puede determinar uno a partir del usuario.]]></es>
+            <pt><![CDATA[Este valor é usado como autor se não for possível determinar um a partir do utilizador.]]></pt>
+            <fr><![CDATA[Cette valeur est utilisée comme auteur si aucun auteur ne peut être déterminé à partir de l'utilisateur.]]></fr>
+            <it><![CDATA[Questo valore viene usato come autore se non è possibile determinarne uno dall'utente.]]></it>
+            <pl><![CDATA[Ta wartość jest używana jako autor, jeśli nie można ustalić autora na podstawie użytkownika.]]></pl>
         </locale>
 
         <locale name="settings.feeds.rss.title">
-            <de><![CDATA[RSS Einstellungen]]></de>
+            <de><![CDATA[RSS-Einstellungen]]></de>
             <en><![CDATA[RSS Settings]]></en>
+            <es><![CDATA[Configuración de RSS]]></es>
+            <pt><![CDATA[Definições de RSS]]></pt>
+            <fr><![CDATA[Paramètres RSS]]></fr>
+            <it><![CDATA[Impostazioni RSS]]></it>
+            <pl><![CDATA[Ustawienia RSS]]></pl>
         </locale>
 
         <locale name="settings.feeds.rss.http.title">
             <de><![CDATA[HTTP erzwingen]]></de>
-            <en><![CDATA[Force http]]></en>
+            <en><![CDATA[Force HTTP]]></en>
+            <es><![CDATA[Forzar HTTP]]></es>
+            <pt><![CDATA[Forçar HTTP]]></pt>
+            <fr><![CDATA[Forcer HTTP]]></fr>
+            <it><![CDATA[Forza HTTP]]></it>
+            <pl><![CDATA[Wymuś HTTP]]></pl>
         </locale>
         <locale name="settings.feeds.rss.http.desc">
-            <de>
-                <![CDATA[Erzwingt alle Links das http:// Protokoll zu verwenden. Gemäß Spezifikation sind https:// Links nicht vorgesehen und Validatoren können bei Ihrer Verwendung Warnungen ausgeben. Die meisten Reader können jedoch Problemlos mit https:// Links umgehen.]]></de>
-            <en>
-                <![CDATA[Forces all links to use the http protokoll. According to the rss specification https links are not valid. Therefore some validators may throw an error while most readers can handle https links without problems.]]></en>
+            <de><![CDATA[Erzwingt die Verwendung des Protokolls http:// für alle Links. Gemäß Spezifikation sind https://-Links nicht vorgesehen und Validatoren können bei ihrer Verwendung Warnungen ausgeben. Die meisten Reader können jedoch problemlos mit https://-Links umgehen.]]></de>
+            <en><![CDATA[Forces all links to use the HTTP protocol. According to the RSS specification, HTTPS links are not valid. Some validators may therefore report an error, although most readers can handle HTTPS links without problems.]]></en>
+            <es><![CDATA[Obliga a todos los enlaces a usar el protocolo http://. Según la especificación RSS, los enlaces https:// no están previstos y algunos validadores pueden mostrar advertencias. Sin embargo, la mayoría de los lectores los admite sin problemas.]]></es>
+            <pt><![CDATA[Obriga todas as ligações a usar o protocolo http://. Segundo a especificação RSS, as ligações https:// não estão previstas e alguns validadores podem apresentar avisos. No entanto, a maioria dos leitores aceita-as sem problemas.]]></pt>
+            <fr><![CDATA[Force tous les liens à utiliser le protocole http://. Selon la spécification RSS, les liens https:// ne sont pas prévus et certains validateurs peuvent émettre des avertissements. La plupart des lecteurs les gèrent toutefois sans problème.]]></fr>
+            <it><![CDATA[Impone a tutti i link di usare il protocollo http://. Secondo la specifica RSS, i link https:// non sono previsti e alcuni validatori possono mostrare avvisi. La maggior parte dei lettori li gestisce comunque senza problemi.]]></it>
+            <pl><![CDATA[Wymusza używanie protokołu http:// we wszystkich linkach. Zgodnie ze specyfikacją RSS linki https:// nie są przewidziane i niektóre walidatory mogą wyświetlać ostrzeżenia. Większość czytników obsługuje je jednak bez problemu.]]></pl>
         </locale>
     </groups>
 
