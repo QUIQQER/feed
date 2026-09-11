@@ -90,7 +90,7 @@ define('package/quiqqer/feed/bin/Manager', [
 
             this.$Grid = new Grid(Container, {
                 columnModel          : [{
-                    header   : QUILocale.get('quiqqer/system', 'id'),
+                    header   : QUILocale.get('quiqqer/core', 'id'),
                     dataIndex: 'id',
                     dataType : 'string',
                     width    : 40
@@ -105,12 +105,12 @@ define('package/quiqqer/feed/bin/Manager', [
                     dataType : 'string',
                     width    : 200
                 }, {
-                    header   : QUILocale.get('quiqqer/system', 'project'),
+                    header   : QUILocale.get('quiqqer/core', 'project'),
                     dataIndex: 'project',
                     dataType : 'string',
                     width    : 120
                 }, {
-                    header   : QUILocale.get('quiqqer/system', 'language'),
+                    header   : QUILocale.get('quiqqer/core', 'language'),
                     dataIndex: 'lang',
                     dataType : 'string',
                     width    : 80
