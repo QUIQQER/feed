@@ -2,6 +2,15 @@
 <locales>
 
     <groups name="quiqqer/feed" datatype="js">
+        <locale name="quiqqer.feed.project.missing">
+            <de><![CDATA[Projekt nicht vorhanden]]></de>
+            <en><![CDATA[Project not found]]></en>
+            <es><![CDATA[Proyecto no encontrado]]></es>
+            <pt><![CDATA[Projeto não encontrado]]></pt>
+            <fr><![CDATA[Projet introuvable]]></fr>
+            <it><![CDATA[Progetto non trovato]]></it>
+            <pl><![CDATA[Projekt nie istnieje]]></pl>
+        </locale>
         <locale name="feed.manager.title">
             <de><![CDATA[Feed-Manager]]></de>
             <en><![CDATA[Feed manager]]></en>

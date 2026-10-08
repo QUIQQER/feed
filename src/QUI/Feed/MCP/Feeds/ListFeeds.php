@@ -39,9 +39,10 @@ class ListFeeds extends AbstractTool
                             continue;
                         }
 
-                        $feeds[] = self::parseFeed(
-                            $Manager->getFeed((int)$feedRow['id'])
-                        );
+                        $Feed = $Manager->getFeedForList((int)$feedRow['id']);
+                        $feeds[] = $Feed
+                            ? self::parseFeed($Feed)
+                            : self::parseOrphanedFeed($feedRow);
                     }
 
                     return [

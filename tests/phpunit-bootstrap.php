@@ -9,3 +9,10 @@ if (!defined('QUIQQER_AJAX')) {
 }
 
 require_once __DIR__ . '/../../../../bootstrap.php';
+
+// MCP is optional; keep the feed tool tests runnable in a minimal installation.
+require_once __DIR__ . '/stubs/Mcp/Server/Builder.php';
+require_once __DIR__ . '/stubs/Mcp/Schema/Result/CallToolResult.php';
+require_once __DIR__ . '/stubs/QUI/AI/MCP/Server.php';
+require_once __DIR__ . '/stubs/QUI/AI/MCP/ToolHelper.php';
+require_once __DIR__ . '/stubs/QUI/MCP/ToolInterface.php';
