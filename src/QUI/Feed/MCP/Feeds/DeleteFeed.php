@@ -33,7 +33,6 @@ class DeleteFeed extends AbstractTool
                             continue;
                         }
 
-                        $Manager->getFeed($feedId);
                         $Manager->deleteFeed($feedId);
                         $deleted[] = $feedId;
                     }

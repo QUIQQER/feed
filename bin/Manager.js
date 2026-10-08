@@ -147,6 +147,11 @@ define('package/quiqqer/feed/bin/Manager', [
 
                     Parent.set('html', '');
 
+                    if (rowData.missingProject) {
+                        Parent.textContent = QUILocale.get(lg, 'quiqqer.feed.project.missing');
+                        return;
+                    }
+
                     var url = rowData.url;
 
                     new Element('div', {
@@ -165,9 +170,11 @@ define('package/quiqqer/feed/bin/Manager', [
                 },
 
                 onDblClick: function (event) {
-                    self.openFeedWindow(
-                        self.$Grid.getDataByRow(event.row).id
-                    );
+                    const row = self.$Grid.getDataByRow(event.row);
+
+                    if (!row.missingProject) {
+                        self.openFeedWindow(row.id);
+                    }
                 },
 
                 onClick: function () {
@@ -192,9 +199,13 @@ define('package/quiqqer/feed/bin/Manager', [
                 result.data = result.data.map((Row) => {
                     Row.pageSize = parseInt(Row.pageSize) ? Row.pageSize : '-';
 
-                    Row.actions = new Element('div', {
-                        'class': 'quiqqer-feeds-manager-actions'
-                    });
+                    Row.actions = document.createElement('div');
+                    Row.actions.className = 'quiqqer-feeds-manager-actions';
+
+                    if (Row.missingProject) {
+                        Row.actions.textContent = QUILocale.get(lg, 'quiqqer.feed.project.missing');
+                        return Row;
+                    }
 
                     new QUIButton({
                         'class': 'quiqqer-feeds-manager-actions-btn',

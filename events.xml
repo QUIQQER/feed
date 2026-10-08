@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
+    <event on="onDeleteProject" fire="\QUI\Feed\EventHandler::onDeleteProject" />
     <event on="onPackageSetup" fire="\QUI\Feed\EventHandler::onPackageSetup" />
     <event on="onRequest" fire="\QUI\Feed\EventHandler::onRequest" />
     <event on="onSiteActivate" fire="\QUI\Feed\EventHandler::onSiteChange" />
