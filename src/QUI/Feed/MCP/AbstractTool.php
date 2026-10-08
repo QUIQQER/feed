@@ -21,6 +21,7 @@ use function is_int;
 use function is_numeric;
 use function is_scalar;
 use function is_string;
+use function json_decode;
 use function json_encode;
 use function max;
 use function min;
@@ -58,22 +59,12 @@ abstract class AbstractTool implements ToolInterface
         $attributes = $Feed->getAttributes();
         $FeedType = $Feed->getFeedType();
 
-        $result = [
+        $result = array_merge(self::parseFeedAttributes($attributes), [
             'id' => $Feed->getId(),
             'typeId' => $Feed->getTypeId(),
             'typeTitle' => $FeedType->getAttribute('title'),
-            'project' => (string)$Feed->getAttribute('project'),
-            'lang' => (string)$Feed->getAttribute('lang'),
-            'feedName' => (string)$Feed->getAttribute('feedName'),
-            'feedDescription' => (string)$Feed->getAttribute('feedDescription'),
-            'feedlimit' => (int)$Feed->getAttribute('feedlimit'),
-            'pageSize' => (int)$Feed->getAttribute('pageSize'),
-            'publish' => (bool)$Feed->getAttribute('publish'),
-            'publishSites' => $Feed->getAttribute('publish_sites'),
-            'feedImage' => $Feed->getAttribute('feedImage'),
-            'directOutput' => (bool)$Feed->getAttribute('directOutput'),
             'url' => $Feed->getUrl()
-        ];
+        ]);
 
         if ($withAttributes) {
             $result['attributes'] = $attributes;
@@ -82,6 +73,46 @@ abstract class AbstractTool implements ToolInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array<string, mixed> $attributes
+     * @return array<string, mixed>
+     */
+    protected static function parseFeedAttributes(array $attributes): array
+    {
+        return [
+            'project' => (string)($attributes['project'] ?? ''),
+            'lang' => (string)($attributes['lang'] ?? ''),
+            'feedName' => (string)($attributes['feedName'] ?? ''),
+            'feedDescription' => (string)($attributes['feedDescription'] ?? ''),
+            'feedlimit' => (int)($attributes['feedlimit'] ?? 0),
+            'pageSize' => (int)($attributes['pageSize'] ?? 0),
+            'publish' => (bool)($attributes['publish'] ?? false),
+            'publishSites' => $attributes['publish_sites'] ?? false,
+            'feedImage' => $attributes['feedImage'] ?? false,
+            'directOutput' => (bool)($attributes['directOutput'] ?? false)
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    protected static function parseOrphanedFeed(array $row): array
+    {
+        $settings = json_decode((string)($row['feed_settings'] ?? ''), true);
+        $attributes = is_array($settings) ? array_merge($row, $settings) : $row;
+
+        return array_merge(self::parseFeedAttributes($attributes), [
+            'id' => (int)$row['id'],
+            'typeId' => (string)($row['type_id'] ?? ''),
+            'typeTitle' => '',
+            'project' => (string)$row['project'],
+            'lang' => (string)$row['lang'],
+            'url' => '',
+            'missingProject' => true
+        ]);
     }
 
     /**

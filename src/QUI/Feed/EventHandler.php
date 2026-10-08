@@ -20,6 +20,18 @@ use function json_encode;
 class EventHandler
 {
     /**
+     * quiqqer/core: onDeleteProject (the project no longer exists).
+     */
+    public static function onDeleteProject(string $project): void
+    {
+        try {
+            (new Manager())->deleteProjectFeeds($project);
+        } catch (\Doctrine\DBAL\Exception $Exception) {
+            QUI\System\Log::writeException($Exception);
+        }
+    }
+
+    /**
      * quiqqer/core: onPackageSetup
      *
      * @param QUI\Package\Package $Package

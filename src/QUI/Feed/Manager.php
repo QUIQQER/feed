@@ -98,21 +98,73 @@ class Manager
     }
 
     /**
-     * Delete a feed
+     * Load a feed for a management list, keeping orphaned rows accessible.
+     * Other errors must not be reported as a missing project.
      *
-     * @param integer $feedId - ID of the Feed
+     * @throws QUI\Exception
+     */
+    public function getFeedForList(int $feedId): ?Feed
+    {
+        try {
+            return $this->getFeed($feedId);
+        } catch (QUI\Exception $Exception) {
+            if ($Exception->getCode() !== 804) {
+                throw $Exception;
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * Delete a feed without loading its project or feed type.
+     *
+     * @throws Exception
+     * @throws QUI\Exception
      */
     public function deleteFeed(int $feedId): void
     {
-        try {
-            $this->getFeed($feedId);
+        $deleted = QUI::getDataBaseConnection()->delete(
+            Doctrine::quoteIdentifier(QUI::getDBTableName(self::TABLE)),
+            ['id' => $feedId]
+        );
 
-            QUI::getDataBaseConnection()->delete(
-                Doctrine::quoteIdentifier(QUI::getDBTableName(Manager::TABLE)),
-                ['id' => $feedId]
+        if (!$deleted) {
+            throw new QUI\Exception(
+                QUI::getLocale()->get('quiqqer/feed', 'exception.feed.not.found')
             );
-        } catch (QUI\Exception $Exception) {
-            QUI\System\Log::writeException($Exception);
+        }
+
+        LongTermCache::clear('quiqqer/feed/' . $feedId);
+    }
+
+    /**
+     * Remove feeds after their project has been deleted, in every language.
+     *
+     * @throws Exception
+     */
+    public function deleteProjectFeeds(string $project): void
+    {
+        $Connection = QUI::getDataBaseConnection();
+        $table = Doctrine::quoteIdentifier(QUI::getDBTableName(self::TABLE));
+        $feedIds = $Connection->createQueryBuilder()
+            ->select('id')
+            ->from($table)
+            ->where(Doctrine::quoteIdentifier('project') . ' = :project')
+            ->setParameter('project', $project)
+            ->executeQuery()
+            ->fetchFirstColumn();
+
+        foreach ($feedIds as $feedId) {
+            // Recheck the project so a concurrently reassigned feed is retained.
+            $deleted = $Connection->delete($table, [
+                'id' => (int)$feedId,
+                'project' => $project
+            ]);
+
+            if ($deleted) {
+                LongTermCache::clear('quiqqer/feed/' . (int)$feedId);
+            }
         }
     }
 
